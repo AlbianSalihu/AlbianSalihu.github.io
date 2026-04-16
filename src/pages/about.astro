@@ -12,18 +12,18 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       <div class="content-grid">
         <section class="content-section intro-section" data-reveal style="transition-delay:80ms">
           <h2 data-i18n="about.bg">Background</h2>
-          <p data-i18n="about.bio1">
+          <p class="glow-hover glow-hover-nobg" data-i18n="about.bio1">
             I'm Albian, a Robotics Engineer based in Lausanne, Switzerland. I hold a Master's degree
             in Robotics (minor in Space Technologies) and a Bachelor's in Microengineering, both from
             EPFL — one of Europe's leading engineering institutions.
           </p>
-          <p data-i18n="about.bio2">
+          <p class="glow-hover glow-hover-nobg" data-i18n="about.bio2">
             My path started in electronics with a vocational diploma (CFC) and baccalaureate at CPLN,
             before moving into microengineering and then robotics at EPFL. That progression gives me
             a strong foundation across the full hardware-software stack — from circuit-level electronics
             to high-level control algorithms and AI.
           </p>
-          <p data-i18n="about.bio3">
+          <p class="glow-hover glow-hover-nobg" data-i18n="about.bio3">
             I currently work at Wasteflow, where I develop real-time control systems for industrial
             waste-sorting conveyors — acting as the "muscle" that executes the decisions made by the
             company's AI system.
@@ -41,7 +41,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                 </svg>
               </div>
               <h3 data-i18n="about.s1t">Robotics & Control</h3>
-              <p data-i18n="about.s1d">Real-time control systems, ROS 2, sensor integration, and autonomous robot platforms.</p>
+              <p class="glow-hover glow-hover-nobg" data-i18n="about.s1d">Real-time control systems, ROS 2, sensor integration, and autonomous robot platforms.</p>
             </div>
             <div class="service-card">
               <div class="service-icon">
@@ -59,7 +59,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                 </svg>
               </div>
               <h3 data-i18n="about.s2t">Embedded Systems & FPGA</h3>
-              <p data-i18n="about.s2d">FPGA development on Xilinx Zynq and Intel DE10. Signal processing, control loops, real-time constraints.</p>
+              <p class="glow-hover glow-hover-nobg" data-i18n="about.s2d">FPGA development on Xilinx Zynq and Intel DE10. Signal processing, control loops, real-time constraints.</p>
             </div>
             <div class="service-card">
               <div class="service-icon">
@@ -68,7 +68,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                 </svg>
               </div>
               <h3 data-i18n="about.s3t">AI & Machine Learning</h3>
-              <p data-i18n="about.s3d">Training and deploying ML models for real-world decision-making, including computer vision pipelines.</p>
+              <p class="glow-hover glow-hover-nobg" data-i18n="about.s3d">Training and deploying ML models for real-world decision-making, including computer vision pipelines.</p>
             </div>
             <div class="service-card">
               <div class="service-icon">
@@ -77,7 +77,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                 </svg>
               </div>
               <h3 data-i18n="about.s4t">Electronics & Prototyping</h3>
-              <p data-i18n="about.s4d">PCB design, circuit assembly, CAD modelling, and hands-on hardware prototyping from concept to test.</p>
+              <p class="glow-hover glow-hover-nobg" data-i18n="about.s4d">PCB design, circuit assembly, CAD modelling, and hands-on hardware prototyping from concept to test.</p>
             </div>
           </div>
         </section>
@@ -89,28 +89,28 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
               <div class="timeline-date">2021 – 2024</div>
               <div class="timeline-content">
                 <h3 data-i18n="about.edu1t">Master in Robotics — Minor in Space Technologies</h3>
-                <p>EPFL, École Polytechnique Fédérale de Lausanne</p>
+                <p class="glow-hover glow-hover-nobg">EPFL, École Polytechnique Fédérale de Lausanne</p>
               </div>
             </div>
             <div class="timeline-item">
               <div class="timeline-date">2018 – 2021</div>
               <div class="timeline-content">
                 <h3 data-i18n="about.edu2t">Bachelor in Microengineering</h3>
-                <p>EPFL, École Polytechnique Fédérale de Lausanne</p>
+                <p class="glow-hover glow-hover-nobg">EPFL, École Polytechnique Fédérale de Lausanne</p>
               </div>
             </div>
             <div class="timeline-item">
               <div class="timeline-date">2016 – 2017</div>
               <div class="timeline-content">
                 <h3 data-i18n="about.edu3t">Federal Vocational Baccalaureate</h3>
-                <p>CPLN, Centre Professionnel du Littoral Neuchâtelois</p>
+                <p class="glow-hover glow-hover-nobg">CPLN, Centre Professionnel du Littoral Neuchâtelois</p>
               </div>
             </div>
             <div class="timeline-item">
               <div class="timeline-date">2012 – 2016</div>
               <div class="timeline-content">
                 <h3 data-i18n="about.edu4t">Federal VET Diploma (CFC) — Electronics</h3>
-                <p>CPLN, Centre Professionnel du Littoral Neuchâtelois</p>
+                <p class="glow-hover glow-hover-nobg">CPLN, Centre Professionnel du Littoral Neuchâtelois</p>
               </div>
             </div>
           </div>
@@ -118,7 +118,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
         <section class="content-section cta-section" data-reveal style="transition-delay:150ms">
           <h2 data-i18n="about.cta">Let's Work Together</h2>
-          <p data-i18n="about.cta_sub">Interested in collaborating on robotics, embedded systems, or AI projects?</p>
+          <p class="glow-hover glow-hover-nobg" data-i18n="about.cta_sub">Interested in collaborating on robotics, embedded systems, or AI projects?</p>
           <div class="contact-buttons">
             <a href={`${base}/projects`} class="btn btn-primary">
               <span data-i18n="about.btn_w">View My Work</span>

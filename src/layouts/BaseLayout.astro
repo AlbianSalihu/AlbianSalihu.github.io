@@ -244,5 +244,59 @@ const {
 
       document.addEventListener('astro:page-load', _renderKatex);
     </script>
+
+    <script>
+      // Proximity glow — desktop only (pointer: fine = real mouse)
+      if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+        // dim text color components: #64748b = rgb(100, 116, 139)
+        const DIM_R = 100, DIM_G = 116, DIM_B = 139;
+        const RADIUS = 160; // px — how far the effect reaches
+
+        let mouseX = -9999, mouseY = -9999;
+        let rafQueued = false;
+        let glowEls: HTMLElement[] = [];
+
+        function refreshElements() {
+          glowEls = Array.from(document.querySelectorAll<HTMLElement>('.glow-hover'));
+        }
+
+        function update() {
+          rafQueued = false;
+          for (const el of glowEls) {
+            const r = el.getBoundingClientRect();
+            const dx = Math.max(r.left - mouseX, 0, mouseX - r.right);
+            const dy = Math.max(r.top  - mouseY, 0, mouseY - r.bottom);
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            const t = Math.max(0, 1 - dist / RADIUS);
+
+            if (t > 0) {
+              const cr = Math.round(DIM_R + t * (255 - DIM_R));
+              const cg = Math.round(DIM_G + t * (255 - DIM_G));
+              const cb = Math.round(DIM_B + t * (255 - DIM_B));
+              el.style.color      = `rgb(${cr},${cg},${cb})`;
+              if (!el.classList.contains('glow-hover-nobg'))
+                el.style.background = `rgba(0,0,0,${(t * 0.35).toFixed(2)})`;
+            } else {
+              el.style.color      = '';
+              el.style.background = '';
+            }
+          }
+        }
+
+        document.addEventListener('mousemove', (e) => {
+          mouseX = e.clientX;
+          mouseY = e.clientY;
+          if (!rafQueued) { rafQueued = true; requestAnimationFrame(update); }
+        });
+
+        // Reset when mouse leaves the window
+        document.addEventListener('mouseleave', () => {
+          mouseX = mouseY = -9999;
+          if (!rafQueued) { rafQueued = true; requestAnimationFrame(update); }
+        });
+
+        document.addEventListener('astro:page-load', refreshElements);
+      }
+    </script>
   </body>
 </html>

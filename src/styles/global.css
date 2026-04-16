@@ -126,6 +126,14 @@ body {
   [data-reveal] { opacity: 1; transform: none; transition: none; }
 }
 
+/* ── Proximity glow — JS drives color/background via inline styles ── */
+@media (hover: hover) {
+  .glow-hover {
+    transition: color 0.2s ease, background 0.2s ease;
+    border-radius: 0.25rem;
+  }
+}
+
 /* ── Bilingual content blocks ── */
 /* Usage: wrap content in <div class="lang-fr"> or <div class="lang-en"> */
 .lang-fr { display: none; }

@@ -30,15 +30,15 @@ const { slug, title, description, tags, featured, date, image, imageBg, imagePos
       {date && <span class="project-date">{date}</span>}
     </div>
     <h3 class="project-title" data-i18n={`p.${slug}.t`}>{title}</h3>
-    <p class="project-description" data-i18n={`p.${slug}.d`}>{description}</p>
+    <p class="project-description glow-hover glow-hover-nobg" data-i18n={`p.${slug}.d`}>{description}</p>
     {tags && tags.length > 0 && (
       <div class="project-tags">
         {tags.map((tag) => (
-          <span class="tag">{tag}</span>
+          <span class="tag glow-hover glow-hover-nobg">{tag}</span>
         ))}
       </div>
     )}
-    <span class="read-more">
+    <span class="read-more glow-hover glow-hover-nobg">
       <span data-i18n="proj.read_more">View project</span>
       <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <line x1="5" y1="12" x2="19" y2="12"></line>
