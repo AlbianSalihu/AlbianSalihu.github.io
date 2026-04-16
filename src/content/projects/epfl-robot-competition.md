@@ -98,7 +98,7 @@ Deux zones de dépôt : **100%** (points complets) et **50%** (moitié des point
 
 </div>
 
-<img src="/astro-darkness/epfl-robot-competition/arena.png" alt="Arena layout with zones and collection points" />
+<img src="/epfl-robot-competition/arena.png" alt="Arena layout with zones and collection points" />
 
 ### Competition Strategy
 
@@ -150,30 +150,30 @@ Châssis réduit à 300×200×150 mm après découverte que le Lidar était trop
 
 </div>
 
-<img src="/astro-darkness/epfl-robot-competition/generations.png" alt="Three robot generations: Gen 1, Gen 2, Gen 3 (final)" />
+<img src="/epfl-robot-competition/generations.png" alt="Three robot generations: Gen 1, Gen 2, Gen 3 (final)" />
 
 <div class="video-grid">
 
-<img src="/astro-darkness/epfl-robot-competition/final_assembly.png" alt="Final robot CAD assembly — front view" />
-<img src="/astro-darkness/epfl-robot-competition/backview.png" alt="Back view showing belt drive and electronics placement" />
+<img src="/epfl-robot-competition/final_assembly.png" alt="Final robot CAD assembly — front view" />
+<img src="/epfl-robot-competition/backview.png" alt="Back view showing belt drive and electronics placement" />
 
 </div>
 
 <div class="video-grid">
 
-<img src="/astro-darkness/epfl-robot-competition/transmission.png" alt="Belt drive transmission — exploded view and section analysis" />
-<img src="/astro-darkness/epfl-robot-competition/funnel.png" alt="Funnel implementation with flexible claw tips" />
+<img src="/epfl-robot-competition/transmission.png" alt="Belt drive transmission — exploded view and section analysis" />
+<img src="/epfl-robot-competition/funnel.png" alt="Funnel implementation with flexible claw tips" />
 
 </div>
 
 <div class="video-grid">
 
-<img src="/astro-darkness/epfl-robot-competition/robot_real_a.jpg" alt="Real robot at competition — arena view" />
-<img src="/astro-darkness/epfl-robot-competition/robot_real_b.jpg" alt="Real robot with Duplo bricks in front" />
+<img src="/epfl-robot-competition/robot_real_a.jpg" alt="Real robot at competition — arena view" />
+<img src="/epfl-robot-competition/robot_real_b.jpg" alt="Real robot with Duplo bricks in front" />
 
 </div>
 
-<img src="/astro-darkness/epfl-robot-competition/robot_real_c.jpg" alt="Real robot on competition carpet" />
+<img src="/epfl-robot-competition/robot_real_c.jpg" alt="Real robot on competition carpet" />
 
 ## Electronics
 
@@ -273,7 +273,7 @@ Deux paquets ROS (`br_simulation`, `arena_gazebo`) implémentent une simulation 
 
 </div>
 
-<img src="/astro-darkness/epfl-robot-competition/simulation.png" alt="Gazebo simulation with arena and robot" />
+<img src="/epfl-robot-competition/simulation.png" alt="Gazebo simulation with arena and robot" />
 
 ### Localization
 
@@ -380,8 +380,8 @@ Décisions de conception clés :
 
 <div class="video-grid">
 
-<img src="/astro-darkness/epfl-robot-competition/detection.png" alt="YOLOv5 brick detection — patch cropping and merged detections" />
-<img src="/astro-darkness/epfl-robot-competition/detection_rviz.png" alt="Brick detections visualized in RViz as 3D markers" />
+<img src="/epfl-robot-competition/detection.png" alt="YOLOv5 brick detection — patch cropping and merged detections" />
+<img src="/epfl-robot-competition/detection_rviz.png" alt="Brick detections visualized in RViz as 3D markers" />
 </div>
 
 ### Brick Management

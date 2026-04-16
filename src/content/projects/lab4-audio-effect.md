@@ -54,7 +54,7 @@ Mini-project for the EPFL *Embedded Systems* course (June 2023), completed as pa
 
 The goal: build a **quasi-real-time audio effect device** on the Intel DE1-SoC FPGA board. A microphone captures audio, it gets processed through an FFT-based low-pass filter, and the result plays back through the speaker — all coordinated across two independent processors over custom hardware IP.
 
-<img src="/astro-darkness/lab4-audio/goal.JPG" alt="System goal: microphone → FFT → low-pass filter → IFFT → speaker" style="max-width:80%;display:block;margin:0 auto;" />
+<img src="/lab4-audio/goal.JPG" alt="System goal: microphone → FFT → low-pass filter → IFFT → speaker" style="max-width:80%;display:block;margin:0 auto;" />
 
 The project was not just about writing signal processing code. The core challenge was **designing the hardware infrastructure** that makes it possible: a custom DMA controller, a custom interrupt-based mailbox, and a dual-processor system wired together over Intel's Avalon interconnect — all implemented from scratch in VHDL.
 
@@ -65,7 +65,7 @@ Mini-projet pour le cours *Systèmes Embarqués* de l'EPFL (juin 2023), réalis�
 
 L'objectif : construire un **dispositif d'effet audio en temps quasi-réel** sur la carte FPGA Intel DE1-SoC. Un microphone capture l'audio, celui-ci est traité par un filtre passe-bas basé sur la FFT, puis le résultat est rejoué par le haut-parleur — le tout coordonné entre deux processeurs indépendants via des IP matérielles personnalisées.
 
-<img src="/astro-darkness/lab4-audio/goal.JPG" alt="Objectif : microphone → FFT → filtre passe-bas → IFFT → haut-parleur" style="max-width:80%;display:block;margin:0 auto;" />
+<img src="/lab4-audio/goal.JPG" alt="Objectif : microphone → FFT → filtre passe-bas → IFFT → haut-parleur" style="max-width:80%;display:block;margin:0 auto;" />
 
 Le projet ne consistait pas seulement à écrire du code de traitement du signal. Le défi principal était de **concevoir l'infrastructure matérielle** : un contrôleur DMA personnalisé, une boîte aux lettres matérielle par interruption, et un système bi-processeur câblé sur l'interconnexion Avalon d'Intel — le tout implémenté de zéro en VHDL.
 
@@ -83,11 +83,11 @@ The system runs on the Intel DE1-SoC with a WM8731 audio CODEC at 48 kHz (clocke
 - **Bus 1** (CPU1 domain): Nios II Processor 1, On-chip Memory 1, Custom DMA 0, Custom DMA 1, IP Audio Ctrl, IP Timer 1
 - **Bus 2** (shared peripherals): IP Audio, IP PIO (8-bit switches), SDRAM Controller
 
-<img src="/astro-darkness/lab4-audio/general_architecture_avalon.JPG" alt="Full Avalon bus hierarchy: three buses, two Nios II processors, custom IPs, SDRAM, audio CODEC" style="max-width:90%;display:block;margin:0 auto;" data-lightbox />
+<img src="/lab4-audio/general_architecture_avalon.JPG" alt="Full Avalon bus hierarchy: three buses, two Nios II processors, custom IPs, SDRAM, audio CODEC" style="max-width:90%;display:block;margin:0 auto;" data-lightbox />
 
 The two processors have their own memory spaces and Avalon buses, isolated except for the shared Bus 2. Inter-processor communication happens entirely through the custom hardware IPs — no shared memory flag polling.
 
-<img src="/astro-darkness/lab4-audio/general_architecture_connectic.JPG" alt="Connectivity block diagram: CPU0, CPU1, Custom IRQ Sender, Custom DMA 0/1, SDRAM, Audio IP" style="max-width:75%;display:block;margin:0 auto;" />
+<img src="/lab4-audio/general_architecture_connectic.JPG" alt="Connectivity block diagram: CPU0, CPU1, Custom IRQ Sender, Custom DMA 0/1, SDRAM, Audio IP" style="max-width:75%;display:block;margin:0 auto;" />
 
 </div>
 <div class="lang-fr">
@@ -98,11 +98,11 @@ Le système fonctionne sur l'Intel DE1-SoC avec un CODEC audio WM8731 à 48 kHz 
 - **Bus 1** (domaine CPU1) : Processeur Nios II 1, Mémoire on-chip 1, Custom DMA 0, Custom DMA 1, IP Audio Ctrl, IP Timer 1
 - **Bus 2** (périphériques partagés) : IP Audio, IP PIO (switchs 8 bits), Contrôleur SDRAM
 
-<img src="/astro-darkness/lab4-audio/general_architecture_avalon.JPG" alt="Hiérarchie complète des bus Avalon : trois bus, deux processeurs Nios II, IPs personnalisées, SDRAM, CODEC audio" style="max-width:90%;display:block;margin:0 auto;" data-lightbox />
+<img src="/lab4-audio/general_architecture_avalon.JPG" alt="Hiérarchie complète des bus Avalon : trois bus, deux processeurs Nios II, IPs personnalisées, SDRAM, CODEC audio" style="max-width:90%;display:block;margin:0 auto;" data-lightbox />
 
 Les deux processeurs ont leurs propres espaces mémoire et bus Avalon, isolés sauf pour le Bus 2 partagé. La communication inter-processeur se fait entièrement via les IPs matérielles personnalisées — sans polling de flags en mémoire partagée.
 
-<img src="/astro-darkness/lab4-audio/general_architecture_connectic.JPG" alt="Diagramme de connectivité : CPU0, CPU1, Custom IRQ Sender, Custom DMA 0/1, SDRAM, IP Audio" style="max-width:75%;display:block;margin:0 auto;" />
+<img src="/lab4-audio/general_architecture_connectic.JPG" alt="Diagramme de connectivité : CPU0, CPU1, Custom IRQ Sender, Custom DMA 0/1, SDRAM, IP Audio" style="max-width:75%;display:block;margin:0 auto;" />
 
 </div>
 
@@ -118,7 +118,7 @@ Each DMA is a dual-role component:
 - **Avalon Master**: drives the memory bus autonomously to read/write data
 - **Avalon Slave**: exposes a register interface for CPU1 to configure and start transfers
 
-<img src="/astro-darkness/lab4-audio/blockDiagramDMA.JPG" alt="Custom DMA block diagram: Avalon Slave config port (8 registers) and Avalon Master memory bus" style="background:#d4d4d4;max-width:65%;display:block;margin:0 auto;" />
+<img src="/lab4-audio/blockDiagramDMA.JPG" alt="Custom DMA block diagram: Avalon Slave config port (8 registers) and Avalon Master memory bus" style="background:#d4d4d4;max-width:65%;display:block;margin:0 auto;" />
 
 </div>
 <div class="lang-fr">
@@ -129,7 +129,7 @@ Chaque DMA joue un double rôle :
 - **Maître Avalon** : pilote le bus mémoire de manière autonome pour lire/écrire les données
 - **Esclave Avalon** : expose une interface de registres pour que CPU1 configure et déclenche les transferts
 
-<img src="/astro-darkness/lab4-audio/blockDiagramDMA.JPG" alt="Diagramme du DMA : port esclave Avalon (8 registres) et bus maître Avalon" style="background:#d4d4d4;max-width:65%;display:block;margin:0 auto;" />
+<img src="/lab4-audio/blockDiagramDMA.JPG" alt="Diagramme du DMA : port esclave Avalon (8 registres) et bus maître Avalon" style="background:#d4d4d4;max-width:65%;display:block;margin:0 auto;" />
 
 </div>
 
@@ -228,7 +228,7 @@ It exposes two registers over its Avalon Slave interface:
 
 **How it works**: CPU0 writes the SDRAM address into register 0. The component immediately raises the `IRQ` line. CPU1's interrupt handler reads the address from register 0, then writes to register 1 to acknowledge and lower the IRQ.
 
-<img src="/astro-darkness/lab4-audio/blockDiagramIRQSender.JPG" alt="Custom IRQ Sender block diagram: RegMessage + RegAckIRQ, IRQ output line" style="background:#d4d4d4;max-width:55%;display:block;margin:0 auto;" />
+<img src="/lab4-audio/blockDiagramIRQSender.JPG" alt="Custom IRQ Sender block diagram: RegMessage + RegAckIRQ, IRQ output line" style="background:#d4d4d4;max-width:55%;display:block;margin:0 auto;" />
 
 This eliminates the need for CPU1 to poll any shared memory location — the interrupt fires the moment CPU0 has finished recording.
 
@@ -246,7 +246,7 @@ Il expose deux registres via son interface Esclave Avalon :
 
 **Fonctionnement** : CPU0 écrit l'adresse SDRAM dans le registre 0. Le composant lève immédiatement la ligne `IRQ`. Le gestionnaire d'interruption de CPU1 lit l'adresse depuis le registre 0, puis écrit dans le registre 1 pour acquitter et abaisser l'IRQ.
 
-<img src="/astro-darkness/lab4-audio/blockDiagramIRQSender.JPG" alt="Diagramme du IRQ Sender : RegMessage + RegAckIRQ, ligne IRQ de sortie" style="background:#d4d4d4;max-width:55%;display:block;margin:0 auto;" />
+<img src="/lab4-audio/blockDiagramIRQSender.JPG" alt="Diagramme du IRQ Sender : RegMessage + RegAckIRQ, ligne IRQ de sortie" style="background:#d4d4d4;max-width:55%;display:block;margin:0 auto;" />
 
 Cela élimine le besoin pour CPU1 de surveiller un emplacement mémoire partagé — l'interruption se déclenche dès que CPU0 a terminé l'enregistrement.
 
@@ -260,7 +260,7 @@ Cela élimine le besoin pour CPU1 de surveiller un emplacement mémoire partagé
 
 The WM8731 CODEC is accessed through Intel's Audio IP core, which sits on the shared Avalon bus. Internally it has four FIFOs and a serializer/deserializer pair for I²S communication with the CODEC:
 
-<img src="/astro-darkness/lab4-audio/explanation_audioIP.JPG" alt="Audio IP internal structure: Left/Right FIFOs, Deserializer (ADC input), Serializer (DAC output), Avalon Slave port" style="background:#d4d4d4;max-width:85%;display:block;margin:0 auto;" />
+<img src="/lab4-audio/explanation_audioIP.JPG" alt="Audio IP internal structure: Left/Right FIFOs, Deserializer (ADC input), Serializer (DAC output), Avalon Slave port" style="background:#d4d4d4;max-width:85%;display:block;margin:0 auto;" />
 
 CPU0 reads microphone samples from the **Right FIFO** (ADC side) one at a time in a polling loop, writing each 16-bit sample directly to SDRAM. CPU1 writes processed samples into the **Left + Right FIFOs** (DAC side) for playback.
 
@@ -271,7 +271,7 @@ The CODEC runs at 48 kHz — 10 seconds of recording = 480,000 samples = 960 KB 
 
 Le CODEC WM8731 est accessible via le cœur IP Audio d'Intel, situé sur le bus Avalon partagé. En interne, il comporte quatre FIFOs et une paire sérialiseur/désérialiseur pour la communication I²S avec le CODEC :
 
-<img src="/astro-darkness/lab4-audio/explanation_audioIP.JPG" alt="Structure interne de l'IP Audio : FIFOs Gauche/Droite, Désérialiseur (entrée ADC), Sérialiseur (sortie DAC), port Esclave Avalon" style="background:#d4d4d4;max-width:85%;display:block;margin:0 auto;" />
+<img src="/lab4-audio/explanation_audioIP.JPG" alt="Structure interne de l'IP Audio : FIFOs Gauche/Droite, Désérialiseur (entrée ADC), Sérialiseur (sortie DAC), port Esclave Avalon" style="background:#d4d4d4;max-width:85%;display:block;margin:0 auto;" />
 
 CPU0 lit les échantillons du microphone depuis la **FIFO Droite** (côté ADC) un par un dans une boucle de polling, en écrivant chaque échantillon 16 bits directement en SDRAM. CPU1 écrit les échantillons traités dans les **FIFOs Gauche + Droite** (côté DAC) pour la lecture.
 
@@ -287,14 +287,14 @@ Le CODEC fonctionne à 48 kHz — 10 secondes d'enregistrement = 480 000 échant
 
 The two processors run completely independent firmware. Their combined flow is:
 
-<img src="/astro-darkness/lab4-audio/softME.drawio.png" alt="CPU0 and CPU1 software flowcharts: record → IRQ → DMA read → FFT → filter → IFFT → DMA write → playback" style="background:#d4d4d4;max-width:70%;display:block;margin:0 auto;" data-lightbox />
+<img src="/lab4-audio/softME.drawio.png" alt="CPU0 and CPU1 software flowcharts: record → IRQ → DMA read → FFT → filter → IFFT → DMA write → playback" style="background:#d4d4d4;max-width:70%;display:block;margin:0 auto;" data-lightbox />
 
 </div>
 <div class="lang-fr">
 
 Les deux processeurs exécutent des firmwares complètement indépendants. Leur flux combiné est :
 
-<img src="/astro-darkness/lab4-audio/softME.drawio.png" alt="Organigrammes CPU0 et CPU1 : enregistrement → IRQ → lecture DMA → FFT → filtre → IFFT → écriture DMA → lecture audio" style="background:#d4d4d4;max-width:70%;display:block;margin:0 auto;" data-lightbox />
+<img src="/lab4-audio/softME.drawio.png" alt="Organigrammes CPU0 et CPU1 : enregistrement → IRQ → lecture DMA → FFT → filtre → IFFT → écriture DMA → lecture audio" style="background:#d4d4d4;max-width:70%;display:block;margin:0 auto;" data-lightbox />
 
 </div>
 
@@ -364,7 +364,7 @@ CPU1 enregistre trois ISRs au démarrage : un pour `customIRQSender`, un pour ch
 
 The filter operates in the frequency domain on 1024-sample blocks:
 
-<img src="/astro-darkness/lab4-audio/low_pass.png" alt="Low-pass filter in frequency domain: magnitude vs frequency, bins above cutoff zeroed" style="background:#ffffff;max-width:45%;display:block;margin:0 auto;" />
+<img src="/lab4-audio/low_pass.png" alt="Low-pass filter in frequency domain: magnitude vs frequency, bins above cutoff zeroed" style="background:#ffffff;max-width:45%;display:block;margin:0 auto;" />
 
 **Forward FFT** → **zero bins where `freq ≥ 20 kHz`** → **Inverse FFT** → **normalise by 1/N**
 
@@ -377,7 +377,7 @@ The FFT library used is **KissFFT** (`kiss_fftr` / `kiss_fftri` for real-valued 
 
 Le filtre opère dans le domaine fréquentiel sur des blocs de 1024 échantillons :
 
-<img src="/astro-darkness/lab4-audio/low_pass.png" alt="Filtre passe-bas dans le domaine fréquentiel : magnitude vs fréquence, bins au-dessus de la coupure mis à zéro" style="background:#ffffff;max-width:45%;display:block;margin:0 auto;" />
+<img src="/lab4-audio/low_pass.png" alt="Filtre passe-bas dans le domaine fréquentiel : magnitude vs fréquence, bins au-dessus de la coupure mis à zéro" style="background:#ffffff;max-width:45%;display:block;margin:0 auto;" />
 
 **FFT directe** → **mise à zéro des bins où `freq ≥ 20 kHz`** → **FFT inverse** → **normalisation par 1/N**
 
@@ -393,9 +393,9 @@ La bibliothèque FFT utilisée est **KissFFT** (`kiss_fftr` / `kiss_fftri` pour 
 
 CPU profiling confirmed where time was being spent:
 
-<img src="/astro-darkness/lab4-audio/CPU0_profiling.JPG" alt="CPU0 profiling: 49% time in alt_up_audio_read_fifo, 33% in alt_up_audio_read_fifo_avail — audio FIFO polling dominates" style="max-width:70%;display:block;margin:0 auto;" />
+<img src="/lab4-audio/CPU0_profiling.JPG" alt="CPU0 profiling: 49% time in alt_up_audio_read_fifo, 33% in alt_up_audio_read_fifo_avail — audio FIFO polling dominates" style="max-width:70%;display:block;margin:0 auto;" />
 
-<img src="/astro-darkness/lab4-audio/CPU1_profiling.JPG" alt="CPU1 profiling: 20% in main loop, 19% in KissFFT subfunctions, 11% in alt_up_audio_write_fifo_space — DMA and FFT well-distributed" style="max-width:70%;display:block;margin:0 auto;" />
+<img src="/lab4-audio/CPU1_profiling.JPG" alt="CPU1 profiling: 20% in main loop, 19% in KissFFT subfunctions, 11% in alt_up_audio_write_fifo_space — DMA and FFT well-distributed" style="max-width:70%;display:block;margin:0 auto;" />
 
 **CPU0**: ~82% of time spent in audio FIFO polling (`read_fifo` + `read_fifo_avail`). Expected — recording is entirely I/O-bound.
 
@@ -406,9 +406,9 @@ CPU profiling confirmed where time was being spent:
 
 Le profilage CPU a confirmé où le temps était dépensé :
 
-<img src="/astro-darkness/lab4-audio/CPU0_profiling.JPG" alt="Profilage CPU0 : 49% dans alt_up_audio_read_fifo, 33% dans alt_up_audio_read_fifo_avail — polling de la FIFO audio dominant" style="max-width:70%;display:block;margin:0 auto;" />
+<img src="/lab4-audio/CPU0_profiling.JPG" alt="Profilage CPU0 : 49% dans alt_up_audio_read_fifo, 33% dans alt_up_audio_read_fifo_avail — polling de la FIFO audio dominant" style="max-width:70%;display:block;margin:0 auto;" />
 
-<img src="/astro-darkness/lab4-audio/CPU1_profiling.JPG" alt="Profilage CPU1 : 20% dans la boucle principale, 19% dans les sous-fonctions KissFFT, 11% dans alt_up_audio_write_fifo_space" style="max-width:70%;display:block;margin:0 auto;" />
+<img src="/lab4-audio/CPU1_profiling.JPG" alt="Profilage CPU1 : 20% dans la boucle principale, 19% dans les sous-fonctions KissFFT, 11% dans alt_up_audio_write_fifo_space" style="max-width:70%;display:block;margin:0 auto;" />
 
 **CPU0** : ~82% du temps en polling de la FIFO audio (`read_fifo` + `read_fifo_avail`). Attendu — l'enregistrement est entièrement limité par les entrées/sorties.
 

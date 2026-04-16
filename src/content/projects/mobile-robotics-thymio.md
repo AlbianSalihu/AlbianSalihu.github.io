@@ -103,13 +103,13 @@ The vision module detects three things from a single overhead camera frame: obst
 
 The vision module went through **15 iterations** (`vision_09.py` → `vision_15.py`) before reaching a version reliable enough to run on the physical robot. The main challenge was distinguishing Thymio's dots from background objects under variable lighting.
 
-<img src="/astro-darkness/mobile-robotics/testimg2.jpg" alt="Raw arena image" style="max-width:80%;display:block;margin:0 auto;" />
+<img src="/mobile-robotics/testimg2.jpg" alt="Raw arena image" style="max-width:80%;display:block;margin:0 auto;" />
 
-<img src="/astro-darkness/mobile-robotics/vis.HSV_image.png" alt="HSV-filtered image" style="max-width:80%;display:block;margin:0 auto;" />
+<img src="/mobile-robotics/vis.HSV_image.png" alt="HSV-filtered image" style="max-width:80%;display:block;margin:0 auto;" />
 
-<img src="/astro-darkness/mobile-robotics/vis.binary_image.png" alt="Binary image after morphological processing" style="max-width:80%;display:block;margin:0 auto;" />
+<img src="/mobile-robotics/vis.binary_image.png" alt="Binary image after morphological processing" style="max-width:80%;display:block;margin:0 auto;" />
 
-<img src="/astro-darkness/mobile-robotics/vis.all_markers.png" alt="Detected obstacles, goal, and Thymio overlaid" style="max-width:80%;display:block;margin:0 auto;" />
+<img src="/mobile-robotics/vis.all_markers.png" alt="Detected obstacles, goal, and Thymio overlaid" style="max-width:80%;display:block;margin:0 auto;" />
 
 </div>
 <div class="lang-fr">
@@ -131,13 +131,13 @@ Le module de vision détecte trois choses depuis une seule image de caméra en s
 
 Le module de vision a traversé **15 itérations** (`vision_09.py` → `vision_15.py`) avant d'atteindre une version suffisamment fiable pour fonctionner sur le robot physique. Le principal défi était de distinguer les points du Thymio des objets de fond sous un éclairage variable.
 
-<img src="/astro-darkness/mobile-robotics/testimg2.jpg" alt="Image brute de l'arène" style="max-width:80%;display:block;margin:0 auto;" />
+<img src="/mobile-robotics/testimg2.jpg" alt="Image brute de l'arène" style="max-width:80%;display:block;margin:0 auto;" />
 
-<img src="/astro-darkness/mobile-robotics/vis.HSV_image.png" alt="Image filtrée en HSV" style="max-width:80%;display:block;margin:0 auto;" />
+<img src="/mobile-robotics/vis.HSV_image.png" alt="Image filtrée en HSV" style="max-width:80%;display:block;margin:0 auto;" />
 
-<img src="/astro-darkness/mobile-robotics/vis.binary_image.png" alt="Image binaire après traitement morphologique" style="max-width:80%;display:block;margin:0 auto;" />
+<img src="/mobile-robotics/vis.binary_image.png" alt="Image binaire après traitement morphologique" style="max-width:80%;display:block;margin:0 auto;" />
 
-<img src="/astro-darkness/mobile-robotics/vis.all_markers.png" alt="Obstacles, objectif et Thymio détectés superposés" style="max-width:80%;display:block;margin:0 auto;" />
+<img src="/mobile-robotics/vis.all_markers.png" alt="Obstacles, objectif et Thymio détectés superposés" style="max-width:80%;display:block;margin:0 auto;" />
 
 </div>
 
@@ -155,11 +155,11 @@ Le module de vision a traversé **15 itérations** (`vision_09.py` → `vision_1
 
 **Step 4 — Path output:** reversed list of waypoint coordinates in image-pixel space, passed to the motion controller.
 
-<img src="/astro-darkness/mobile-robotics/augmented.jpg" alt="Inflated obstacles — binary image used for visibility checking" style="max-width:80%;display:block;margin:0 auto;" />
+<img src="/mobile-robotics/augmented.jpg" alt="Inflated obstacles — binary image used for visibility checking" style="max-width:80%;display:block;margin:0 auto;" />
 
-<img src="/astro-darkness/mobile-robotics/visibility.jpg" alt="Visibility graph — blue lines connect mutually visible nodes" style="max-width:80%;display:block;margin:0 auto;" />
+<img src="/mobile-robotics/visibility.jpg" alt="Visibility graph — blue lines connect mutually visible nodes" style="max-width:80%;display:block;margin:0 auto;" />
 
-<img src="/astro-darkness/mobile-robotics/path.jpg" alt="Shortest path computed by Dijkstra" style="max-width:80%;display:block;margin:0 auto;" />
+<img src="/mobile-robotics/path.jpg" alt="Shortest path computed by Dijkstra" style="max-width:80%;display:block;margin:0 auto;" />
 
 </div>
 <div class="lang-fr">
@@ -172,11 +172,11 @@ Le module de vision a traversé **15 itérations** (`vision_09.py` → `vision_1
 
 **Étape 4 — Sortie de chemin :** liste inversée de coordonnées de waypoints en espace pixel-image, transmise au contrôleur de mouvement.
 
-<img src="/astro-darkness/mobile-robotics/augmented.jpg" alt="Obstacles gonflés — image binaire utilisée pour la vérification de visibilité" style="max-width:80%;display:block;margin:0 auto;" />
+<img src="/mobile-robotics/augmented.jpg" alt="Obstacles gonflés — image binaire utilisée pour la vérification de visibilité" style="max-width:80%;display:block;margin:0 auto;" />
 
-<img src="/astro-darkness/mobile-robotics/visibility.jpg" alt="Graphe de visibilité — les lignes bleues connectent les nœuds mutuellement visibles" style="max-width:80%;display:block;margin:0 auto;" />
+<img src="/mobile-robotics/visibility.jpg" alt="Graphe de visibilité — les lignes bleues connectent les nœuds mutuellement visibles" style="max-width:80%;display:block;margin:0 auto;" />
 
-<img src="/astro-darkness/mobile-robotics/path.jpg" alt="Chemin le plus court calculé par Dijkstra" style="max-width:80%;display:block;margin:0 auto;" />
+<img src="/mobile-robotics/path.jpg" alt="Chemin le plus court calculé par Dijkstra" style="max-width:80%;display:block;margin:0 auto;" />
 
 </div>
 

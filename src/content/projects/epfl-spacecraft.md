@@ -54,7 +54,7 @@ The **CHESS mission** (Constellation of High-performance Exospheric Science Sate
 
 The constellation deploys multiple CubeSats in orbit, each carrying a miniaturized mass spectrometer. Together, they build a picture of atmospheric chemistry that no single satellite could achieve alone.
 
-<img src="/astro-darkness/epfl-spacecraft/ChessCubesat.png" alt="CHESS CubeSat constellation" style="background:#d4d4d4;" />
+<img src="/epfl-spacecraft/ChessCubesat.png" alt="CHESS CubeSat constellation" style="background:#d4d4d4;" />
 
 </div>
 <div class="lang-fr">
@@ -63,7 +63,7 @@ La mission **CHESS** (Constellation of High-performance Exospheric Science Satel
 
 La constellation déploie plusieurs CubeSats en orbite, chacun embarquant un spectromètre de masse miniaturisé. Ensemble, ils reconstituent une image de la chimie atmosphérique qu'aucun satellite seul ne pourrait atteindre.
 
-<img src="/astro-darkness/epfl-spacecraft/ChessCubesat.png" alt="Constellation CubeSat CHESS" style="background:#d4d4d4;" />
+<img src="/epfl-spacecraft/ChessCubesat.png" alt="Constellation CubeSat CHESS" style="background:#d4d4d4;" />
 
 </div>
 
@@ -79,7 +79,7 @@ The instrument is built around three stacked boards: a **power board** (filament
 
 The filament subsystem is the most critical and fragile part of the instrument. Too little power and no ionization occurs; too much and the filament burns out — destroying the instrument. Precise, deterministic control is non-negotiable.
 
-<img src="/astro-darkness/epfl-spacecraft/CubesatTOF.JPG" alt="CubeSatTOF mass spectrometer" style="max-width:55%;display:block;margin:0 auto 1.5rem auto;" />
+<img src="/epfl-spacecraft/CubesatTOF.JPG" alt="CubeSatTOF mass spectrometer" style="max-width:55%;display:block;margin:0 auto 1.5rem auto;" />
 
 </div>
 <div class="lang-fr">
@@ -90,7 +90,7 @@ L'instrument est construit autour de trois cartes empilées : une **carte de pui
 
 Le sous-système filament est la partie la plus critique et la plus fragile de l'instrument. Trop peu de puissance : aucune ionisation. Trop : le filament fond — détruisant l'instrument. Un contrôle précis et déterministe est impératif.
 
-<img src="/astro-darkness/epfl-spacecraft/CubesatTOF.JPG" alt="Spectromètre de masse CubeSatTOF" style="max-width:55%;display:block;margin:0 auto 1.5rem auto;" />
+<img src="/epfl-spacecraft/CubesatTOF.JPG" alt="Spectromètre de masse CubeSatTOF" style="max-width:55%;display:block;margin:0 auto 1.5rem auto;" />
 
 </div>
 
@@ -129,14 +129,14 @@ La complexité supplémentaire : la dynamique du filament présente **deux const
 
 A complete **FPGA filament controller** in VHDL, integrated into the Xilinx Kria K26 SoC platform, designed to the specifications of the CubeSatTOF instrument.
 
-<img src="/astro-darkness/epfl-spacecraft/trimmedfilinterface.JPG" alt="Filament interface on the power board" style="max-width:50%;display:block;margin:0 auto;" />
+<img src="/epfl-spacecraft/trimmedfilinterface.JPG" alt="Filament interface on the power board" style="max-width:50%;display:block;margin:0 auto;" />
 
 </div>
 <div class="lang-fr">
 
 Un **contrôleur de filament FPGA** complet en VHDL, intégré dans la plateforme Xilinx Kria K26 SoC, conçu selon les spécifications de l'instrument CubeSatTOF.
 
-<img src="/astro-darkness/epfl-spacecraft/trimmedfilinterface.JPG" alt="Interface du filament sur la carte de puissance" style="max-width:50%;display:block;margin:0 auto;" />
+<img src="/epfl-spacecraft/trimmedfilinterface.JPG" alt="Interface du filament sur la carte de puissance" style="max-width:50%;display:block;margin:0 auto;" />
 
 </div>
 
@@ -146,14 +146,14 @@ Un **contrôleur de filament FPGA** complet en VHDL, intégré dans la plateform
 
 Generates FIL_SYNC and FIL_PHASE at the correct frequency with a user-configurable phase offset. The offset is encoded as a register value: `x = (angle × 3333) / 360`. Fully verified in simulation across 0°, 45°, 90°, and 180° phase configurations, then validated on physical hardware.
 
-<img src="/astro-darkness/epfl-spacecraft/phasesyncout.png" alt="Phase and sync output signals — simulation" style="background:#d4d4d4;max-width:50%;display:block;margin:0 auto;" />
+<img src="/epfl-spacecraft/phasesyncout.png" alt="Phase and sync output signals — simulation" style="background:#d4d4d4;max-width:50%;display:block;margin:0 auto;" />
 
 </div>
 <div class="lang-fr">
 
 Génère FIL_SYNC et FIL_PHASE à la fréquence correcte avec un déphasage configurable par l'utilisateur. Le déphasage est encodé comme valeur de registre : `x = (angle × 3333) / 360`. Entièrement vérifié en simulation pour des configurations à 0°, 45°, 90° et 180°, puis validé sur matériel physique.
 
-<img src="/astro-darkness/epfl-spacecraft/phasesyncout.png" alt="Signaux de sortie phase et sync — simulation" style="background:#d4d4d4;max-width:50%;display:block;margin:0 auto;" />
+<img src="/epfl-spacecraft/phasesyncout.png" alt="Signaux de sortie phase et sync — simulation" style="background:#d4d4d4;max-width:50%;display:block;margin:0 auto;" />
 
 </div>
 
@@ -171,7 +171,7 @@ An **anti-windup** stage clamps the output to [0°, 180°], preventing integrato
 
 A two-stage PID (fast/slow dynamics) was studied as a candidate architecture and equations were derived, but not implemented — the single PID is sufficient for the current stage of the project.
 
-<img src="/astro-darkness/epfl-spacecraft/pid.drawio.png" alt="PID state machine" style="max-width:15%;display:block;margin:0 auto;" />
+<img src="/epfl-spacecraft/pid.drawio.png" alt="PID state machine" style="max-width:15%;display:block;margin:0 auto;" />
 
 </div>
 <div class="lang-fr">
@@ -186,7 +186,7 @@ Un étage **anti-windup** borne la sortie à [0°, 180°], empêchant la saturat
 
 Un PID à deux étages (dynamiques rapide/lente) a été étudié comme architecture candidate avec des équations dérivées, mais non implémenté — le PID simple est suffisant pour ce stade du projet.
 
-<img src="/astro-darkness/epfl-spacecraft/pid.drawio.png" alt="Machine à états PID" style="max-width:15%;display:block;margin:0 auto;" />
+<img src="/epfl-spacecraft/pid.drawio.png" alt="Machine à états PID" style="max-width:15%;display:block;margin:0 auto;" />
 
 </div>
 
@@ -209,7 +209,7 @@ A custom AXI4-Lite slave peripheral (`Filament_Controller_v1_0_S00_AXI`) bridges
 
 The ARM CPU can update setpoints and read back state at runtime — enabling adaptive software control layered on top of the FPGA's deterministic hardware loop.
 
-<img src="/astro-darkness/epfl-spacecraft/fpgasystem.JPG" alt="FPGA system integration on Kria K26" style="max-width:70%;display:block;margin:0 auto;" />
+<img src="/epfl-spacecraft/fpgasystem.JPG" alt="FPGA system integration on Kria K26" style="max-width:70%;display:block;margin:0 auto;" />
 
 </div>
 <div class="lang-fr">
@@ -229,7 +229,7 @@ Un périphérique esclave AXI4-Lite personnalisé (`Filament_Controller_v1_0_S00
 
 Le processeur ARM peut mettre à jour les consignes et lire l'état en temps réel — permettant un contrôle logiciel adaptatif superposé à la boucle matérielle déterministe du FPGA.
 
-<img src="/astro-darkness/epfl-spacecraft/fpgasystem.JPG" alt="Intégration du système FPGA sur Kria K26" style="max-width:70%;display:block;margin:0 auto;" />
+<img src="/epfl-spacecraft/fpgasystem.JPG" alt="Intégration du système FPGA sur Kria K26" style="max-width:70%;display:block;margin:0 auto;" />
 
 </div>
 
@@ -239,14 +239,14 @@ Le processeur ARM peut mettre à jour les consignes et lire l'état en temps ré
 
 The controller logic is structured as a VHDL state machine: `IDLE → Start → Counter → Phase/Sync generation states`, with closed-loop PID computation overlaid on the phase generation path. The state machine guarantees cycle-accurate timing of the filament drive signals regardless of CPU activity.
 
-<img src="/astro-darkness/epfl-spacecraft/final_state_machine.drawio.png" alt="Controller state machine diagram" style="background:#ffffff;max-width:100%;display:block;margin:0 auto;" />
+<img src="/epfl-spacecraft/final_state_machine.drawio.png" alt="Controller state machine diagram" style="background:#ffffff;max-width:100%;display:block;margin:0 auto;" />
 
 </div>
 <div class="lang-fr">
 
 La logique de contrôle est structurée comme une machine à états VHDL : `IDLE → Start → Counter → états de génération Phase/Sync`, avec le calcul PID en boucle fermée superposé au chemin de génération de phase. La machine à états garantit un timing cycle-précis des signaux de pilotage du filament, indépendamment de l'activité du CPU.
 
-<img src="/astro-darkness/epfl-spacecraft/final_state_machine.drawio.png" alt="Diagramme de la machine à états du contrôleur" style="background:#ffffff;max-width:100%;display:block;margin:0 auto;" />
+<img src="/epfl-spacecraft/final_state_machine.drawio.png" alt="Diagramme de la machine à états du contrôleur" style="background:#ffffff;max-width:100%;display:block;margin:0 auto;" />
 
 </div>
 
@@ -258,19 +258,19 @@ La logique de contrôle est structurée comme une machine à états VHDL : `IDLE
 
 **Simulation:** Full testbench built in Xilinx Vivado. The open-loop controller verified across all phase configurations (0°, 45°, 90°, 180°). The controller performed flawlessly in simulation — all phase shifts executed accurately under all tested conditions. Closed-loop simulation testing was not feasible without a filament response model.
 
-<img src="/astro-darkness/epfl-spacecraft/simulation_setup.jpg" alt="Simulation setup in Vivado" style="max-width:80%;display:block;margin:0 auto 1.5rem auto;" />
+<img src="/epfl-spacecraft/simulation_setup.jpg" alt="Simulation setup in Vivado" style="max-width:80%;display:block;margin:0 auto 1.5rem auto;" />
 
-<img src="/astro-darkness/epfl-spacecraft/0degreesres.png" alt="0° phase shift — simulation result" style="max-width:100%;display:block;margin:0 auto 1.5rem auto;" />
+<img src="/epfl-spacecraft/0degreesres.png" alt="0° phase shift — simulation result" style="max-width:100%;display:block;margin:0 auto 1.5rem auto;" />
 
-<img src="/astro-darkness/epfl-spacecraft/45degres.png" alt="45° phase shift — simulation result" style="max-width:100%;display:block;margin:0 auto 1.5rem auto;" />
+<img src="/epfl-spacecraft/45degres.png" alt="45° phase shift — simulation result" style="max-width:100%;display:block;margin:0 auto 1.5rem auto;" />
 
-<img src="/astro-darkness/epfl-spacecraft/180degreeres.png" alt="180° phase shift — simulation result" style="max-width:100%;display:block;margin:0 auto 1.5rem auto;" />
+<img src="/epfl-spacecraft/180degreeres.png" alt="180° phase shift — simulation result" style="max-width:100%;display:block;margin:0 auto 1.5rem auto;" />
 
 **Hardware:** Open-loop controller deployed and validated on the physical CubeSatTOF hardware stack (Kria K26 + power board + sensor board + digital board). Confirmed on oscilloscope at a 90° phase shift configuration. A minor frequency deviation was observed due to integer rounding in the phase calculation — correctable by selecting a clock frequency that yields an integer result (e.g. 300 MHz).
 
-<img src="/astro-darkness/epfl-spacecraft/filamentmounted.png" alt="Filament mounted — hardware test setup" style="max-width:60%;display:block;margin:0 auto 1.5rem auto;" />
+<img src="/epfl-spacecraft/filamentmounted.png" alt="Filament mounted — hardware test setup" style="max-width:60%;display:block;margin:0 auto 1.5rem auto;" />
 
-<img src="/astro-darkness/epfl-spacecraft/OpenTest.png" alt="Open-loop hardware test — oscilloscope result" style="max-width:100%;display:block;margin:0 auto 1.5rem auto;" />
+<img src="/epfl-spacecraft/OpenTest.png" alt="Open-loop hardware test — oscilloscope result" style="max-width:100%;display:block;margin:0 auto 1.5rem auto;" />
 
 **Outcome:**
 - Open-loop controller: verified in simulation and on physical hardware
@@ -284,19 +284,19 @@ La logique de contrôle est structurée comme une machine à états VHDL : `IDLE
 
 **Simulation :** Banc de test complet sous Xilinx Vivado. Le contrôleur en boucle ouverte a été vérifié pour toutes les configurations de déphasage (0°, 45°, 90°, 180°). Le contrôleur a fonctionné parfaitement en simulation — tous les déphasages exécutés avec précision dans toutes les conditions testées. La simulation en boucle fermée n'était pas faisable sans modèle de réponse du filament.
 
-<img src="/astro-darkness/epfl-spacecraft/simulation_setup.jpg" alt="Configuration du banc de test Vivado" style="max-width:80%;display:block;margin:0 auto 1.5rem auto;" />
+<img src="/epfl-spacecraft/simulation_setup.jpg" alt="Configuration du banc de test Vivado" style="max-width:80%;display:block;margin:0 auto 1.5rem auto;" />
 
-<img src="/astro-darkness/epfl-spacecraft/0degreesres.png" alt="Résultat simulation — déphasage 0°" style="max-width:100%;display:block;margin:0 auto 1.5rem auto;" />
+<img src="/epfl-spacecraft/0degreesres.png" alt="Résultat simulation — déphasage 0°" style="max-width:100%;display:block;margin:0 auto 1.5rem auto;" />
 
-<img src="/astro-darkness/epfl-spacecraft/45degres.png" alt="Résultat simulation — déphasage 45°" style="max-width:100%;display:block;margin:0 auto 1.5rem auto;" />
+<img src="/epfl-spacecraft/45degres.png" alt="Résultat simulation — déphasage 45°" style="max-width:100%;display:block;margin:0 auto 1.5rem auto;" />
 
-<img src="/astro-darkness/epfl-spacecraft/180degreeres.png" alt="Résultat simulation — déphasage 180°" style="max-width:100%;display:block;margin:0 auto 1.5rem auto;" />
+<img src="/epfl-spacecraft/180degreeres.png" alt="Résultat simulation — déphasage 180°" style="max-width:100%;display:block;margin:0 auto 1.5rem auto;" />
 
 **Matériel :** Le contrôleur en boucle ouverte a été déployé et validé sur le stack matériel physique CubeSatTOF (Kria K26 + carte de puissance + carte capteur + carte numérique). Confirmé à l'oscilloscope dans une configuration à 90° de déphasage. Un léger écart de fréquence a été observé, dû à des erreurs d'arrondi entier dans le calcul de phase — corrigeable en choisissant une fréquence d'horloge produisant un résultat entier (ex. 300 MHz).
 
-<img src="/astro-darkness/epfl-spacecraft/filamentmounted.png" alt="Filament monté — setup de test matériel" style="max-width:60%;display:block;margin:0 auto 1.5rem auto;" />
+<img src="/epfl-spacecraft/filamentmounted.png" alt="Filament monté — setup de test matériel" style="max-width:60%;display:block;margin:0 auto 1.5rem auto;" />
 
-<img src="/astro-darkness/epfl-spacecraft/OpenTest.png" alt="Test matériel en boucle ouverte — résultat oscilloscope" style="max-width:100%;display:block;margin:0 auto 1.5rem auto;" />
+<img src="/epfl-spacecraft/OpenTest.png" alt="Test matériel en boucle ouverte — résultat oscilloscope" style="max-width:100%;display:block;margin:0 auto 1.5rem auto;" />
 
 **Résultats :**
 - Contrôleur en boucle ouverte : vérifié en simulation et sur matériel physique

@@ -90,7 +90,7 @@ An FFT-augmented U-Net style encoder-decoder. The key design choice: at each dow
 | UpSampling₂ + Concat₃ | 135 | Upsample 2×2 + skip concat |
 | Dec_conv₁, Dec_conv₀ | 3 | Conv 3×3 → output |
 
-<img src="/astro-darkness/deep-learning/Model.png" alt="U-Net model architecture diagram" style="background:#ffffff;max-width:100%;display:block;margin:0 auto;" data-lightbox />
+<img src="/deep-learning/Model.png" alt="U-Net model architecture diagram" style="background:#ffffff;max-width:100%;display:block;margin:0 auto;" data-lightbox />
 
 </div>
 <div class="lang-fr">
@@ -113,7 +113,7 @@ Un encodeur-décodeur de style U-Net augmenté par FFT. Le choix de conception c
 | UpSampling₂ + Concat₃ | 135 | Upsample 2×2 + skip concat |
 | Dec_conv₁, Dec_conv₀ | 3 | Conv 3×3 → sortie |
 
-<img src="/astro-darkness/deep-learning/Model.png" alt="Diagramme de l'architecture U-Net" style="background:#ffffff;max-width:100%;display:block;margin:0 auto;" />
+<img src="/deep-learning/Model.png" alt="Diagramme de l'architecture U-Net" style="background:#ffffff;max-width:100%;display:block;margin:0 auto;" />
 
 </div>
 
@@ -129,7 +129,7 @@ A structured 3-run search over the model's key hyperparameters:
 
 The validation set (80% of the held-out data) was used exclusively for parameter search. The remaining 20% was kept untouched as the final test set — avoiding any data leakage between tuning and evaluation.
 
-<img src="/astro-darkness/deep-learning/SplitDataset.png" alt="Dataset split strategy" style="background:#ffffff;max-width:60%;display:block;margin:0 auto;" />
+<img src="/deep-learning/SplitDataset.png" alt="Dataset split strategy" style="background:#ffffff;max-width:60%;display:block;margin:0 auto;" />
 
 </div>
 <div class="lang-fr">
@@ -142,7 +142,7 @@ Une recherche structurée en 3 runs sur les hyperparamètres clés du modèle :
 
 L'ensemble de validation (80% des données retenues) a été utilisé exclusivement pour la recherche de paramètres. Les 20% restants ont été conservés intacts comme jeu de test final — évitant toute fuite de données entre le réglage et l'évaluation.
 
-<img src="/astro-darkness/deep-learning/SplitDataset.png" alt="Stratégie de découpage du jeu de données" style="background:#ffffff;max-width:60%;display:block;margin:0 auto;" />
+<img src="/deep-learning/SplitDataset.png" alt="Stratégie de découpage du jeu de données" style="background:#ffffff;max-width:60%;display:block;margin:0 auto;" />
 
 </div>
 
@@ -154,9 +154,9 @@ L'ensemble de validation (80% des données retenues) a été utilisé exclusivem
 
 Optimizer: ADAM. Loss: MSE (pixel-level minimization). The model successfully reconstructs clean images from noisy inputs without access to any clean training data.
 
-<img src="/astro-darkness/deep-learning/prediction_validation.PNG" alt="Validation set predictions: noisy input / denoised output / clean target" style="max-width:90%;display:block;margin:0 auto;" />
+<img src="/deep-learning/prediction_validation.PNG" alt="Validation set predictions: noisy input / denoised output / clean target" style="max-width:90%;display:block;margin:0 auto;" />
 
-<img src="/astro-darkness/deep-learning/prediction_test.PNG" alt="Test set predictions: noisy input / denoised output / clean target" style="max-width:90%;display:block;margin:0 auto;" />
+<img src="/deep-learning/prediction_test.PNG" alt="Test set predictions: noisy input / denoised output / clean target" style="max-width:90%;display:block;margin:0 auto;" />
 
 *Left: noisy input — Middle: model prediction — Right: clean target*
 
@@ -167,9 +167,9 @@ Optimizer: ADAM. Loss: MSE (pixel-level minimization). The model successfully re
 
 Optimiseur : ADAM. Perte : MSE (minimisation pixel à pixel). Le modèle reconstruit avec succès des images propres à partir d'entrées bruitées, sans jamais accéder à des données d'entraînement propres.
 
-<img src="/astro-darkness/deep-learning/prediction_validation.PNG" alt="Prédictions sur le jeu de validation : entrée bruitée / sortie débruitée / cible propre" style="max-width:90%;display:block;margin:0 auto;" />
+<img src="/deep-learning/prediction_validation.PNG" alt="Prédictions sur le jeu de validation : entrée bruitée / sortie débruitée / cible propre" style="max-width:90%;display:block;margin:0 auto;" />
 
-<img src="/astro-darkness/deep-learning/prediction_test.PNG" alt="Prédictions sur le jeu de test : entrée bruitée / sortie débruitée / cible propre" style="max-width:90%;display:block;margin:0 auto;" />
+<img src="/deep-learning/prediction_test.PNG" alt="Prédictions sur le jeu de test : entrée bruitée / sortie débruitée / cible propre" style="max-width:90%;display:block;margin:0 auto;" />
 
 *Gauche : entrée bruitée — Milieu : prédiction du modèle — Droite : cible propre*
 
@@ -204,7 +204,7 @@ The hardest part. Both forward and backward passes derived from first principles
 - **Gradient w.r.t. input**: convolution of the upstream gradient with the kernel rotated 180°, dilated by stride, padded by `kernel_size / 2`
 - **Gradient w.r.t. kernel**: convolution of the input with the upstream gradient dilated by stride
 
-<img src="/astro-darkness/deep-learning/Convolution.png" alt="Convolution forward and backward pass diagrams" style="background:#ffffff;max-width:90%;display:block;margin:0 auto;" />
+<img src="/deep-learning/Convolution.png" alt="Convolution forward and backward pass diagrams" style="background:#ffffff;max-width:90%;display:block;margin:0 auto;" />
 
 </div>
 <div class="lang-fr">
@@ -215,7 +215,7 @@ La partie la plus difficile. Les passes avant et arrière dérivées depuis les 
 - **Gradient par rapport à l'entrée** : convolution du gradient amont avec le noyau tourné à 180°, dilaté par le stride, paddé de `kernel_size / 2`
 - **Gradient par rapport au noyau** : convolution de l'entrée avec le gradient amont dilaté par le stride
 
-<img src="/astro-darkness/deep-learning/Convolution.png" alt="Diagrammes des passes forward et backward de la convolution" style="background:#ffffff;max-width:90%;display:block;margin:0 auto;" />
+<img src="/deep-learning/Convolution.png" alt="Diagrammes des passes forward et backward de la convolution" style="background:#ffffff;max-width:90%;display:block;margin:0 auto;" />
 
 </div>
 
@@ -244,9 +244,9 @@ La partie la plus difficile. Les passes avant et arrière dérivées depuis les 
 
 The gap vs Mini-Project 1 (25.43 → 20.42) reflects the difference between optimized PyTorch CUDA kernels and a hand-coded implementation — not a flaw in the approach, but an expected cost of the exercise.
 
-<img src="/astro-darkness/deep-learning/prediction_val_2.png" alt="Validation set predictions — from-scratch model" style="max-width:90%;display:block;margin:0 auto;" />
+<img src="/deep-learning/prediction_val_2.png" alt="Validation set predictions — from-scratch model" style="max-width:90%;display:block;margin:0 auto;" />
 
-<img src="/astro-darkness/deep-learning/prediction_test_2.png" alt="Test set predictions — from-scratch model" style="max-width:90%;display:block;margin:0 auto;" />
+<img src="/deep-learning/prediction_test_2.png" alt="Test set predictions — from-scratch model" style="max-width:90%;display:block;margin:0 auto;" />
 
 *Left: noisy input — Middle: model prediction — Right: clean target*
 
@@ -257,9 +257,9 @@ The gap vs Mini-Project 1 (25.43 → 20.42) reflects the difference between opti
 
 L'écart avec le Mini-Projet 1 (25,43 → 20,42) reflète la différence entre les noyaux CUDA optimisés de PyTorch et une implémentation codée à la main — non pas une faille dans l'approche, mais un coût attendu de l'exercice.
 
-<img src="/astro-darkness/deep-learning/prediction_val_2.png" alt="Prédictions sur le jeu de validation — modèle from scratch" style="max-width:90%;display:block;margin:0 auto;" />
+<img src="/deep-learning/prediction_val_2.png" alt="Prédictions sur le jeu de validation — modèle from scratch" style="max-width:90%;display:block;margin:0 auto;" />
 
-<img src="/astro-darkness/deep-learning/prediction_test_2.png" alt="Prédictions sur le jeu de test — modèle from scratch" style="max-width:90%;display:block;margin:0 auto;" />
+<img src="/deep-learning/prediction_test_2.png" alt="Prédictions sur le jeu de test — modèle from scratch" style="max-width:90%;display:block;margin:0 auto;" />
 
 *Gauche : entrée bruitée — Milieu : prédiction du modèle — Droite : cible propre*
 

@@ -100,11 +100,11 @@ CPG states are mapped to Cartesian foot targets in the leg xz-plane via:
 
 The CPG amplitude *r* converges quickly to the limit cycle (√μ = 1) for all four legs:
 
-<img src="/astro-darkness/epfl-legged-robots/Figure_question1b.png" alt="CPG amplitude convergence for all 4 legs over 2 seconds" style="max-width:100%;display:block;margin:0 auto;" />
+<img src="/epfl-legged-robots/Figure_question1b.png" alt="CPG amplitude convergence for all 4 legs over 2 seconds" style="max-width:100%;display:block;margin:0 auto;" />
 
 The full CPG state evolution (r, θ, ṙ, θ̇) over a 2-second run:
 
-<img src="/astro-darkness/epfl-legged-robots/Figure_question1.png" alt="CPG states r, theta, r-dot, theta-dot for all 4 legs" style="max-width:100%;display:block;margin:0 auto;" />
+<img src="/epfl-legged-robots/Figure_question1.png" alt="CPG states r, theta, r-dot, theta-dot for all 4 legs" style="max-width:100%;display:block;margin:0 auto;" />
 
 </div>
 <div class="lang-fr">
@@ -126,11 +126,11 @@ Les états du CPG sont convertis en positions cartésiennes cibles dans le plan 
 
 L'amplitude *r* du CPG converge rapidement vers le cycle limite (√μ = 1) pour les quatre pattes :
 
-<img src="/astro-darkness/epfl-legged-robots/Figure_question1b.png" alt="Convergence de l'amplitude CPG pour les 4 pattes sur 2 secondes" style="max-width:100%;display:block;margin:0 auto;" />
+<img src="/epfl-legged-robots/Figure_question1b.png" alt="Convergence de l'amplitude CPG pour les 4 pattes sur 2 secondes" style="max-width:100%;display:block;margin:0 auto;" />
 
 Évolution complète des états CPG (r, θ, ṙ, θ̇) sur 2 secondes :
 
-<img src="/astro-darkness/epfl-legged-robots/Figure_question1.png" alt="États CPG r, theta, r-dot, theta-dot pour les 4 pattes" style="max-width:100%;display:block;margin:0 auto;" />
+<img src="/epfl-legged-robots/Figure_question1.png" alt="États CPG r, theta, r-dot, theta-dot pour les 4 pattes" style="max-width:100%;display:block;margin:0 auto;" />
 
 </div>
 
@@ -141,10 +141,10 @@ L'amplitude *r* du CPG converge rapidement vers le cycle limite (√μ = 1) pour
 Four gaits are implemented by choosing different inter-leg phase offset matrices φ:
 
 <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0.75rem;margin:1rem 0;">
-<div style="text-align:center;"><img src="/astro-darkness/epfl-legged-robots/trot_gait.png" alt="Trot footfall sequence" style="max-width:100%;background:#fff;" /><em style="font-size:0.8rem;">Trot</em></div>
-<div style="text-align:center;"><img src="/astro-darkness/epfl-legged-robots/walk_gait.png" alt="Walk footfall sequence" style="max-width:100%;background:#fff;" /><em style="font-size:0.8rem;">Walk</em></div>
-<div style="text-align:center;"><img src="/astro-darkness/epfl-legged-robots/bound_gait.png" alt="Bound footfall sequence" style="max-width:100%;background:#fff;" /><em style="font-size:0.8rem;">Bound</em></div>
-<div style="text-align:center;"><img src="/astro-darkness/epfl-legged-robots/pace_gait.png" alt="Pace footfall sequence" style="max-width:100%;background:#fff;" /><em style="font-size:0.8rem;">Pace</em></div>
+<div style="text-align:center;"><img src="/epfl-legged-robots/trot_gait.png" alt="Trot footfall sequence" style="max-width:100%;background:#fff;" /><em style="font-size:0.8rem;">Trot</em></div>
+<div style="text-align:center;"><img src="/epfl-legged-robots/walk_gait.png" alt="Walk footfall sequence" style="max-width:100%;background:#fff;" /><em style="font-size:0.8rem;">Walk</em></div>
+<div style="text-align:center;"><img src="/epfl-legged-robots/bound_gait.png" alt="Bound footfall sequence" style="max-width:100%;background:#fff;" /><em style="font-size:0.8rem;">Bound</em></div>
+<div style="text-align:center;"><img src="/epfl-legged-robots/pace_gait.png" alt="Pace footfall sequence" style="max-width:100%;background:#fff;" /><em style="font-size:0.8rem;">Pace</em></div>
 </div>
 
 | Gait | Leg coordination | v_avg (fast) | CoT (fast) |
@@ -162,10 +162,10 @@ The Pace gait achieves the lowest Cost of Transport (CoT = 0.459). The Bound gai
 Quatre allures sont implémentées en choisissant différentes matrices de déphasage φ entre les pattes :
 
 <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0.75rem;margin:1rem 0;">
-<div style="text-align:center;"><img src="/astro-darkness/epfl-legged-robots/trot_gait.png" alt="Séquence de pas Trot" style="max-width:100%;background:#fff;" /><em style="font-size:0.8rem;">Trot</em></div>
-<div style="text-align:center;"><img src="/astro-darkness/epfl-legged-robots/walk_gait.png" alt="Séquence de pas Marche" style="max-width:100%;background:#fff;" /><em style="font-size:0.8rem;">Marche</em></div>
-<div style="text-align:center;"><img src="/astro-darkness/epfl-legged-robots/bound_gait.png" alt="Séquence de pas Bond" style="max-width:100%;background:#fff;" /><em style="font-size:0.8rem;">Bond</em></div>
-<div style="text-align:center;"><img src="/astro-darkness/epfl-legged-robots/pace_gait.png" alt="Séquence de pas Pace" style="max-width:100%;background:#fff;" /><em style="font-size:0.8rem;">Pace</em></div>
+<div style="text-align:center;"><img src="/epfl-legged-robots/trot_gait.png" alt="Séquence de pas Trot" style="max-width:100%;background:#fff;" /><em style="font-size:0.8rem;">Trot</em></div>
+<div style="text-align:center;"><img src="/epfl-legged-robots/walk_gait.png" alt="Séquence de pas Marche" style="max-width:100%;background:#fff;" /><em style="font-size:0.8rem;">Marche</em></div>
+<div style="text-align:center;"><img src="/epfl-legged-robots/bound_gait.png" alt="Séquence de pas Bond" style="max-width:100%;background:#fff;" /><em style="font-size:0.8rem;">Bond</em></div>
+<div style="text-align:center;"><img src="/epfl-legged-robots/pace_gait.png" alt="Séquence de pas Pace" style="max-width:100%;background:#fff;" /><em style="font-size:0.8rem;">Pace</em></div>
 </div>
 
 | Allure | Coordination des pattes | v_moy (rapide) | CoT (rapide) |
@@ -197,7 +197,7 @@ A **combined Joint + Cartesian PD controller** drives the legs:
 
 Desired vs actual foot position with the optimised combined controller (trot, 2 s):
 
-<img src="/astro-darkness/epfl-legged-robots/Figure_question2_opt_cart+joint.png" alt="Desired vs actual foot position — joint + Cartesian PD, optimised gains" style="max-width:100%;display:block;margin:0 auto;" />
+<img src="/epfl-legged-robots/Figure_question2_opt_cart+joint.png" alt="Desired vs actual foot position — joint + Cartesian PD, optimised gains" style="max-width:100%;display:block;margin:0 auto;" />
 
 </div>
 <div class="lang-fr">
@@ -216,7 +216,7 @@ Un **contrôleur PD combiné Articulaire + Cartésien** pilote les pattes :
 
 Position du pied désirée vs réelle avec le contrôleur combiné optimisé (trot, 2 s) :
 
-<img src="/astro-darkness/epfl-legged-robots/Figure_question2_opt_cart+joint.png" alt="Position du pied désirée vs réelle — PD articulaire + cartésien, gains optimisés" style="max-width:100%;display:block;margin:0 auto;" />
+<img src="/epfl-legged-robots/Figure_question2_opt_cart+joint.png" alt="Position du pied désirée vs réelle — PD articulaire + cartésien, gains optimisés" style="max-width:100%;display:block;margin:0 auto;" />
 
 </div>
 
@@ -329,23 +329,23 @@ The fast PPO policy achieves **CoT = 0.300** — lower than any CPG gait.
 
 Training convergence of the best CPG-RL policy (PPO):
 
-<img src="/astro-darkness/epfl-legged-robots/EPISODE_LENGTH_BEST_CPG.png" alt="Episode length convergence — CPG-RL PPO policy" style="max-width:100%;display:block;margin:0 auto;" />
+<img src="/epfl-legged-robots/EPISODE_LENGTH_BEST_CPG.png" alt="Episode length convergence — CPG-RL PPO policy" style="max-width:100%;display:block;margin:0 auto;" />
 
-<img src="/astro-darkness/epfl-legged-robots/REWARD_best_cpg.png" alt="Reward convergence — CPG-RL PPO policy" style="max-width:100%;display:block;margin:0 auto;" />
+<img src="/epfl-legged-robots/REWARD_best_cpg.png" alt="Reward convergence — CPG-RL PPO policy" style="max-width:100%;display:block;margin:0 auto;" />
 
 The episode length hits the maximum (1000 steps) after ~200k timesteps; the reward converges after ~400k. The variance is low — indicating a stable policy.
 
 Robot base position over 10 seconds for the fast policy (v_avg = 0.944 m/s). X increases steadily; Y and Z remain near-flat:
 
-<img src="/astro-darkness/epfl-legged-robots/fig_base_position_1ms.jpeg" alt="Robot base position progression — fast CPG-RL policy" style="max-width:100%;display:block;margin:0 auto;" />
+<img src="/epfl-legged-robots/fig_base_position_1ms.jpeg" alt="Robot base position progression — fast CPG-RL policy" style="max-width:100%;display:block;margin:0 auto;" />
 
 Leg contact pattern and CPG state evolution during fast locomotion:
 
-<img src="/astro-darkness/epfl-legged-robots/fig_pressure_data.jpeg" alt="Leg contact boolean — CPG-RL policy" style="max-width:100%;display:block;margin:0 auto;" />
+<img src="/epfl-legged-robots/fig_pressure_data.jpeg" alt="Leg contact boolean — CPG-RL policy" style="max-width:100%;display:block;margin:0 auto;" />
 
-<img src="/astro-darkness/epfl-legged-robots/fig_theta_rl.jpeg" alt="CPG phase progression — CPG-RL policy" style="max-width:100%;display:block;margin:0 auto;" />
+<img src="/epfl-legged-robots/fig_theta_rl.jpeg" alt="CPG phase progression — CPG-RL policy" style="max-width:100%;display:block;margin:0 auto;" />
 
-<img src="/astro-darkness/epfl-legged-robots/fig_r_rl.jpeg" alt="CPG amplitude progression — CPG-RL policy" style="max-width:100%;display:block;margin:0 auto;" />
+<img src="/epfl-legged-robots/fig_r_rl.jpeg" alt="CPG amplitude progression — CPG-RL policy" style="max-width:100%;display:block;margin:0 auto;" />
 
 </div>
 <div class="lang-fr">
@@ -359,23 +359,23 @@ La politique PPO rapide atteint **CoT = 0,300** — inférieur à toutes les all
 
 Convergence de l'entraînement de la meilleure politique CPG-RL (PPO) :
 
-<img src="/astro-darkness/epfl-legged-robots/EPISODE_LENGTH_BEST_CPG.png" alt="Convergence de la longueur d'épisode — politique CPG-RL PPO" style="max-width:100%;display:block;margin:0 auto;" />
+<img src="/epfl-legged-robots/EPISODE_LENGTH_BEST_CPG.png" alt="Convergence de la longueur d'épisode — politique CPG-RL PPO" style="max-width:100%;display:block;margin:0 auto;" />
 
-<img src="/astro-darkness/epfl-legged-robots/REWARD_best_cpg.png" alt="Convergence de la récompense — politique CPG-RL PPO" style="max-width:100%;display:block;margin:0 auto;" />
+<img src="/epfl-legged-robots/REWARD_best_cpg.png" alt="Convergence de la récompense — politique CPG-RL PPO" style="max-width:100%;display:block;margin:0 auto;" />
 
 La longueur d'épisode atteint le maximum (1000 étapes) après ~200k pas de temps ; la récompense converge après ~400k. La faible variance indique une politique stable.
 
 Position de la base du robot sur 10 secondes pour la politique rapide (v_moy = 0,944 m/s). X croît régulièrement ; Y et Z restent quasi-plats :
 
-<img src="/astro-darkness/epfl-legged-robots/fig_base_position_1ms.jpeg" alt="Progression de la position de la base — politique CPG-RL rapide" style="max-width:100%;display:block;margin:0 auto;" />
+<img src="/epfl-legged-robots/fig_base_position_1ms.jpeg" alt="Progression de la position de la base — politique CPG-RL rapide" style="max-width:100%;display:block;margin:0 auto;" />
 
 Contact des pattes et évolution des états CPG en locomotion rapide :
 
-<img src="/astro-darkness/epfl-legged-robots/fig_pressure_data.jpeg" alt="Contact des pattes — politique CPG-RL" style="max-width:100%;display:block;margin:0 auto;" />
+<img src="/epfl-legged-robots/fig_pressure_data.jpeg" alt="Contact des pattes — politique CPG-RL" style="max-width:100%;display:block;margin:0 auto;" />
 
-<img src="/astro-darkness/epfl-legged-robots/fig_theta_rl.jpeg" alt="Évolution de la phase CPG — politique CPG-RL" style="max-width:100%;display:block;margin:0 auto;" />
+<img src="/epfl-legged-robots/fig_theta_rl.jpeg" alt="Évolution de la phase CPG — politique CPG-RL" style="max-width:100%;display:block;margin:0 auto;" />
 
-<img src="/astro-darkness/epfl-legged-robots/fig_r_rl.jpeg" alt="Évolution de l'amplitude CPG — politique CPG-RL" style="max-width:100%;display:block;margin:0 auto;" />
+<img src="/epfl-legged-robots/fig_r_rl.jpeg" alt="Évolution de l'amplitude CPG — politique CPG-RL" style="max-width:100%;display:block;margin:0 auto;" />
 
 </div>
 
