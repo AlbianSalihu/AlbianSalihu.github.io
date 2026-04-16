@@ -1,5 +1,6 @@
 /* Global styles for dark minimal theme */
 :root {
+  color-scheme: dark;
   /* Color Palette - Black & Gray */
   --color-bg-dark: #04060a;
   --color-bg-darker: #030408;
