@@ -8,9 +8,11 @@
 <script>
   const ENABLED = true;
 
+  const isMobile = window.innerWidth < 768;
+
   const SETTINGS = {
-    nodeCount: 1500,
-    connectionDistance: 150,
+    nodeCount: isMobile ? 400 : 1500,
+    connectionDistance: isMobile ? 90 : 150,
     nodeSpeed: 0.2,
     nodeRadiusMin: 0.8,
     nodeRadiusMax: 2.2,
