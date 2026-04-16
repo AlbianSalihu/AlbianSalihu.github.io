@@ -1,215 +1,1140 @@
 ---
-// Three.js による3D背景アニメーション
+// Constellation background — drifting nodes, shooting stars, collision flashes,
+// and temporary circuit/control/AI-style formations made from nearby stars.
 ---
 
-<canvas id="three-canvas"></canvas>
+<canvas id="constellation-canvas" transition:persist></canvas>
 
 <script>
-  import * as THREE from 'three';
+  const ENABLED = true;
 
-  // Three.js アニメーションの初期化と管理
-  let scene: THREE.Scene | null = null;
-  let camera: THREE.PerspectiveCamera | null = null;
-  let renderer: THREE.WebGLRenderer | null = null;
-  let particlesMesh: THREE.Points<THREE.BufferGeometry, THREE.PointsMaterial> | null = null;
-  let torus: THREE.Mesh<THREE.TorusGeometry, THREE.MeshBasicMaterial> | null = null;
-  let torus2: THREE.Mesh<THREE.TorusGeometry, THREE.MeshBasicMaterial> | null = null;
-  let animationId: number | null = null;
-  let mouseX = 0;
-  let mouseY = 0;
-  let time = 0;
+  const SETTINGS = {
+    nodeCount: 1500,
+    connectionDistance: 150,
+    nodeSpeed: 0.2,
+    nodeRadiusMin: 0.8,
+    nodeRadiusMax: 2.2,
+    lineOpacityMax: 0.2,
 
-  // マウスムーブハンドラー
-  const handleMouseMove = (event: MouseEvent) => {
-    mouseX = (event.clientX / window.innerWidth) * 2 - 1;
-    mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+    // Pulse
+    pulseSpeed: 0.03,
+    pulseAmount: 0.45,
+
+    // Color nodes
+    colorNodeFraction: 0.2,
+    colorShiftSpeed: 0.04,
+    starColors: [
+      [255, 255, 255],
+      [255, 205, 0],
+      [0, 210, 255],
+      [255, 180, 130],
+    ] as number[][],
+
+    // Parallax
+    parallaxFactor: 0.25,
+    parallaxScale: 2.5,
+
+    // Shooting stars
+    shootingStarInterval: 90,
+    shootingStarSpeed: 14,
+    trailLength: 28,
+    collisionRadius: 2,
+    insideSpawnFraction: 0.4,
+    clickBurst: 1,
+
+    // PCB grid
+    gridEnabled: true,
+    gridSpacing: 36,
+    gridOpacity: 0.1,
+
+    // Mouse repulsion
+    mouseRepulseRadius: 30,    // px — how far stars get pushed
+    mouseRepulseStrength: 0.2, // impulse per frame at closest point
+
+    // Formations
+    formationsEnabled: true,
+    formationIntervalMin: 280,
+    formationIntervalMax: 500,
+    formationCaptureRadius: 185,
+
+    // smoother pull
+    formationPullStrength: 0.003,   // lower = slower, smoother
+    formationDamping: 0.93,          // closer to 1 = more floaty
+    formationMaxSpeed: 1.4,         // max speed while being pulled
+    formationArrivalThreshold: 3.5,
+
+    formationGlowColor: [100, 220, 255] as number[],
+    formationLineOpacity: 0.85,
+    formationLineOpacityForming: 0.28, // faint while assembling
+    formationLineWidth: 1.4,
+
+    // Orientation: 0, 90, 180, 270 degrees
+    formationAngles: [0, Math.PI * 0.5, Math.PI, Math.PI * 1.5],
+
+    // Debug / testing
+    debugFormations: false,
   };
 
-  // リサイズハンドラー
-  const handleResize = () => {
-    if (!camera || !renderer) return;
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-  };
+  if (!ENABLED) {
+    // nothing
+  } else {
+    type NodeMode = 'free' | 'forming' | 'holding';
 
-  // Three.jsアニメーションの初期化
-  function initThreeAnimation() {
-    const canvas = document.getElementById('three-canvas') as HTMLCanvasElement;
-    if (!canvas) return;
+    type Node = {
+      x: number; y: number;
+      vx: number; vy: number;
+      radius: number;
+      baseOpacity: number;
+      pulseOffset: number;
+      hasColor: boolean;
+      colorPhase: number;
+      mode: NodeMode;
+      targetX?: number;
+      targetY?: number;
+      homeVx?: number;
+      homeVy?: number;
+      formationId?: number | null;
+    };
 
-    // 既存のアニメーションをクリーンアップ
-    cleanupThreeAnimation();
+    type ShootingStar = {
+      x: number; y: number;
+      vx: number; vy: number;
+      trail: { x: number; y: number }[];
+      alive: boolean;
+    };
 
-    // シーン、カメラ、レンダラーの設定
-    scene = new THREE.Scene();
-    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    type Flash = {
+      x: number; y: number;
+      r: number; g: number; b: number;
+      radius: number;
+      maxRadius: number;
+      opacity: number;
+      age: number;
+      maxAge: number;
+    };
 
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(window.devicePixelRatio);
-    camera.position.z = 5;
+    type CircuitShape = {
+      name: string;
+      points: { x: number; y: number }[];
+      links: [number, number][];
+      holdFrames: number;
+    };
 
-    // パーティクルシステムの作成
-    const particlesGeometry = new THREE.BufferGeometry();
-    const particlesCount = 5000;
-    const posArray = new Float32Array(particlesCount * 3);
-    const colorArray = new Float32Array(particlesCount * 3);
+    type ActiveFormation = {
+      id: number;
+      shapeName: string;
+      x: number;
+      y: number;
+      points: { x: number; y: number }[];
+      links: [number, number][];
+      nodeIndices: number[];
+      state: 'forming' | 'holding' | 'releasing';
+      age: number;
+      holdFrames: number;
+      glow: number;
+    };
 
-    for (let i = 0; i < particlesCount * 3; i += 3) {
-      // ランダムな位置
-      posArray[i] = (Math.random() - 0.5) * 100;
-      posArray[i + 1] = (Math.random() - 0.5) * 100;
-      posArray[i + 2] = (Math.random() - 0.5) * 100;
+    const SHAPES: CircuitShape[] = [
+      {
+        name: 'opamp',
+        points: [
+          { x: -40, y: -30 },
+          { x: -40, y: 30 },
+          { x: 40, y: 0 },
+          { x: -68, y: -15 },
+          { x: -68, y: 15 },
+          { x: 68, y: 0 },
+          {x:-40, y:-15},
+          {x:-40, y:15},
+        ],
+        links: [
+          [0, 1], [1, 2], [2, 0],
+          [3, 6], [4, 7], [2, 5],
+        ],
+        holdFrames: 250,
+      },
+      {
+        name: 'resistor',
+        points: [
+          { x: -60, y: 0 },
+          { x: -27, y: 0 },
+          { x: -20, y: -12 },
+          { x: -10, y: 12 },
+          { x: 0, y: -12 },
+          { x: 10, y: 12 },
+          { x: 20, y: -12 },
+          { x: 27, y: 0 },
+          { x: 60, y: 0 },
+        ],
+        links: [
+          [0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,7],[7,8]
+        ],
+        holdFrames: 190,
+      },
+      {
+        name: 'capacitor',
+        points: [
+          { x: -70, y: 0 },
+          { x: -6, y: 0 },
+          { x: -6, y: -24 },
+          { x: -6, y: 24 },
+          { x: 6, y: -24 },
+          { x: 6, y: 24 },
+          { x: 6, y: 0 },
+          { x: 70, y: 0 },
+        ],
+        links: [
+          [0,1],[2,3],[4,5],[6,7]
+        ],
+        holdFrames: 180,
+      },
+      {
+        name: 'diode',
+        points: [
+          { x: -72, y: 0 },
+          { x: -18, y: 0 },
+          { x: -18, y: -24 },
+          { x: -18, y: 24 },
+          { x: 20, y: 0 },
+          { x: 20, y: -28 },
+          { x: 20, y: 28 },
+          { x: 72, y: 0 },
+        ],
+        links: [
+          [0,1],[1,2],[1,3],[2,4],[3,4],[5,6],[4,7]
+        ],
+        holdFrames: 180,
+      },
+      {
+        name: 'schottky_diode',
+        points: [
+          { x: -78, y: 0 },
+          { x: -18, y: 0 },
+          { x: -18, y: -24 },
+          { x: -18, y: 24 },
+          { x: 18, y: 0 },
+          { x: 18, y: -28 },
+          { x: 18, y: 28 },
+          { x: 34, y: -28 },
+          { x: 34, y: -18 },
+          { x: 2, y: 28 },
+          { x: 2, y: 18 },
+          { x: 78, y: 0 },
+        ],
+        links: [
+          [0,1],[1,2],[1,3],[2,4],[3,4],[5,6],[5,7],[6,9],[4,11],[9,10],[7,8]
+        ],
+        holdFrames: 190,
+      },
+      {
+        name: 'ground',
+        points: [
+          { x: 0, y: -40 },
+          { x: 0, y: -10 },
+          { x: -28, y: 6 },
+          { x: 28, y: 6 },
+          { x: -18, y: 18 },
+          { x: 18, y: 18 },
+          { x: -8, y: 30 },
+          { x: 8, y: 30 },
+        ],
+        links: [
+          [0,1],[2,3],[4,5],[6,7]
+        ],
+        holdFrames: 160,
+      },
+      {
+        name: 'nmos',
+        points: [
+          { x: -70, y: 0 },   // gate lead
+          { x: -30, y: 0 },   // gate
+          { x: -15, y: -34 },   // drain lead top
+          { x: -30, y: -20 },   // channel top
+          { x: -30, y: 20 },    // channel bottom
+          { x: -15, y: 34 },    // source lead bottom
+          { x: 15, y: -34 },  // right rail top
+          { x: 15, y: 34 },   // right rail bot
+          { x: 6, y: 28 },  // arrow-ish top
+          { x: 6, y: 40 },   // arrow-ish bot
+          { x: 15,y: -54 },
+          { x: 15,y: 54 },
 
-      // ランダムな色（紫、ピンク、青の系統）
-      const colorType = Math.random();
-      if (colorType < 0.33) {
-        // 紫
-        colorArray[i] = 0.66;
-        colorArray[i + 1] = 0.33;
-        colorArray[i + 2] = 0.97;
-      } else if (colorType < 0.66) {
-        // ピンク
-        colorArray[i] = 0.93;
-        colorArray[i + 1] = 0.28;
-        colorArray[i + 2] = 0.60;
-      } else {
-        // 青
-        colorArray[i] = 0.23;
-        colorArray[i + 1] = 0.51;
-        colorArray[i + 2] = 0.96;
+        ],
+        links: [
+          [0,1],[2,5],[3,4],[8,7],[7,9],[6,10],[2,6],[5,7],[7,11]
+        ],
+        holdFrames: 220,
+      },
+    ];
+
+    let canvas: HTMLCanvasElement | null = null;
+    let ctx: CanvasRenderingContext2D | null = null;
+    let animId: number | null = null;
+    let loopVersion = 0; // incremented on each init to invalidate stale loop callbacks
+
+    let nodes: Node[] = [];
+    let shootingStars: ShootingStar[] = [];
+    let flashes: Flash[] = [];
+    let activeFormations: ActiveFormation[] = [];
+
+    let W = 0, H = 0;
+    let VH = 0;
+    let scrollY = 0;
+    let tick = 0;
+    let mouseX = -9999, mouseClientY = -9999; // screen coords, converted to virtual in loop
+
+    let shapeBag: string[] = [];
+    let formationCounter = 0;
+    let nextFormationTick = 0;
+
+    let debugPanel: HTMLDivElement | null = null;
+    let debugShapeSelect: HTMLSelectElement | null = null;
+    let debugAngleSelect: HTMLSelectElement | null = null;
+
+    function getShapeByName(name: string): CircuitShape | undefined {
+      return SHAPES.find((s) => s.name === name);
+    }
+
+    function clampMagnitude(x: number, y: number, max: number) {
+      const mag = Math.sqrt(x * x + y * y);
+      if (mag <= max || mag === 0) return { x, y };
+      const k = max / mag;
+      return { x: x * k, y: y * k };
+    }
+
+    function spawnFormationByShape(
+      shape: CircuitShape,
+      forcedAngle?: number,
+      options?: { force?: boolean; centerX?: number; centerY?: number }
+    ): boolean {
+      const angle =
+        forcedAngle !== undefined
+          ? forcedAngle
+          : SETTINGS.formationAngles[Math.floor(Math.random() * SETTINGS.formationAngles.length)];
+
+      const rotated = rotatePoints(shape.points, angle);
+      const bounds = getBounds(rotated);
+
+      const marginX = Math.max(120, bounds.width * 0.7);
+      const marginY = Math.max(120, bounds.height * 0.7);
+
+      if (W < marginX * 2 || VH < marginY * 2) {
+        return false;
+      }
+
+      const cx =
+        options?.centerX !== undefined
+          ? options.centerX
+          : marginX + Math.random() * (W - marginX * 2);
+
+      const cy =
+        options?.centerY !== undefined
+          ? options.centerY
+          : marginY + Math.random() * (VH - marginY * 2);
+
+      const worldPoints = rotated.map((p) => ({ x: cx + p.x, y: cy + p.y }));
+      const created = createFormation(shape, worldPoints, cx, cy, options?.force === true);
+
+      if (created) {
+        scheduleNextFormation();
+      }
+
+      return created;
+    }
+
+    function triggerRandomFormation() {
+      if (activeFormations.length > 0) return;
+
+      const shape = getNextShape();
+      const centerX = W * 0.5;
+      const centerY = H * 0.5 - (-(scrollY * SETTINGS.parallaxFactor));
+
+      const ok = spawnFormationByShape(shape, undefined, {
+        force: true,
+        centerX,
+        centerY,
+      });
+
+      if (!ok) {
+        console.warn('Random formation test spawn failed:', shape.name);
       }
     }
 
-    particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
-    particlesGeometry.setAttribute('color', new THREE.BufferAttribute(colorArray, 3));
+    function triggerSelectedFormation() {
+      if (!debugShapeSelect || !debugAngleSelect) return;
+      if (activeFormations.length > 0) return;
 
-    // パーティクル用マテリアル
-    const particlesMaterial = new THREE.PointsMaterial({
-      size: 0.15,
-      vertexColors: true,
-      transparent: true,
-      opacity: 0.8,
-      blending: THREE.AdditiveBlending,
-    });
+      const shape = getShapeByName(debugShapeSelect.value);
+      if (!shape) return;
 
-    particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
-    scene.add(particlesMesh);
+      const angleValue = debugAngleSelect.value;
+      const angle = angleValue === 'random' ? undefined : Number(angleValue);
 
-    // 回転するトーラス（ドーナツ型）の追加
-    const torusGeometry = new THREE.TorusGeometry(10, 3, 16, 100);
-    const torusMaterial = new THREE.MeshBasicMaterial({
-      color: 0xa855f7,
-      wireframe: true,
-      transparent: true,
-      opacity: 0.3,
-    });
-    torus = new THREE.Mesh(torusGeometry, torusMaterial);
-    scene.add(torus);
+      const centerX = W * 0.5;
+      const centerY = H * 0.5 - (-(scrollY * SETTINGS.parallaxFactor));
 
-    // 2つ目のトーラス
-    const torus2Geometry = new THREE.TorusGeometry(15, 2, 16, 100);
-    const torus2Material = new THREE.MeshBasicMaterial({
-      color: 0xec4899,
-      wireframe: true,
-      transparent: true,
-      opacity: 0.2,
-    });
-    torus2 = new THREE.Mesh(torus2Geometry, torus2Material);
-    torus2.rotation.x = Math.PI / 4;
-    scene.add(torus2);
+      const ok = spawnFormationByShape(shape, angle, {
+        force: true,
+        centerX,
+        centerY,
+      });
 
-    // イベントリスナーの追加
-    document.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('resize', handleResize);
+      if (!ok) {
+        console.warn('Formation test spawn failed:', shape.name);
+      }
+    }
 
-    // アニメーションループの開始
-    time = 0;
-    animate();
+    function createDebugUI() {
+      removeDebugUI();
+      if (!SETTINGS.debugFormations) return;
+
+      debugPanel = document.createElement('div');
+      debugPanel.style.position = 'fixed';
+      debugPanel.style.right = '16px';
+      debugPanel.style.bottom = '16px';
+      debugPanel.style.zIndex = '20';
+      debugPanel.style.padding = '10px';
+      debugPanel.style.borderRadius = '12px';
+      debugPanel.style.background = 'rgba(8,12,22,0.78)';
+      debugPanel.style.backdropFilter = 'blur(10px)';
+      debugPanel.style.border = '1px solid rgba(120,180,255,0.18)';
+      debugPanel.style.display = 'flex';
+      debugPanel.style.gap = '8px';
+      debugPanel.style.alignItems = 'center';
+      debugPanel.style.flexWrap = 'wrap';
+      debugPanel.style.fontFamily = 'ui-monospace, SFMono-Regular, Menlo, monospace';
+      debugPanel.style.fontSize = '12px';
+      debugPanel.style.color = 'rgba(220,235,255,0.95)';
+      debugPanel.style.pointerEvents = 'auto';
+
+      const label = document.createElement('span');
+      label.textContent = 'Form test';
+
+      debugShapeSelect = document.createElement('select');
+      debugShapeSelect.style.background = 'rgba(255,255,255,0.06)';
+      debugShapeSelect.style.color = 'white';
+      debugShapeSelect.style.border = '1px solid rgba(255,255,255,0.12)';
+      debugShapeSelect.style.borderRadius = '8px';
+      debugShapeSelect.style.padding = '6px 8px';
+
+      for (const shape of SHAPES) {
+        const opt = document.createElement('option');
+        opt.value = shape.name;
+        opt.textContent = shape.name;
+        debugShapeSelect.appendChild(opt);
+      }
+
+      debugAngleSelect = document.createElement('select');
+      debugAngleSelect.style.background = 'rgba(255,255,255,0.06)';
+      debugAngleSelect.style.color = 'white';
+      debugAngleSelect.style.border = '1px solid rgba(255,255,255,0.12)';
+      debugAngleSelect.style.borderRadius = '8px';
+      debugAngleSelect.style.padding = '6px 8px';
+
+      [
+        ['random', 'random angle'],
+        ['0', '0°'],
+        [String(Math.PI * 0.5), '90°'],
+        [String(Math.PI), '180°'],
+        [String(Math.PI * 1.5), '270°'],
+      ].forEach(([value, text]) => {
+        const opt = document.createElement('option');
+        opt.value = value;
+        opt.textContent = text;
+        debugAngleSelect!.appendChild(opt);
+      });
+
+      const triggerBtn = document.createElement('button');
+      triggerBtn.textContent = 'trigger';
+      triggerBtn.style.padding = '6px 10px';
+      triggerBtn.style.borderRadius = '8px';
+      triggerBtn.style.border = '1px solid rgba(255,255,255,0.12)';
+      triggerBtn.style.background = 'rgba(100,220,255,0.14)';
+      triggerBtn.style.color = 'white';
+      triggerBtn.style.cursor = 'pointer';
+      triggerBtn.onclick = triggerSelectedFormation;
+
+      const randomBtn = document.createElement('button');
+      randomBtn.textContent = 'random';
+      randomBtn.style.padding = '6px 10px';
+      randomBtn.style.borderRadius = '8px';
+      randomBtn.style.border = '1px solid rgba(255,255,255,0.12)';
+      randomBtn.style.background = 'rgba(255,255,255,0.08)';
+      randomBtn.style.color = 'white';
+      randomBtn.style.cursor = 'pointer';
+      randomBtn.onclick = triggerRandomFormation;
+
+      const hint = document.createElement('span');
+      hint.textContent = 'R = random';
+      hint.style.opacity = '0.7';
+
+      debugPanel.appendChild(label);
+      debugPanel.appendChild(debugShapeSelect);
+      debugPanel.appendChild(debugAngleSelect);
+      debugPanel.appendChild(triggerBtn);
+      debugPanel.appendChild(randomBtn);
+      debugPanel.appendChild(hint);
+
+      document.body.appendChild(debugPanel);
+    }
+
+    function removeDebugUI() {
+      debugShapeSelect = null;
+      debugAngleSelect = null;
+      if (debugPanel) {
+        debugPanel.remove();
+        debugPanel = null;
+      }
+    }
+
+    function handleKeydown(e: KeyboardEvent) {
+      if (!SETTINGS.debugFormations) return;
+      if (e.key.toLowerCase() === 'r') {
+        triggerRandomFormation();
+      }
+    }
+
+    function shuffle<T>(arr: T[]): T[] {
+      const copy = [...arr];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function refillShapeBag() {
+      shapeBag = shuffle(SHAPES.map((s) => s.name));
+    }
+
+    function getNextShape(): CircuitShape {
+      if (shapeBag.length === 0) refillShapeBag();
+      const name = shapeBag.pop()!;
+      return SHAPES.find((s) => s.name === name)!;
+    }
+
+    function scheduleNextFormation() {
+      const gap =
+        SETTINGS.formationIntervalMin +
+        Math.floor(Math.random() * (SETTINGS.formationIntervalMax - SETTINGS.formationIntervalMin + 1));
+      nextFormationTick = tick + gap;
+    }
+
+    function rotatePoints(points: { x: number; y: number }[], angle: number) {
+      const c = Math.cos(angle);
+      const s = Math.sin(angle);
+      return points.map((p) => ({
+        x: p.x * c - p.y * s,
+        y: p.x * s + p.y * c,
+      }));
+    }
+
+    function getBounds(points: { x: number; y: number }[]) {
+      let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+      for (const p of points) {
+        if (p.x < minX) minX = p.x;
+        if (p.x > maxX) maxX = p.x;
+        if (p.y < minY) minY = p.y;
+        if (p.y > maxY) maxY = p.y;
+      }
+      return { minX, maxX, minY, maxY, width: maxX - minX, height: maxY - minY };
+    }
+
+    function handleMouseMove(e: MouseEvent) {
+      mouseX = e.clientX;
+      mouseClientY = e.clientY;
+    }
+
+    function handleClick(e: MouseEvent) {
+      const vy = e.clientY - (-(scrollY * SETTINGS.parallaxFactor));
+      spawnClickBurst(e.clientX, vy);
+    }
+
+    function init() {
+      // Invalidate the running loop — it will stop on its next tick without cancelAnimationFrame,
+      // so there is no gap in rendering during the page transition.
+      loopVersion++;
+
+      // Detach old listeners and observers before re-attaching below
+      window.removeEventListener('resize', resize);
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('click', handleClick);
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('keydown', handleKeydown);
+      mouseX = -9999; mouseClientY = -9999;
+      removeDebugUI();
+      if (canvas && (canvas as any).__bodyObserver) {
+        (canvas as any).__bodyObserver.disconnect();
+      }
+      shapeBag = [];
+
+      canvas = document.getElementById('constellation-canvas') as HTMLCanvasElement;
+      if (!canvas) return;
+      ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      scrollY = window.scrollY;
+      resize();
+      // Restore full live state from previous navigation if available, otherwise spawn fresh
+      const saved = (window as any).__starState;
+      if (saved?.nodes?.length) {
+        nodes = saved.nodes;
+        shootingStars = saved.shootingStars || [];
+        flashes = saved.flashes || [];
+        activeFormations = saved.activeFormations || [];
+        formationCounter = saved.formationCounter ?? 0;
+        tick = saved.tick ?? 0;
+        nextFormationTick = saved.nextFormationTick ?? tick;
+      } else {
+        spawnNodes();
+        activeFormations = [];
+        formationCounter = 0;
+        tick = 0;
+        scheduleNextFormation();
+      }
+      refillShapeBag();
+
+      window.addEventListener('resize', resize);
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('click', handleClick);
+      window.addEventListener('mousemove', handleMouseMove, { passive: true });
+      window.addEventListener('keydown', handleKeydown);
+      createDebugUI();
+
+      // Re-compute VH when page height changes (images/videos load and expand scroll height).
+      // Only update the virtual bounds — never respawn nodes, to keep the star pattern stable.
+      let vhTimer: ReturnType<typeof setTimeout> | null = null;
+      function recheckVH() {
+        if (vhTimer) clearTimeout(vhTimer);
+        vhTimer = setTimeout(() => {
+          resize();
+          vhTimer = null;
+        }, 80);
+      }
+      const bodyObserver = new ResizeObserver(recheckVH);
+      bodyObserver.observe(document.body);
+
+      // Store observer on canvas element for cleanup
+      (canvas as any).__bodyObserver = bodyObserver;
+
+      loop();
+    }
+
+    function resize() {
+      if (!canvas) return;
+      W = canvas.width = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+      // Virtual height must cover the visible range at any scroll depth.
+      // At max scroll (pageH - H), visible virtual y-top = (pageH - H) * parallaxFactor.
+      // Add 1.5× viewport below that so the bottom is always filled.
+      const pageH = document.documentElement.scrollHeight;
+      const minVH = (pageH - H) * SETTINGS.parallaxFactor + H * 1.5;
+      VH = Math.max(H * SETTINGS.parallaxScale, minVH);
+    }
+
+    function onScroll() {
+      scrollY = window.scrollY;
+    }
+
+    function spawnNodes() {
+      nodes = Array.from({ length: SETTINGS.nodeCount }, () => ({
+        x: Math.random() * W,
+        y: Math.random() * VH,
+        vx: (Math.random() - 0.5) * SETTINGS.nodeSpeed,
+        vy: (Math.random() - 0.5) * SETTINGS.nodeSpeed,
+        radius: SETTINGS.nodeRadiusMin + Math.random() * (SETTINGS.nodeRadiusMax - SETTINGS.nodeRadiusMin),
+        baseOpacity: 0.25 + Math.random() * 0.5,
+        pulseOffset: Math.random() * Math.PI * 2,
+        hasColor: Math.random() < SETTINGS.colorNodeFraction,
+        colorPhase: Math.random() * Math.PI * 2,
+        mode: 'free',
+        targetX: undefined,
+        targetY: undefined,
+        homeVx: undefined,
+        homeVy: undefined,
+        formationId: null,
+      }));
+    }
+
+    function spawnShootingStar(ox?: number, oy?: number, angle?: number) {
+      let x: number, y: number, a: number;
+
+      if (ox !== undefined && oy !== undefined && angle !== undefined) {
+        x = ox;
+        y = oy;
+        a = angle;
+      } else if (Math.random() < SETTINGS.insideSpawnFraction) {
+        x = Math.random() * W;
+        y = Math.random() * H;
+        a = Math.random() * Math.PI * 2;
+      } else {
+        a = (Math.random() * Math.PI * 0.5) + Math.PI * 0.1;
+        if (Math.random() < 0.5) {
+          x = -10;
+          y = Math.random() * H * 0.6;
+        } else {
+          x = Math.random() * W * 0.5;
+          y = -10;
+        }
+      }
+
+      const speed = SETTINGS.shootingStarSpeed * (0.7 + Math.random() * 0.6);
+
+      shootingStars.push({
+        x, y,
+        vx: Math.cos(a) * speed,
+        vy: Math.sin(a) * speed,
+        trail: [],
+        alive: true,
+      });
+    }
+
+    function spawnClickBurst(x: number, y: number) {
+      const count = SETTINGS.clickBurst;
+      for (let i = 0; i < count; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        spawnShootingStar(x, y, angle);
+      }
+      spawnFlash(x, y, [255, 255, 255]);
+    }
+
+    function spawnFlash(x: number, y: number, col: number[]) {
+      flashes.push({
+        x, y,
+        r: col[0], g: col[1], b: col[2],
+        radius: 2,
+        maxRadius: 40 + Math.random() * 30,
+        opacity: 1,
+        age: 0,
+        maxAge: 40,
+      });
+    }
+
+    function lerpColor(a: number[], b: number[], t: number): number[] {
+      return [
+        a[0] + (b[0] - a[0]) * t,
+        a[1] + (b[1] - a[1]) * t,
+        a[2] + (b[2] - a[2]) * t,
+      ];
+    }
+
+    function getStarColor(phase: number): number[] {
+      const colors = SETTINGS.starColors;
+      const scaled = ((phase % (Math.PI * 2)) / (Math.PI * 2)) * colors.length;
+      const idx = Math.floor(scaled) % colors.length;
+      const next = (idx + 1) % colors.length;
+      return lerpColor(colors[idx], colors[next], scaled - Math.floor(scaled));
+    }
+
+    function maybeSpawnFormation() {
+      if (!SETTINGS.formationsEnabled) return;
+      if (activeFormations.length > 0) return;
+      if (tick < nextFormationTick) return;
+
+      const shape = getNextShape();
+      spawnFormationByShape(shape);
+    }
+
+    function createFormation(
+      shape: CircuitShape,
+      points: { x: number; y: number }[],
+      cx: number,
+      cy: number,
+      force = false
+    ): boolean {
+      const nodeIndices: number[] = [];
+      const used = new Set<number>();
+      const maxD2 = SETTINGS.formationCaptureRadius * SETTINGS.formationCaptureRadius;
+
+      for (const pt of points) {
+        let bestIdx = -1;
+        let bestDist = Infinity;
+
+        for (let i = 0; i < nodes.length; i++) {
+          const n = nodes[i];
+          if (used.has(i)) continue;
+          if (n.mode !== 'free') continue;
+
+          const dx = n.x - pt.x;
+          const dy = n.y - pt.y;
+          const d2 = dx * dx + dy * dy;
+
+          if (!force && d2 > maxD2) continue;
+
+          if (d2 < bestDist) {
+            bestDist = d2;
+            bestIdx = i;
+          }
+        }
+
+        if (bestIdx === -1) return false;
+
+        used.add(bestIdx);
+        nodeIndices.push(bestIdx);
+      }
+
+      const id = formationCounter++;
+
+      nodeIndices.forEach((idx, i) => {
+        const n = nodes[idx];
+        n.mode = 'forming';
+        n.targetX = points[i].x;
+        n.targetY = points[i].y;
+        n.formationId = id;
+        n.homeVx = n.vx;
+        n.homeVy = n.vy;
+      });
+
+      activeFormations.push({
+        id,
+        shapeName: shape.name,
+        x: cx,
+        y: cy,
+        points,
+        links: shape.links,
+        nodeIndices,
+        state: 'forming',
+        age: 0,
+        holdFrames: shape.holdFrames,
+        glow: 1,
+      });
+
+      return true;
+    }
+
+    function updateFormations() {
+      for (const f of activeFormations) {
+        f.age++;
+
+        if (f.state === 'forming') {
+          let allArrived = true;
+
+          for (const idx of f.nodeIndices) {
+            const n = nodes[idx];
+            const dx = (n.targetX ?? n.x) - n.x;
+            const dy = (n.targetY ?? n.y) - n.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+
+            if (dist > SETTINGS.formationArrivalThreshold) {
+              allArrived = false;
+              break;
+            }
+          }
+
+          if (allArrived) {
+            f.state = 'holding';
+            f.age = 0;
+            f.glow = 1;
+            for (const idx of f.nodeIndices) {
+              nodes[idx].mode = 'holding';
+            }
+          }
+        } else if (f.state === 'holding') {
+          f.glow *= 0.992;
+          if (f.age > f.holdFrames) {
+            f.state = 'releasing';
+          }
+        } else if (f.state === 'releasing') {
+          for (const idx of f.nodeIndices) {
+            const n = nodes[idx];
+            n.mode = 'free';
+            n.formationId = null;
+            n.targetX = undefined;
+            n.targetY = undefined;
+            n.vx = (Math.random() - 0.5) * SETTINGS.nodeSpeed;
+            n.vy = (Math.random() - 0.5) * SETTINGS.nodeSpeed;
+          }
+          f.age = Infinity;
+        }
+      }
+
+      activeFormations = activeFormations.filter((f) => f.age !== Infinity);
+    }
+
+    function drawFormations() {
+      if (!ctx) return;
+
+      const [gr, gg, gb] = SETTINGS.formationGlowColor;
+
+      for (const f of activeFormations) {
+        const lineAlpha =
+          f.state === 'holding'
+            ? SETTINGS.formationLineOpacity * Math.max(0.35, f.glow)
+            : SETTINGS.formationLineOpacityForming;
+
+        for (const [a, b] of f.links) {
+          const p1 = f.points[a];
+          const p2 = f.points[b];
+
+          ctx.beginPath();
+          ctx.moveTo(p1.x, p1.y);
+          ctx.lineTo(p2.x, p2.y);
+          ctx.strokeStyle = `rgba(${gr},${gg},${gb},${lineAlpha})`;
+          ctx.lineWidth = SETTINGS.formationLineWidth;
+          ctx.stroke();
+        }
+
+        if (f.state === 'holding') {
+          for (const p of f.points) {
+            const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, 14);
+            grad.addColorStop(0, `rgba(${gr},${gg},${gb},${0.22 * f.glow})`);
+            grad.addColorStop(1, `rgba(${gr},${gg},${gb},0)`);
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, 14, 0, Math.PI * 2);
+            ctx.fillStyle = grad;
+            ctx.fill();
+          }
+        }
+      }
+    }
+
+    function loop() {
+      const myVersion = loopVersion;
+      if (!ctx || !canvas) return;
+
+      ctx.clearRect(0, 0, W, H);
+      tick++;
+
+      maybeSpawnFormation();
+
+      // Update nodes
+      const offsetY = -(scrollY * SETTINGS.parallaxFactor);
+      const mouseVY = mouseClientY - offsetY; // convert screen Y → virtual Y
+      const repR = SETTINGS.mouseRepulseRadius;
+      const repStr = SETTINGS.mouseRepulseStrength;
+
+      for (const n of nodes) {
+        if (n.mode === 'free') {
+          // Mouse repulsion
+          const mdx = n.x - mouseX;
+          const mdy = n.y - mouseVY;
+          const mdist = Math.sqrt(mdx * mdx + mdy * mdy);
+          if (mdist < repR && mdist > 0.1) {
+            const force = repStr * (1 - mdist / repR);
+            n.vx += (mdx / mdist) * force;
+            n.vy += (mdy / mdist) * force;
+          }
+
+          n.x += n.vx;
+          n.y += n.vy;
+
+          // Gentle drag so repulsed stars drift back naturally
+          n.vx *= 0.97;
+          n.vy *= 0.97;
+        } else {
+          const dx = (n.targetX ?? n.x) - n.x;
+          const dy = (n.targetY ?? n.y) - n.y;
+
+          n.vx += dx * SETTINGS.formationPullStrength;
+          n.vy += dy * SETTINGS.formationPullStrength;
+
+          n.vx *= SETTINGS.formationDamping;
+          n.vy *= SETTINGS.formationDamping;
+
+          const clamped = clampMagnitude(n.vx, n.vy, SETTINGS.formationMaxSpeed);
+          n.vx = clamped.x;
+          n.vy = clamped.y;
+
+          n.x += n.vx;
+          n.y += n.vy;
+        }
+
+        if (n.x < 0) n.x = W;
+        if (n.x > W) n.x = 0;
+        if (n.y < 0) n.y = VH;
+        if (n.y > VH) n.y = 0;
+
+        if (n.hasColor) n.colorPhase += SETTINGS.colorShiftSpeed;
+      }
+
+      updateFormations();
+
+      // Spawn shooting stars
+      if (tick % SETTINGS.shootingStarInterval === 0) {
+        spawnShootingStar();
+      }
+
+      // Update shooting stars
+      for (const s of shootingStars) {
+        s.trail.unshift({ x: s.x, y: s.y });
+        if (s.trail.length > SETTINGS.trailLength) s.trail.pop();
+
+        s.x += s.vx;
+        s.y += s.vy;
+
+        for (const n of nodes) {
+          const dx = s.x - n.x;
+          const dy = s.y - n.y;
+          if (Math.sqrt(dx * dx + dy * dy) < SETTINGS.collisionRadius) {
+            const col = n.hasColor ? getStarColor(n.colorPhase) : [255, 255, 255];
+            spawnFlash(n.x, n.y, col);
+            s.alive = false;
+            break;
+          }
+        }
+
+        if (s.x > W + 50 || s.y > H + 50 || s.x < -50 || s.y < -50) {
+          s.alive = false;
+        }
+      }
+      shootingStars = shootingStars.filter((s) => s.alive);
+
+      // Update flashes
+      for (const f of flashes) {
+        f.age++;
+        const t = f.age / f.maxAge;
+        f.radius = f.maxRadius * Math.sqrt(t);
+        f.opacity = 1 - t;
+      }
+      flashes = flashes.filter((f) => f.age < f.maxAge);
+
+      // Grid
+      if (SETTINGS.gridEnabled) {
+        const gs = SETTINGS.gridSpacing;
+        for (let gx = gs / 2; gx < W; gx += gs) {
+          for (let gy = gs / 2; gy < H; gy += gs) {
+            ctx.beginPath();
+            ctx.arc(gx, gy, 1.1, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(100,160,255,${SETTINGS.gridOpacity})`;
+            ctx.fill();
+          }
+        }
+      }
+
+      // Parallax
+      ctx.save();
+      ctx.translate(0, offsetY);
+
+      // Normal connections
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          if (nodes[i].mode !== 'free') continue;
+          if (nodes[j].mode !== 'free') continue;
+
+          const dx = nodes[i].x - nodes[j].x;
+          const dy = nodes[i].y - nodes[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < SETTINGS.connectionDistance) {
+            const opacity = SETTINGS.lineOpacityMax * (1 - dist / SETTINGS.connectionDistance);
+            ctx.beginPath();
+            ctx.moveTo(nodes[i].x, nodes[i].y);
+            ctx.lineTo(nodes[j].x, nodes[j].y);
+            ctx.strokeStyle = `rgba(255,255,255,${opacity})`;
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+          }
+        }
+      }
+
+      drawFormations();
+
+      // Nodes
+      for (const n of nodes) {
+        const pulse = Math.sin(tick * SETTINGS.pulseSpeed + n.pulseOffset);
+        let opacity = Math.max(
+          0.05,
+          Math.min(1, n.baseOpacity + pulse * SETTINGS.pulseAmount * n.baseOpacity)
+        );
+
+        let r = 255, g = 255, b = 255;
+        if (n.hasColor) {
+          const c = getStarColor(n.colorPhase);
+          r = c[0];
+          g = c[1];
+          b = c[2];
+        }
+
+        if (n.mode === 'holding') opacity = Math.min(1, opacity + 0.25);
+
+        if (n.radius > 1.6 || n.hasColor || n.mode !== 'free') {
+          const gs = n.mode === 'holding' ? n.radius * 5 : n.radius * 3.5;
+          const grad = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, gs);
+          grad.addColorStop(0, `rgba(${r},${g},${b},${opacity * 0.45})`);
+          grad.addColorStop(1, `rgba(${r},${g},${b},0)`);
+          ctx.beginPath();
+          ctx.arc(n.x, n.y, gs, 0, Math.PI * 2);
+          ctx.fillStyle = grad;
+          ctx.fill();
+        }
+
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, n.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${r},${g},${b},${opacity})`;
+        ctx.fill();
+      }
+
+      // Shooting stars
+      for (const s of shootingStars) {
+        for (let i = 0; i < s.trail.length - 1; i++) {
+          const t = 1 - i / s.trail.length;
+          const opacity = t * 0.8;
+          const width = t * 2;
+          ctx.beginPath();
+          ctx.moveTo(s.trail[i].x, s.trail[i].y);
+          ctx.lineTo(s.trail[i + 1].x, s.trail[i + 1].y);
+          ctx.strokeStyle = `rgba(255,255,255,${opacity})`;
+          ctx.lineWidth = width;
+          ctx.stroke();
+        }
+
+        const grad = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, 6);
+        grad.addColorStop(0, 'rgba(255,255,255,0.9)');
+        grad.addColorStop(1, 'rgba(255,255,255,0)');
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, 6, 0, Math.PI * 2);
+        ctx.fillStyle = grad;
+        ctx.fill();
+      }
+
+      // Flashes
+      for (const f of flashes) {
+        const ring = ctx.createRadialGradient(f.x, f.y, f.radius * 0.5, f.x, f.y, f.radius);
+        ring.addColorStop(0, `rgba(${f.r},${f.g},${f.b},${f.opacity * 0.6})`);
+        ring.addColorStop(1, `rgba(${f.r},${f.g},${f.b},0)`);
+        ctx.beginPath();
+        ctx.arc(f.x, f.y, f.radius, 0, Math.PI * 2);
+        ctx.fillStyle = ring;
+        ctx.fill();
+
+        const core = f.maxRadius * 0.15;
+        const coreGrad = ctx.createRadialGradient(f.x, f.y, 0, f.x, f.y, core);
+        coreGrad.addColorStop(0, `rgba(255,255,255,${f.opacity})`);
+        coreGrad.addColorStop(1, `rgba(${f.r},${f.g},${f.b},0)`);
+        ctx.beginPath();
+        ctx.arc(f.x, f.y, core, 0, Math.PI * 2);
+        ctx.fillStyle = coreGrad;
+        ctx.fill();
+      }
+
+      ctx.restore();
+
+      animId = requestAnimationFrame(() => { if (loopVersion === myVersion) loop(); });
+    }
+
+    // Called on astro:before-preparation — saves full live state but keeps the loop running
+    // so all animations continue during the page transition.
+    function saveState() {
+      if (nodes.length) {
+        (window as any).__starState = {
+          nodes,
+          shootingStars: [...shootingStars],
+          flashes: [...flashes],
+          activeFormations: [...activeFormations],
+          formationCounter,
+          tick,
+          nextFormationTick,
+        };
+      }
+    }
+
+    document.addEventListener('astro:page-load', init);
+    document.addEventListener('astro:before-preparation', saveState);
   }
-
-  // アニメーションループ
-  function animate() {
-    if (!scene || !camera || !renderer || !particlesMesh || !torus || !torus2) return;
-
-    animationId = requestAnimationFrame(animate);
-    time += 0.001;
-
-    // パーティクルの回転とうねり
-    particlesMesh.rotation.y = time * 0.3;
-    particlesMesh.rotation.x = Math.sin(time) * 0.1;
-
-    // トーラスの回転
-    torus.rotation.x += 0.01;
-    torus.rotation.y += 0.005;
-    torus.rotation.z += 0.003;
-
-    torus2.rotation.x += 0.005;
-    torus2.rotation.y += 0.01;
-    torus2.rotation.z += 0.002;
-
-    // マウス追従
-    camera.position.x = mouseX * 2;
-    camera.position.y = mouseY * 2;
-    camera.lookAt(scene.position);
-
-    renderer.render(scene, camera);
-  }
-
-  // クリーンアップ
-  function cleanupThreeAnimation() {
-    // アニメーションループの停止
-    if (animationId !== null) {
-      cancelAnimationFrame(animationId);
-      animationId = null;
-    }
-
-    // イベントリスナーの削除
-    document.removeEventListener('mousemove', handleMouseMove);
-    window.removeEventListener('resize', handleResize);
-
-    // Three.jsオブジェクトのクリーンアップ
-    if (particlesMesh) {
-      particlesMesh.geometry.dispose();
-      particlesMesh.material.dispose();
-      particlesMesh = null;
-    }
-
-    if (torus) {
-      torus.geometry.dispose();
-      torus.material.dispose();
-      torus = null;
-    }
-
-    if (torus2) {
-      torus2.geometry.dispose();
-      torus2.material.dispose();
-      torus2 = null;
-    }
-
-    if (renderer) {
-      renderer.dispose();
-      renderer = null;
-    }
-
-    scene = null;
-    camera = null;
-  }
-
-  // Astro View Transitionsに対応した初期化
-  document.addEventListener('astro:page-load', () => {
-    initThreeAnimation();
-  });
-
-  // ページ離脱時のクリーンアップ
-  document.addEventListener('astro:before-preparation', () => {
-    cleanupThreeAnimation();
-  });
 </script>
 
 <style>
-  #three-canvas {
+  #constellation-canvas {
     position: fixed;
     top: 0;
     left: 0;

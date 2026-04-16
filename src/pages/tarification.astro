@@ -1,0 +1,43 @@
+---
+// Hidden page — not linked from navigation
+// Future freelancing tarification page
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Tarification — Albian Salihu" description="Services et tarification">
+  <main class="tarification-page">
+    <div class="container">
+      <h1 class="page-title">Services & Tarification</h1>
+      <p class="placeholder">Cette page sera complétée lors du lancement des activités freelance.</p>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .tarification-page {
+    min-height: 100vh;
+    padding: calc(var(--nav-height) + 4rem) 2rem 5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .container {
+    max-width: 700px;
+    text-align: center;
+  }
+
+  .page-title {
+    font-family: var(--font-heading);
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    font-weight: 700;
+    color: var(--color-text);
+    margin-bottom: 1.5rem;
+  }
+
+  .placeholder {
+    color: var(--color-text-dim);
+    font-size: 1.1rem;
+    line-height: 1.7;
+  }
+</style>

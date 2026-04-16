@@ -1,18 +1,18 @@
-/* Global styles for dark abyss theme */
+/* Global styles for dark minimal theme */
 :root {
-  /* Color Palette - Developer Dark Theme */
-  --color-bg-dark: #0F172A;
-  --color-bg-darker: #020617;
-  --color-bg-card: #1E293B;
-  --color-primary: #3B82F6;
-  --color-accent-purple: #8B5CF6;
-  --color-accent-pink: #EC4899;
-  --color-accent-blue: #3B82F6;
-  --color-accent-cyan: #06B6D4;
-  --color-text: #F1F5F9;
-  --color-text-dim: #94A3B8;
-  --color-border: #334155;
-  --color-shadow: rgba(59, 130, 246, 0.3);
+  /* Color Palette - Black & Gray */
+  --color-bg-dark: #04060a;
+  --color-bg-darker: #030408;
+  --color-bg-card: #0d1017;
+  --color-primary: #e2e8f0;
+  --color-accent-purple: #94a3b8;
+  --color-accent-pink: #cbd5e1;
+  --color-accent-blue: #94a3b8;
+  --color-accent-cyan: #94a3b8;
+  --color-text: #f1f5f9;
+  --color-text-dim: #64748b;
+  --color-border: #1e1e1e;
+  --color-shadow: rgba(148, 163, 184, 0.1);
 
   /* Typography */
   --font-heading: 'Space Grotesk', system-ui, sans-serif;
@@ -30,7 +30,7 @@
 
 html {
   font-family: var(--font-body);
-  background: var(--color-bg-dark);
+  background: var(--color-bg-darker);
   color: var(--color-text);
   overflow-x: hidden;
   scroll-behavior: smooth;
@@ -44,36 +44,8 @@ h1, h2, h3, h4, h5, h6 {
 body {
   min-height: 100vh;
   position: relative;
-  overflow-x: hidden;
 }
 
-/* Animated background gradient */
-body::before {
-  content: '';
-  position: fixed;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background:
-    radial-gradient(circle at 20% 50%, rgba(168, 85, 247, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(236, 72, 153, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 40% 20%, rgba(59, 130, 246, 0.1) 0%, transparent 50%);
-  animation: gradientShift 20s ease infinite;
-  z-index: -1;
-}
-
-@keyframes gradientShift {
-  0%, 100% {
-    transform: translate(0, 0) rotate(0deg);
-  }
-  33% {
-    transform: translate(10%, -10%) rotate(120deg);
-  }
-  66% {
-    transform: translate(-10%, 10%) rotate(240deg);
-  }
-}
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {
@@ -85,12 +57,12 @@ body::before {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, var(--color-accent-purple), var(--color-accent-pink));
+  background: #2a2a2a;
   border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, var(--color-accent-pink), var(--color-accent-blue));
+  background: #3a3a3a;
 }
 
 /* Global animations */
@@ -127,14 +99,35 @@ body::before {
 .shimmer-text {
   background: linear-gradient(
     90deg,
-    var(--color-accent-purple),
-    var(--color-accent-pink),
-    var(--color-accent-blue),
-    var(--color-accent-purple)
+    #f1f5f9,
+    #94a3b8,
+    #e2e8f0,
+    #f1f5f9
   );
   background-size: 200% auto;
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: text-shimmer 3s linear infinite;
+  animation: text-shimmer 4s linear infinite;
 }
+
+/* ── Scroll-reveal ── */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+[data-reveal].revealed {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] { opacity: 1; transform: none; transition: none; }
+}
+
+/* ── Bilingual content blocks ── */
+/* Usage: wrap content in <div class="lang-fr"> or <div class="lang-en"> */
+.lang-fr { display: none; }
+.lang-en { display: block; }
+:lang(fr) .lang-fr { display: block; }
+:lang(fr) .lang-en { display: none; }

@@ -1,88 +1,114 @@
 ---
-// Skills/Tech Stack section
+// Skills section
+// To add a link to a tag: add a url field. Leave url empty ('') for no link.
+type Skill = { name: string; url?: string };
+type Category = {
+  titleKey: string;
+  i18nKey: string;
+  icon: string;
+  skills: Skill[];
+};
+
+const categories: Category[] = [
+  {
+    titleKey: 'Robotics & Control',
+    i18nKey: 'skills.rob',
+    icon: `<circle cx="12" cy="12" r="3"></circle><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"></path>`,
+    skills: [
+      { name: 'ROS 2', url: 'https://docs.ros.org' },
+      { name: 'Real-time Control' },
+      { name: 'UAV Control' },
+      { name: 'Sensor Integration' },
+      { name: 'System Integration' },
+      { name: 'Conveyor Control' },
+    ],
+  },
+  {
+    titleKey: 'Embedded Systems',
+    i18nKey: 'skills.emb',
+    icon: `<rect x="4" y="4" width="16" height="16" rx="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line>`,
+    skills: [
+      { name: 'FPGA (Xilinx Zynq)', url: 'https://www.amd.com/en/products/adaptive-socs-and-fpgas/soc/zynq-7000.html' },
+      { name: 'FPGA (Intel DE10)', url: 'https://www.terasic.com.tw/cgi-bin/page/archive.pl?Language=English&CategoryNo=167&No=1046' },
+      { name: 'Vivado / Vitis', url: 'https://www.amd.com/en/products/software/adaptive-socs-and-fpgas/vivado.html' },
+      { name: 'Quartus', url: 'https://www.intel.com/content/www/us/en/products/details/fpga/development-tools/quartus-prime.html' },
+      { name: 'Microcontrollers' },
+      { name: 'VHDL' },
+    ],
+  },
+  {
+    titleKey: 'AI & Data',
+    i18nKey: 'skills.ai',
+    icon: `<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>`,
+    skills: [
+      { name: 'Machine Learning' },
+      { name: 'Deep Learning' },
+      { name: 'Computer Vision' },
+      { name: 'Model Deployment' },
+      { name: 'PyTorch' },
+    ],
+  },
+  {
+    titleKey: 'Electronics & CAD',
+    i18nKey: 'skills.elec',
+    icon: `<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>`,
+    skills: [
+      { name: 'PCB Design' },
+      { name: 'Altium Designer', url: 'https://www.altium.com' },
+      { name: 'Fusion 360', url: 'https://www.autodesk.com/products/fusion-360' },
+      { name: 'Catia', url: 'https://www.3ds.com/products/catia' },
+      { name: 'FreeCAD', url: 'https://www.freecad.org' },
+      { name: 'Prototyping' },
+    ],
+  },
+  {
+    titleKey: 'Programming',
+    i18nKey: 'skills.prog',
+    icon: `<polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline>`,
+    skills: [
+      { name: 'Python', url: 'https://www.python.org' },
+      { name: 'C / C++', url: 'https://isocpp.org' },
+      { name: 'MATLAB', url: 'https://www.mathworks.com/products/matlab.html' },
+      { name: 'C#' },
+      { name: 'Java' },
+    ],
+  },
+  {
+    titleKey: 'Languages',
+    i18nKey: 'skills.langs',
+    icon: `<circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>`,
+    skills: [
+      { name: 'French — Native' },
+      { name: 'Albanian — Native' },
+      { name: 'English — C1' },
+    ],
+  },
+];
 ---
 
 <section class="skills">
   <div class="container">
-    <h2 class="section-title">Skills & Technologies</h2>
-    <p class="section-subtitle">Tools and technologies I work with</p>
+    <h2 class="section-title" data-i18n="skills.title" data-reveal>Skills & Technologies</h2>
+    <p class="section-subtitle" data-i18n="skills.sub" data-reveal style="transition-delay:80ms">Tools and domains I work with</p>
 
     <div class="skills-grid">
-      <div class="skill-category">
-        <div class="category-header">
-          <div class="category-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="16 18 22 12 16 6"></polyline>
-              <polyline points="8 6 2 12 8 18"></polyline>
-            </svg>
+      {categories.map((cat, i) => (
+        <div class="skill-category" data-reveal style={`transition-delay:${i * 70}ms`}>
+          <div class="category-header">
+            <div class="category-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" set:html={cat.icon} />
+            </div>
+            <h3 class="category-title" data-i18n={cat.i18nKey}>{cat.titleKey}</h3>
           </div>
-          <h3 class="category-title">Frontend</h3>
-        </div>
-        <div class="skill-list">
-          <span class="skill-tag">Astro</span>
-          <span class="skill-tag">React</span>
-          <span class="skill-tag">TypeScript</span>
-          <span class="skill-tag">Three.js</span>
-          <span class="skill-tag">CSS Animations</span>
-          <span class="skill-tag">WebGL</span>
-        </div>
-      </div>
-
-      <div class="skill-category">
-        <div class="category-header">
-          <div class="category-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10"></circle>
-              <circle cx="12" cy="12" r="6"></circle>
-              <circle cx="12" cy="12" r="2"></circle>
-            </svg>
+          <div class="skill-list">
+            {cat.skills.map(skill =>
+              skill.url
+                ? <a href={skill.url} class="skill-tag skill-link" target="_blank" rel="noopener noreferrer">{skill.name}</a>
+                : <span class="skill-tag">{skill.name}</span>
+            )}
           </div>
-          <h3 class="category-title">Design & Animation</h3>
         </div>
-        <div class="skill-list">
-          <span class="skill-tag">Motion Design</span>
-          <span class="skill-tag">3D Graphics</span>
-          <span class="skill-tag">UI/UX</span>
-          <span class="skill-tag">Dark Themes</span>
-          <span class="skill-tag">Particle Systems</span>
-        </div>
-      </div>
-
-      <div class="skill-category">
-        <div class="category-header">
-          <div class="category-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
-            </svg>
-          </div>
-          <h3 class="category-title">Tools & Workflow</h3>
-        </div>
-        <div class="skill-list">
-          <span class="skill-tag">Git</span>
-          <span class="skill-tag">npm/pnpm</span>
-          <span class="skill-tag">Vite</span>
-          <span class="skill-tag">VS Code</span>
-          <span class="skill-tag">Chrome DevTools</span>
-        </div>
-      </div>
-
-      <div class="skill-category learning-category">
-        <div class="category-header">
-          <div class="category-icon learning">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
-              <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
-            </svg>
-          </div>
-          <h3 class="category-title">Currently Learning</h3>
-        </div>
-        <div class="skill-list">
-          <span class="skill-tag learning">GLSL Shaders</span>
-          <span class="skill-tag learning">WebGPU</span>
-          <span class="skill-tag learning">React Three Fiber</span>
-          <span class="skill-tag learning">Blender</span>
-        </div>
-      </div>
+      ))}
     </div>
   </div>
 </section>
@@ -125,18 +151,11 @@
     border: 1px solid var(--color-border);
     border-radius: 1rem;
     padding: 1.5rem;
-    transition: all 0.2s ease;
-    cursor: pointer;
+    transition: border-color 0.2s ease;
   }
 
   .skill-category:hover {
-    border-color: var(--color-primary);
-    box-shadow: 0 8px 30px rgba(59, 130, 246, 0.15);
-  }
-
-  .learning-category:hover {
-    border-color: var(--color-accent-purple);
-    box-shadow: 0 8px 30px rgba(139, 92, 246, 0.15);
+    border-color: #2a2a2a;
   }
 
   .category-header {
@@ -152,14 +171,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(59, 130, 246, 0.1);
+    background: rgba(255, 255, 255, 0.04);
     border-radius: 0.5rem;
-    color: var(--color-primary);
-  }
-
-  .category-icon.learning {
-    background: rgba(139, 92, 246, 0.1);
-    color: var(--color-accent-purple);
+    color: var(--color-text-dim);
   }
 
   .category-title {
@@ -177,27 +191,30 @@
 
   .skill-tag {
     padding: 0.375rem 0.75rem;
-    background: rgba(59, 130, 246, 0.08);
+    background: rgba(255, 255, 255, 0.03);
     border: 1px solid var(--color-border);
     border-radius: 0.375rem;
     font-size: 0.8rem;
     color: var(--color-text-dim);
     transition: all 0.2s ease;
+    text-decoration: none;
+    display: inline-block;
   }
 
   .skill-tag:hover {
-    border-color: var(--color-primary);
-    color: var(--color-primary);
+    border-color: #3a3a3a;
+    color: var(--color-text);
   }
 
-  .skill-tag.learning {
-    background: rgba(139, 92, 246, 0.08);
-    border-color: rgba(139, 92, 246, 0.3);
+  /* Linked tags get a subtle external link indicator */
+  .skill-link::after {
+    content: ' ↗';
+    font-size: 0.65rem;
+    opacity: 0.5;
   }
 
-  .skill-tag.learning:hover {
-    border-color: var(--color-accent-purple);
-    color: var(--color-accent-purple);
+  .skill-link:hover::after {
+    opacity: 1;
   }
 
   @media (max-width: 768px) {

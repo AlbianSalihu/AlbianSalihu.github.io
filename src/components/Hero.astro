@@ -1,45 +1,44 @@
 ---
-// Hero section - Clean, professional design
-const base = import.meta.env.BASE_URL;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
-<section class="hero">
-  <div class="hero-content">
-    <div class="greeting">Hello, I'm</div>
+<section class="hero" id="hero-section">
+  <div class="hero-content" id="hero-parallax">
+    <div class="greeting" data-i18n="hero.greeting">Hello, I'm</div>
     <h1 class="hero-title">
-      <span class="title-text">DARKNESS</span>
+      <span class="title-text">ALBIAN SALIHU</span>
     </h1>
-    <p class="hero-subtitle">Web Developer & Creative Coder</p>
-    <p class="hero-description">
-      Building immersive web experiences with Three.js, modern animations, and dark aesthetics.
-      Specializing in motion-rich interfaces that push the boundaries of what's possible on the web.
+
+    <!-- Typewriter subtitle -->
+    <p class="hero-subtitle">
+      <span id="typewriter-text"></span><span class="cursor-blink">|</span>
+    </p>
+
+    <p class="hero-description" data-i18n="hero.desc">
+      I design and build control systems for robotic and embedded applications —
+      bridging hardware, software, and AI from prototype to real-world deployment.
     </p>
     <div class="hero-buttons">
-      <a href={`${base}projects`} class="btn btn-primary">
-        <span>View Projects</span>
+      <a href={`${base}/projects`} class="btn btn-primary">
+        <span data-i18n="hero.btn_proj">View Projects</span>
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <line x1="5" y1="12" x2="19" y2="12"></line>
           <polyline points="12 5 19 12 12 19"></polyline>
         </svg>
       </a>
-      <a href={`${base}blog`} class="btn btn-secondary">
-        <span>Read Blog</span>
+      <a href={`${base}/about`} class="btn btn-secondary">
+        <span data-i18n="hero.btn_about">About Me</span>
       </a>
     </div>
 
-    <!-- Tech stack badges -->
     <div class="tech-stack">
-      <span class="tech-badge">TypeScript</span>
-      <span class="tech-badge">React</span>
-      <span class="tech-badge">Three.js</span>
-      <span class="tech-badge">Astro</span>
+      <span class="tech-badge">Python</span>
+      <span class="tech-badge">C/C++</span>
+      <span class="tech-badge">ROS 2</span>
+      <span class="tech-badge">FPGA</span>
+      <span class="tech-badge">VHDL</span>
+      <span class="tech-badge">ML</span>
     </div>
-  </div>
-
-  <!-- Decorative elements -->
-  <div class="hero-decoration">
-    <div class="glow glow-1"></div>
-    <div class="glow glow-2"></div>
   </div>
 </section>
 
@@ -59,6 +58,7 @@ const base = import.meta.env.BASE_URL;
     z-index: 10;
     max-width: 800px;
     animation: fadeInUp 0.8s ease-out;
+    will-change: transform;
   }
 
   .greeting {
@@ -89,12 +89,8 @@ const base = import.meta.env.BASE_URL;
   }
 
   @keyframes gradientFlow {
-    0%, 100% {
-      background-position: 0% 50%;
-    }
-    50% {
-      background-position: 100% 50%;
-    }
+    0%, 100% { background-position: 0% 50%; }
+    50%       { background-position: 100% 50%; }
   }
 
   .hero-subtitle {
@@ -103,6 +99,17 @@ const base = import.meta.env.BASE_URL;
     color: var(--color-text);
     margin-bottom: 1.5rem;
     font-weight: 500;
+    min-height: 2.2rem;
+  }
+
+  .cursor-blink {
+    animation: blink 0.8s step-end infinite;
+    color: var(--color-text-dim);
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0; }
   }
 
   .hero-description {
@@ -139,23 +146,18 @@ const base = import.meta.env.BASE_URL;
   }
 
   .btn-primary {
-    background: var(--color-primary);
-    color: white;
-    box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
+    background: #f1f5f9;
+    color: #0a0a0a;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
   }
 
   .btn-primary:hover {
-    background: #2563EB;
-    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
+    background: #ffffff;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
   }
 
-  .btn-primary svg {
-    transition: transform 0.2s ease;
-  }
-
-  .btn-primary:hover svg {
-    transform: translateX(4px);
-  }
+  .btn-primary svg { transition: transform 0.2s ease; }
+  .btn-primary:hover svg { transform: translateX(4px); }
 
   .btn-secondary {
     background: transparent;
@@ -164,8 +166,8 @@ const base = import.meta.env.BASE_URL;
   }
 
   .btn-secondary:hover {
-    background: rgba(59, 130, 246, 0.1);
-    border-color: var(--color-primary);
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--color-text-dim);
   }
 
   .tech-stack {
@@ -177,7 +179,7 @@ const base = import.meta.env.BASE_URL;
 
   .tech-badge {
     padding: 0.5rem 1rem;
-    background: rgba(59, 130, 246, 0.1);
+    background: rgba(255, 255, 255, 0.03);
     border: 1px solid var(--color-border);
     border-radius: 2rem;
     font-size: 0.875rem;
@@ -186,93 +188,89 @@ const base = import.meta.env.BASE_URL;
   }
 
   .tech-badge:hover {
-    border-color: var(--color-primary);
-    color: var(--color-primary);
-  }
-
-  /* Decorative glows */
-  .hero-decoration {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    pointer-events: none;
-    overflow: hidden;
-  }
-
-  .glow {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(80px);
-    opacity: 0.4;
-  }
-
-  .glow-1 {
-    width: 400px;
-    height: 400px;
-    background: var(--color-primary);
-    top: 10%;
-    left: 10%;
-    animation: float 8s ease-in-out infinite;
-  }
-
-  .glow-2 {
-    width: 300px;
-    height: 300px;
-    background: var(--color-accent-purple);
-    bottom: 20%;
-    right: 10%;
-    animation: float 6s ease-in-out infinite reverse;
+    border-color: var(--color-text-dim);
+    color: var(--color-text);
   }
 
   @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(30px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
   }
 
-  @keyframes float {
-    0%, 100% {
-      transform: translate(0, 0);
-    }
-    50% {
-      transform: translate(20px, -20px);
-    }
-  }
-
-  /* Respect reduced motion */
   @media (prefers-reduced-motion: reduce) {
-    .title-text {
-      animation: none;
-    }
-    .glow-1, .glow-2 {
-      animation: none;
-    }
-    .hero-content {
-      animation: none;
-    }
+    .title-text, .hero-content { animation: none; }
+    .cursor-blink { animation: none; }
   }
 
   @media (max-width: 768px) {
-    .hero {
-      padding-top: calc(var(--nav-height) + 3rem);
-    }
-
-    .hero-buttons {
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .btn {
-      width: 100%;
-      max-width: 280px;
-      justify-content: center;
-    }
+    .hero { padding-top: calc(var(--nav-height) + 3rem); }
+    .hero-buttons { flex-direction: column; align-items: center; }
+    .btn { width: 100%; max-width: 280px; justify-content: center; }
   }
 </style>
+
+<script>
+  // ── Typewriter cycling ──
+  const phrasesEN = [
+    'Robotics Engineer',
+    'Embedded Systems',
+    'FPGA Developer',
+    'AI Integration',
+    'Control Systems',
+  ];
+  const phrasesFR = [
+    'Ingénieur en Robotique',
+    'Systèmes Embarqués',
+    'Développeur FPGA',
+    'Intégration IA',
+    'Systèmes de Contrôle',
+  ];
+
+  let phrases = phrasesEN;
+  let phraseIdx = 0;
+  let charIdx = 0;
+  let deleting = false;
+  let typeTimer: ReturnType<typeof setTimeout> | null = null;
+
+  function typeStep() {
+    const el = document.getElementById('typewriter-text');
+    if (!el) return;
+
+    const current = phrases[phraseIdx];
+
+    if (!deleting) {
+      el.textContent = current.slice(0, ++charIdx);
+      if (charIdx === current.length) {
+        deleting = true;
+        typeTimer = setTimeout(typeStep, 1800);
+        return;
+      }
+      typeTimer = setTimeout(typeStep, 60);
+    } else {
+      el.textContent = current.slice(0, --charIdx);
+      if (charIdx === 0) {
+        deleting = false;
+        phraseIdx = (phraseIdx + 1) % phrases.length;
+        typeTimer = setTimeout(typeStep, 300);
+        return;
+      }
+      typeTimer = setTimeout(typeStep, 35);
+    }
+  }
+
+  function restartTypewriter(lang: string) {
+    phrases = lang === 'fr' ? phrasesFR : phrasesEN;
+    if (typeTimer) clearTimeout(typeTimer);
+    phraseIdx = 0; charIdx = 0; deleting = false;
+    typeStep();
+  }
+
+  document.addEventListener('astro:page-load', () => {
+    const lang = localStorage.getItem('lang') || 'en';
+    restartTypewriter(lang);
+  });
+
+  document.addEventListener('langchange', (e) => {
+    restartTypewriter((e as CustomEvent).detail);
+  });
+</script>

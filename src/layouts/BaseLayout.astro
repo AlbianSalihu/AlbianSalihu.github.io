@@ -1,13 +1,15 @@
 ---
 import '../styles/global.css';
 import { ClientRouter } from 'astro:transitions';
+import ThreeBackground from '../components/ThreeBackground.astro';
+import Navigation from '../components/Navigation.astro';
 
 interface Props {
   title?: string;
   description?: string;
 }
 
-const base = import.meta.env.BASE_URL;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const {
   title = 'Darkness - Dark Theme',
   description = 'An intense motion-filled dark theme Astro site'
@@ -20,18 +22,20 @@ const {
     <meta charset="UTF-8" />
     <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
+    <link rel="icon" type="image/svg+xml" href={`${base}/favicon.svg`} />
     <meta name="generator" content={Astro.generator} />
     <!-- Google Fonts: Space Grotesk + DM Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <!-- KaTeX math rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous" />
     <title>{title}</title>
     <ClientRouter />
   </head>
   <body>
-    <div class="cursor-follower"></div>
-    <canvas id="three-canvas"></canvas>
+    <ThreeBackground />
+    <Navigation />
     <div id="page-content">
       <slot />
     </div>
@@ -52,57 +56,192 @@ const {
         z-index: 1;
       }
 
-      /* Custom cursor */
-      .cursor-follower {
-        width: 20px;
-        height: 20px;
-        border: 2px solid var(--color-accent-purple);
-        border-radius: 50%;
-        position: fixed;
-        pointer-events: none;
-        z-index: 9999;
-        transition: all 0.1s ease;
-        transform: translate(-50%, -50%);
-        mix-blend-mode: difference;
-      }
-
-      .cursor-follower::before {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 4px;
-        height: 4px;
-        background: var(--color-accent-pink);
-        border-radius: 50%;
-      }
     </style>
 
     <script>
-      // Custom cursor
-      const cursor = document.querySelector('.cursor-follower') as HTMLElement;
+      // i18n — translations & language toggle
+      const T: Record<string, Record<string, string>> = {
+        'nav.home':      { en: 'Home',         fr: 'Accueil' },
+        'nav.projects':  { en: 'Projects',     fr: 'Projets' },
+        'nav.about':     { en: 'About',        fr: 'À propos' },
+        'nav.cv':        { en: 'Download CV',  fr: 'Télécharger CV' },
+        'hero.greeting': { en: "Hello, I'm",   fr: "Bonjour, je suis" },
+        'hero.subtitle': { en: 'Robotics Engineer', fr: 'Ingénieur en Robotique' },
+        'hero.desc':     { en: "I design and build control systems for robotic and embedded applications — bridging hardware, software, and AI from prototype to real-world deployment.", fr: "Je conçois et développe des systèmes de contrôle pour applications robotiques et embarquées — à la frontière du matériel, du logiciel et de l'IA, du prototype au déploiement réel." },
+        'hero.btn_proj': { en: 'View Projects', fr: 'Voir les projets' },
+        'hero.btn_about':{ en: 'About Me',      fr: 'À propos' },
+        'skills.title':  { en: 'Skills & Technologies', fr: 'Compétences & Technologies' },
+        'skills.sub':    { en: 'Tools and domains I work with', fr: 'Outils et domaines de compétence' },
+        'skills.rob':    { en: 'Robotics & Control',  fr: 'Robotique & Contrôle' },
+        'skills.emb':    { en: 'Embedded Systems',    fr: 'Systèmes embarqués' },
+        'skills.ai':     { en: 'AI & Data',           fr: 'IA & Données' },
+        'skills.elec':   { en: 'Electronics & CAD',   fr: 'Électronique & CAO' },
+        'skills.prog':   { en: 'Programming',         fr: 'Programmation' },
+        'skills.langs':  { en: 'Languages',           fr: 'Langues' },
+        'about.title':   { en: 'About Me',            fr: 'À propos' },
+        'about.bg':      { en: 'Background',          fr: 'Parcours' },
+        'about.bio1':    { en: "I'm Albian, a Robotics Engineer based in Lausanne, Switzerland. I hold a Master's degree in Robotics (minor in Space Technologies) and a Bachelor's in Microengineering, both from EPFL — one of Europe's leading engineering institutions.", fr: "Je suis Albian, Ingénieur en Robotique basé à Lausanne, en Suisse. Je suis titulaire d'un Master en Robotique (mineure en Technologies Spatiales) et d'un Bachelor en Microtechnique, tous deux obtenus à l'EPFL." },
+        'about.bio2':    { en: "My path started in electronics with a vocational diploma (CFC) and baccalaureate at CPLN, before moving into microengineering and then robotics at EPFL. That progression gives me a strong foundation across the full hardware-software stack — from circuit-level electronics to high-level control algorithms and AI.", fr: "Mon parcours a débuté en électronique avec un CFC et une maturité professionnelle au CPLN, avant de rejoindre l'EPFL en microtechnique puis en robotique. Cette progression me confère une solide base couvrant l'ensemble de la chaîne matériel-logiciel." },
+        'about.bio3':    { en: "I currently work at Wasteflow, where I develop real-time control systems for industrial waste-sorting conveyors — acting as the \"muscle\" that executes the decisions made by the company's AI system.", fr: "Je travaille actuellement chez Wasteflow, où je développe des systèmes de contrôle en temps réel pour convoyeurs de tri industriel des déchets — jouant le rôle du « muscle » qui exécute les décisions du système IA de l'entreprise." },
+        'about.what':    { en: 'What I Do',           fr: 'Ce que je fais' },
+        'about.s1t':     { en: 'Robotics & Control',  fr: 'Robotique & Contrôle' },
+        'about.s1d':     { en: 'Real-time control systems, ROS 2, sensor integration, and autonomous robot platforms.', fr: 'Systèmes de contrôle en temps réel, ROS 2, intégration de capteurs et plateformes robotiques autonomes.' },
+        'about.s2t':     { en: 'Embedded Systems & FPGA', fr: 'Systèmes embarqués & FPGA' },
+        'about.s2d':     { en: 'FPGA development on Xilinx Zynq and Intel DE10. Signal processing, control loops, real-time constraints.', fr: 'Développement FPGA sur Xilinx Zynq et Intel DE10. Traitement de signal, boucles de contrôle, contraintes temps réel.' },
+        'about.s3t':     { en: 'AI & Machine Learning', fr: 'IA & Machine Learning' },
+        'about.s3d':     { en: 'Training and deploying ML models for real-world decision-making, including computer vision pipelines.', fr: 'Entraînement et déploiement de modèles ML pour prise de décision en conditions réelles, incluant des pipelines de vision par ordinateur.' },
+        'about.s4t':     { en: 'Electronics & Prototyping', fr: 'Électronique & Prototypage' },
+        'about.s4d':     { en: 'PCB design, circuit assembly, CAD modelling, and hands-on hardware prototyping from concept to test.', fr: 'Conception de PCB, assemblage de circuits, modélisation CAO et prototypage matériel de la conception aux tests.' },
+        'about.edu':     { en: 'Education',           fr: 'Formation' },
+        'about.edu1t':   { en: 'Master in Robotics — Minor in Space Technologies', fr: 'Master en Robotique — Mineure en Technologies Spatiales' },
+        'about.edu2t':   { en: 'Bachelor in Microengineering', fr: 'Bachelor en Microtechnique' },
+        'about.edu3t':   { en: 'Federal Vocational Baccalaureate', fr: 'Maturité Professionnelle Fédérale' },
+        'about.edu4t':   { en: 'Federal VET Diploma (CFC) — Electronics', fr: 'CFC — Électronicien' },
+        'about.cta':     { en: "Let's Work Together", fr: 'Travaillons ensemble' },
+        'about.cta_sub': { en: 'Interested in collaborating on robotics, embedded systems, or AI projects?', fr: 'Intéressé par une collaboration en robotique, systèmes embarqués ou IA ?' },
+        'about.btn_w':   { en: 'View My Work',        fr: 'Voir mes projets' },
+        'about.btn_c':   { en: 'Contact Me',          fr: 'Me contacter' },
+        'proj.title':    { en: 'Projects',            fr: 'Projets' },
+        'proj.sub':      { en: 'A selection of my work in robotics, embedded systems, and AI', fr: 'Une sélection de mes projets en robotique, systèmes embarqués et IA' },
+        'proj.feat':     { en: 'Featured Projects',   fr: 'Projets phares' },
+        'proj.other':    { en: 'Other Projects',      fr: 'Autres projets' },
+        'proj.read_more':{ en: 'View project',        fr: 'Voir le projet' },
+        'proj.report':   { en: 'Download Report',     fr: 'Télécharger le rapport' },
+        'proj.feat_badge':{ en: 'Featured',           fr: 'À la une' },
+        'contact.title': { en: 'Get in Touch',         fr: 'Me contacter' },
+        'contact.sub':   { en: "Whether it's a robotics project, embedded systems challenge, or just a question — reach out.", fr: "Un projet en robotique, un défi en systèmes embarqués ou simplement une question — n'hésitez pas." },
+        'contact.link':  { en: 'LinkedIn',             fr: 'LinkedIn' },
+        'toc.back':      { en: 'All Projects',        fr: 'Tous les projets' },
+        'toc.onpage':    { en: 'On this page',        fr: 'Sur cette page' },
+        // ── Project titles & descriptions ──
+        'p.wasteflow.t':            { en: 'Wasteflow — Controls & Systems Integration', fr: 'Wasteflow — Contrôle & Intégration Systèmes' },
+        'p.wasteflow.d':            { en: 'Real-time conveyor control systems bridging an AI vision layer with physical actuation in industrial waste-sorting facilities.', fr: 'Systèmes de contrôle temps réel pour convoyeurs de tri industriel, reliant une couche de vision par IA à l\'actionnement physique.' },
+        'p.master-thesis.t':        { en: 'Master Thesis — Multi-Hardness Silicone 3D Printer', fr: 'Thèse de Master — Imprimante 3D Silicone Multi-Dureté' },
+        'p.master-thesis.d':        { en: 'Sensor integration and closed-loop feedback enabling accurate multi-hardness silicone 3D printing for custom medical prosthetic liners — industry thesis at Swiss MotionTech / EPFL.', fr: 'Intégration de capteurs et boucle de contrôle fermée pour l\'impression 3D silicone multi-dureté précise de liners prothétiques — thèse industrielle chez Swiss MotionTech / EPFL.' },
+        'p.epfl-spacecraft.t':      { en: 'CHESS CubeSat — FPGA Filament Controller', fr: 'CubeSat CHESS — Contrôleur de Filament FPGA' },
+        'p.epfl-spacecraft.d':      { en: 'FPGA-based filament controller for the CubeSatTOF mass spectrometer on the ESA-supported CHESS CubeSat. Open-loop FSM + discrete PID in VHDL on Xilinx Kria K26, with AXI4-Lite CPU interface.', fr: 'Contrôleur de filament FPGA pour le spectromètre CubeSatTOF du CubeSat CHESS soutenu par l\'ESA. FSM en boucle ouverte + PID discret en VHDL sur Xilinx Kria K26, avec interface CPU AXI4-Lite.' },
+        'p.epfl-robot-competition.t':{ en: 'EPFL Robot Competition 2023 — Duplo Brick Collector', fr: 'Compétition Robotique EPFL 2023 — Collecteur de Briques' },
+        'p.epfl-robot-competition.d':{ en: 'Fully autonomous robot for the annual EPFL robotics competition. Custom YOLOv5-S detector trained on 8500 synthetic images, Nav2 navigation, Google Cartographer SLAM — primarily in C++ on ROS 2.', fr: 'Robot entièrement autonome pour la compétition EPFL. Détecteur YOLOv5-S entraîné sur 8500 images synthétiques, navigation Nav2, SLAM Cartographer — principalement en C++ sous ROS 2.' },
+        'p.epfl-legged-robots.t':   { en: 'Quadruped Locomotion — CPG & Deep Reinforcement Learning', fr: 'Locomotion Quadrupède — CPG & Apprentissage par Renforcement' },
+        'p.epfl-legged-robots.d':   { en: 'Implemented and compared bio-inspired Central Pattern Generator control against Deep Reinforcement Learning for quadruped locomotion on a 12.45 kg simulated robot at EPFL BioRob.', fr: 'Implémentation et comparaison d\'un contrôle CPG bio-inspiré et d\'un apprentissage par renforcement profond pour la locomotion quadrupède sur un robot simulé de 12.45 kg au BioRob EPFL.' },
+        'p.de10-fpga-cnn.t':        { en: 'DE10-SoC — FPGA-Accelerated CNN Inference', fr: 'DE10-SoC — Inférence CNN Accélérée sur FPGA' },
+        'p.de10-fpga-cnn.d':        { en: 'End-to-end integer-only CNN inference pipeline on Intel DE10-SoC (ARM + FPGA). Custom hardware datapath in Verilog, hardware-aware post-training quantization, and Python-driven verification.', fr: 'Pipeline d\'inférence CNN entièrement en arithmétique entière sur Intel DE10-SoC (ARM + FPGA). Datapath matériel en Verilog, quantification post-entraînement et vérification pilotée par Python.' },
+        'p.deep-learning-noise2noise.t': { en: 'Deep Learning — Noise2Noise Image Denoising', fr: 'Deep Learning — Débruitage Noise2Noise' },
+        'p.deep-learning-noise2noise.d': { en: 'FFT-augmented U-Net for image denoising using PyTorch (PSNR 25.43), then the same model rebuilt entirely from scratch with custom convolution, upsampling, and ADAM — no autograd.', fr: 'U-Net augmenté FFT pour le débruitage d\'images avec PyTorch (PSNR 25,43), puis le même modèle reconstruit depuis zéro avec convolution, upsampling et ADAM personnalisés — sans autograd.' },
+        'p.mobile-robotics-thymio.t':   { en: 'ThymiAir — Autonomous Mobile Robot Navigation', fr: 'ThymiAir — Navigation Robotique Mobile Autonome' },
+        'p.mobile-robotics-thymio.d':   { en: 'Fully autonomous Thymio robot: computer vision pipeline, visibility graph + Dijkstra path planning, Extended Kalman Filter for pose estimation, and reactive obstacle avoidance. EPFL MICRO-452.', fr: 'Robot Thymio entièrement autonome : pipeline de vision, graphe de visibilité + Dijkstra, filtre de Kalman étendu pour l\'estimation de pose, et évitement réactif d\'obstacles. EPFL MICRO-452.' },
+        'p.lab4-audio-effect.t':        { en: 'FPGA Audio Effect Device — Custom DMA & Dual-Processor DSP', fr: 'Dispositif Audio FPGA — DMA Personnalisé & DSP Bi-processeur' },
+        'p.lab4-audio-effect.d':        { en: 'Custom DMA and IRQ Sender IP cores in VHDL on Intel DE1-SoC. Dual Nios II processors communicate via hardware interrupt. 48 kHz audio pipeline: microphone → SDRAM → FFT → low-pass → IFFT → speaker.', fr: 'Cœurs IP DMA et IRQ Sender personnalisés en VHDL sur Intel DE1-SoC. Deux processeurs Nios II communiquent par interruption matérielle. Pipeline audio 48 kHz : microphone → SDRAM → FFT → passe-bas → IFFT → haut-parleur.' },
+      };
 
-      document.addEventListener('mousemove', (e) => {
-        cursor.style.left = e.clientX + 'px';
-        cursor.style.top = e.clientY + 'px';
+      function applyLanguage(lang: string) {
+        localStorage.setItem('lang', lang);
+        document.documentElement.lang = lang;
+        document.querySelectorAll<HTMLElement>('[data-i18n]').forEach(el => {
+          const key = el.getAttribute('data-i18n')!;
+          if (T[key]?.[lang]) el.textContent = T[key][lang];
+        });
+        document.querySelectorAll<HTMLElement>('.lang-opt').forEach(opt => {
+          opt.classList.toggle('active', opt.dataset.lang === lang);
+        });
+        // Notify components that language changed
+        document.dispatchEvent(new CustomEvent('langchange', { detail: lang }));
+        // Switch CV download to language-appropriate file and filename
+        document.querySelectorAll<HTMLAnchorElement>('[data-cv-link]').forEach(a => {
+          const base = a.href.replace(/\/cv(?:_fr)?\.pdf$/, '');
+          if (lang === 'fr') {
+            a.href = base + '/cv_fr.pdf';
+            a.download = 'Albian_Salihu_CV_fr.pdf';
+          } else {
+            a.href = base + '/cv.pdf';
+            a.download = 'Albian_Salihu_CV_en.pdf';
+          }
+        });
+      }
+
+      (window as any).__applyLanguage = applyLanguage;
+
+      document.addEventListener('astro:page-load', () => {
+        const lang = localStorage.getItem('lang') || 'en';
+        applyLanguage(lang);
+        document.querySelectorAll<HTMLElement>('.lang-opt').forEach(opt => {
+          opt.addEventListener('click', () => applyLanguage(opt.dataset.lang!));
+        });
       });
 
-      // Cursor expand on hover
-      const interactiveElements = document.querySelectorAll('a, button, .card');
-      interactiveElements.forEach(el => {
-        el.addEventListener('mouseenter', () => {
-          cursor.style.width = '40px';
-          cursor.style.height = '40px';
-          cursor.style.backgroundColor = 'rgba(168, 85, 247, 0.2)';
-        });
-
-        el.addEventListener('mouseleave', () => {
-          cursor.style.width = '20px';
-          cursor.style.height = '20px';
-          cursor.style.backgroundColor = 'transparent';
-        });
+      // Page transition — instant hide on swap, brief stars-only pause, then fade in
+      document.addEventListener('astro:after-swap', () => {
+        const el = document.getElementById('page-content');
+        if (!el) return;
+        el.style.opacity = '0';
+        el.animate(
+          [{ opacity: 0 }, { opacity: 1 }],
+          { duration: 450, delay: 180, easing: 'ease-out', fill: 'both' }
+        );
       });
+    </script>
+
+    <script>
+      // Scroll-reveal — runs after every page navigation
+      function initReveal() {
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach(e => {
+              if (e.isIntersecting) {
+                (e.target as HTMLElement).classList.add('revealed');
+                io.unobserve(e.target);
+              }
+            });
+          },
+          { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
+        );
+        document.querySelectorAll('[data-reveal]').forEach(el => {
+          // Reset in case of View Transition re-use
+          el.classList.remove('revealed');
+          io.observe(el);
+        });
+      }
+      document.addEventListener('astro:page-load', initReveal);
+    </script>
+
+    <script is:inline>
+      // KaTeX auto-render — loads lazily, re-runs on every Astro page transition
+      let _katexLoaded = false;
+
+      function _renderKatex() {
+        if (_katexLoaded) {
+          renderMathInElement(document.body, {
+            delimiters: [
+              { left: '$$', right: '$$', display: true },
+              { left: '$',  right: '$',  display: false },
+            ],
+            throwOnError: false,
+          });
+          return;
+        }
+        const s1 = document.createElement('script');
+        s1.src = 'https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js';
+        s1.crossOrigin = 'anonymous';
+        s1.onload = () => {
+          const s2 = document.createElement('script');
+          s2.src = 'https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js';
+          s2.crossOrigin = 'anonymous';
+          s2.onload = () => {
+            _katexLoaded = true;
+            renderMathInElement(document.body, {
+              delimiters: [
+                { left: '$$', right: '$$', display: true },
+                { left: '$',  right: '$',  display: false },
+              ],
+              throwOnError: false,
+            });
+          };
+          document.head.appendChild(s2);
+        };
+        document.head.appendChild(s1);
+      }
+
+      document.addEventListener('astro:page-load', _renderKatex);
     </script>
   </body>
 </html>

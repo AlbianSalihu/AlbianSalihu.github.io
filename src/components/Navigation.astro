@@ -1,31 +1,36 @@
 ---
-// Navigation component - Floating navbar with SVG icons
-const base = import.meta.env.BASE_URL;
+const rawBase = import.meta.env.BASE_URL;
+const base = rawBase.endsWith('/') ? rawBase.slice(0, -1) : rawBase;
 const currentPath = Astro.url.pathname;
-// BASE_URLを除いたパスで比較
-const relativePath = currentPath.replace(base.slice(0, -1), '') || '/';
+const relativePath = currentPath.replace(base, '') || '/';
 ---
 
 <nav class="nav">
   <div class="nav-container">
-    <a href={base} class="logo">DARKNESS</a>
+    <a href={`${base}/`} class="logo">Albian Salihu</a>
 
     <div class="nav-links">
-      <a href={base} class:list={['nav-link', { active: relativePath === '/' }]}>
-        Home
-      </a>
-      <a href={`${base}blog`} class:list={['nav-link', { active: relativePath.startsWith('/blog') }]}>
-        Blog
-      </a>
-      <a href={`${base}projects`} class:list={['nav-link', { active: relativePath === '/projects' }]}>
-        Projects
-      </a>
-      <a href={`${base}about`} class:list={['nav-link', { active: relativePath === '/about' }]}>
-        About
+      <a href={`${base}/`} class:list={['nav-link', { active: relativePath === '/' }]} data-i18n="nav.home">Home</a>
+      <a href={`${base}/projects`} class:list={['nav-link', { active: relativePath.startsWith('/projects') }]} data-i18n="nav.projects">Projects</a>
+      <a href={`${base}/about`} class:list={['nav-link', { active: relativePath === '/about' }]} data-i18n="nav.about">About</a>
+    </div>
+
+    <div class="nav-actions">
+      <div class="lang-toggle" aria-label="Switch language">
+        <span class="lang-opt active" data-lang="en">EN</span>
+        <span class="lang-sep">/</span>
+        <span class="lang-opt" data-lang="fr">FR</span>
+      </div>
+      <a href={`${base}/cv.pdf`} class="cv-btn" data-cv-link download="Albian_Salihu_CV_en.pdf">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="7 10 12 15 17 10"></polyline>
+          <line x1="12" y1="15" x2="12" y2="3"></line>
+        </svg>
+        <span data-i18n="nav.cv">Download CV</span>
       </a>
     </div>
 
-    <!-- Mobile menu button -->
     <button class="mobile-menu-btn" aria-label="Toggle menu" id="mobile-menu-btn">
       <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <line x1="3" y1="12" x2="21" y2="12"></line>
@@ -36,13 +41,26 @@ const relativePath = currentPath.replace(base.slice(0, -1), '') || '/';
   </div>
 </nav>
 
-<!-- Mobile menu overlay -->
 <div class="mobile-menu" id="mobile-menu">
   <div class="mobile-menu-content">
-    <a href={base} class:list={['mobile-nav-link', { active: relativePath === '/' }]}>Home</a>
-    <a href={`${base}blog`} class:list={['mobile-nav-link', { active: relativePath.startsWith('/blog') }]}>Blog</a>
-    <a href={`${base}projects`} class:list={['mobile-nav-link', { active: relativePath === '/projects' }]}>Projects</a>
-    <a href={`${base}about`} class:list={['mobile-nav-link', { active: relativePath === '/about' }]}>About</a>
+    <a href={`${base}/`} class:list={['mobile-nav-link', { active: relativePath === '/' }]} data-i18n="nav.home">Home</a>
+    <a href={`${base}/projects`} class:list={['mobile-nav-link', { active: relativePath.startsWith('/projects') }]} data-i18n="nav.projects">Projects</a>
+    <a href={`${base}/about`} class:list={['mobile-nav-link', { active: relativePath === '/about' }]} data-i18n="nav.about">About</a>
+    <div class="mobile-bottom">
+      <div class="lang-toggle">
+        <span class="lang-opt active" data-lang="en">EN</span>
+        <span class="lang-sep">/</span>
+        <span class="lang-opt" data-lang="fr">FR</span>
+      </div>
+      <a href={`${base}/cv.pdf`} class="mobile-cv-btn" data-cv-link download="Albian_Salihu_CV_en.pdf">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="7 10 12 15 17 10"></polyline>
+          <line x1="12" y1="15" x2="12" y2="3"></line>
+        </svg>
+        <span data-i18n="nav.cv">Download CV</span>
+      </a>
+    </div>
   </div>
 </div>
 
@@ -54,7 +72,7 @@ const relativePath = currentPath.replace(base.slice(0, -1), '') || '/';
     right: 1rem;
     z-index: 1000;
     padding: 1rem 1.5rem;
-    background: rgba(15, 23, 42, 0.85);
+    background: rgba(8, 8, 8, 0.85);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid var(--color-border);
@@ -68,20 +86,23 @@ const relativePath = currentPath.replace(base.slice(0, -1), '') || '/';
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 1rem;
   }
 
   .logo {
     font-family: var(--font-heading);
-    font-size: 1.25rem;
+    font-size: 1.1rem;
     font-weight: 700;
     text-decoration: none;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.01em;
     color: var(--color-text);
+    white-space: nowrap;
     transition: color 0.2s ease;
+    flex-shrink: 0;
   }
 
   .logo:hover {
-    color: var(--color-primary);
+    color: var(--color-text-dim);
   }
 
   .nav-links {
@@ -96,7 +117,6 @@ const relativePath = currentPath.replace(base.slice(0, -1), '') || '/';
     font-size: 0.95rem;
     position: relative;
     transition: color 0.2s ease;
-    cursor: pointer;
   }
 
   .nav-link::after {
@@ -105,12 +125,13 @@ const relativePath = currentPath.replace(base.slice(0, -1), '') || '/';
     bottom: -4px;
     left: 0;
     width: 0;
-    height: 2px;
-    background: var(--color-primary);
+    height: 1px;
+    background: var(--color-text);
     transition: width 0.2s ease;
   }
 
-  .nav-link:hover {
+  .nav-link:hover,
+  .nav-link.active {
     color: var(--color-text);
   }
 
@@ -119,10 +140,66 @@ const relativePath = currentPath.replace(base.slice(0, -1), '') || '/';
     width: 100%;
   }
 
-  .nav-link.active {
-    color: var(--color-primary);
+  /* Actions: lang toggle + CV button */
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-shrink: 0;
   }
 
+  .lang-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+    font-family: var(--font-heading);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+  }
+
+  .lang-opt {
+    cursor: pointer;
+    color: var(--color-text-dim);
+    transition: color 0.2s ease;
+    padding: 0.15rem 0.1rem;
+    user-select: none;
+  }
+
+  .lang-opt:hover,
+  .lang-opt.active {
+    color: var(--color-text);
+  }
+
+  .lang-sep {
+    color: var(--color-border);
+    font-size: 0.7rem;
+  }
+
+  .cv-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.35rem 0.75rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    font-family: var(--font-heading);
+    letter-spacing: 0.03em;
+    text-decoration: none;
+    color: var(--color-text-dim);
+    border: 1px solid var(--color-border);
+    border-radius: 0.375rem;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .cv-btn:hover {
+    color: var(--color-text);
+    border-color: #2a2a2a;
+    background: rgba(255, 255, 255, 0.03);
+  }
+
+  /* Mobile button */
   .mobile-menu-btn {
     display: none;
     background: transparent;
@@ -132,11 +209,7 @@ const relativePath = currentPath.replace(base.slice(0, -1), '') || '/';
     padding: 0.5rem;
   }
 
-  .mobile-menu-btn .icon {
-    width: 24px;
-    height: 24px;
-  }
-
+  /* Mobile overlay */
   .mobile-menu {
     display: none;
     position: fixed;
@@ -144,7 +217,7 @@ const relativePath = currentPath.replace(base.slice(0, -1), '') || '/';
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(15, 23, 42, 0.98);
+    background: rgba(5, 5, 5, 0.98);
     z-index: 999;
     opacity: 0;
     pointer-events: none;
@@ -176,39 +249,53 @@ const relativePath = currentPath.replace(base.slice(0, -1), '') || '/';
 
   .mobile-nav-link:hover,
   .mobile-nav-link.active {
-    color: var(--color-primary);
+    color: var(--color-text);
+  }
+
+  .mobile-bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+    margin-top: 1rem;
+  }
+
+  .mobile-cv-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.25rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    font-family: var(--font-heading);
+    text-decoration: none;
+    color: var(--color-text-dim);
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+  }
+
+  .mobile-cv-btn:hover {
+    color: var(--color-text);
+    border-color: #2a2a2a;
   }
 
   @keyframes slideDown {
-    from {
-      transform: translateY(-100%);
-      opacity: 0;
-    }
-    to {
-      transform: translateY(0);
-      opacity: 1;
-    }
+    from { transform: translateY(-100%); opacity: 0; }
+    to   { transform: translateY(0);     opacity: 1; }
+  }
+
+  @media (max-width: 900px) {
+    .nav-links { gap: 1.25rem; }
+    .cv-btn span { display: none; }
+    .cv-btn { padding: 0.35rem 0.5rem; }
   }
 
   @media (max-width: 768px) {
-    .nav {
-      top: 0.75rem;
-      left: 0.75rem;
-      right: 0.75rem;
-      padding: 0.875rem 1rem;
-    }
-
-    .nav-links {
-      display: none;
-    }
-
-    .mobile-menu-btn {
-      display: flex;
-    }
-
-    .mobile-menu {
-      display: block;
-    }
+    .nav { top: 0.75rem; left: 0.75rem; right: 0.75rem; padding: 0.875rem 1rem; }
+    .nav-links, .nav-actions { display: none; }
+    .mobile-menu-btn { display: flex; }
+    .mobile-menu { display: block; }
   }
 </style>
 
@@ -222,12 +309,8 @@ const relativePath = currentPath.replace(base.slice(0, -1), '') || '/';
         mobileMenu.classList.toggle('open');
       });
 
-      // Close menu when clicking a link
-      const mobileLinks = mobileMenu.querySelectorAll('.mobile-nav-link');
-      mobileLinks.forEach(link => {
-        link.addEventListener('click', () => {
-          mobileMenu.classList.remove('open');
-        });
+      mobileMenu.querySelectorAll('.mobile-nav-link').forEach(link => {
+        link.addEventListener('click', () => mobileMenu.classList.remove('open'));
       });
     }
   });

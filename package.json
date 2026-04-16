@@ -1,24 +1,22 @@
 {
-  "name": "astro-darkness",
+  "name": "albian-salihu-portfolio",
   "type": "module",
   "version": "1.0.1",
-  "description": "A dark-themed Astro portfolio/blog template with Three.js particles and modern animations",
+  "description": "Personal portfolio of Albian Salihu — Robotics Engineer",
   "keywords": [
-    "astro",
-    "theme",
-    "blog",
     "portfolio",
-    "dark-mode",
-    "three.js",
-    "typescript"
+    "robotics",
+    "embedded",
+    "fpga",
+    "astro"
   ],
-  "author": "kpab",
+  "author": "Albian Salihu",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/kpab/astro-darkness"
+    "url": "https://github.com/AlbianSalihu/AlbianSalihu.github.io"
   },
-  "homepage": "https://kpab.github.io/astro-darkness",
+  "homepage": "https://AlbianSalihu.github.io",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",

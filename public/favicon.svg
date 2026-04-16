@@ -1,15 +1,38 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <rect width="512" height="512" rx="96" fill="#040404"/>
   <defs>
-    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#a855f7;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#ec4899;stop-opacity:1" />
-    </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="6" result="b"/>
+      <feMerge>
+        <feMergeNode in="b"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
   </defs>
-  <circle cx="50" cy="50" r="45" fill="#0a0a0f" stroke="url(#grad1)" stroke-width="3"/>
-  <circle cx="50" cy="50" r="30" fill="none" stroke="url(#grad1)" stroke-width="2" opacity="0.5"/>
-  <circle cx="50" cy="50" r="15" fill="url(#grad1)"/>
-  <path d="M 50 10 L 55 25 L 50 20 L 45 25 Z" fill="url(#grad1)" opacity="0.8"/>
-  <path d="M 90 50 L 75 55 L 80 50 L 75 45 Z" fill="url(#grad1)" opacity="0.8"/>
-  <path d="M 50 90 L 55 75 L 50 80 L 45 75 Z" fill="url(#grad1)" opacity="0.8"/>
-  <path d="M 10 50 L 25 55 L 20 50 L 25 45 Z" fill="url(#grad1)" opacity="0.8"/>
+  <g stroke="#5cc8ff" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" fill="none" filter="url(#glow)">
+    <!-- chip -->
+    <rect x="124" y="124" width="264" height="264" rx="40"/>
+    <path d="M170 94v30M256 94v30M342 94v30M170 388v30M256 388v30M342 388v30"/>
+    <path d="M94 170h30M94 256h30M94 342h30M388 170h30M388 256h30M388 342h30"/>
+    <!-- clearer brain cloud -->
+    <path d="M256 185
+             C239 170 212 171 198 188
+             C178 187 162 204 162 225
+             C162 241 171 255 185 262
+             C176 283 187 308 208 315
+             C218 331 239 340 256 332"/>
+    <path d="M256 185
+             C273 170 300 171 314 188
+             C334 187 350 204 350 225
+             C350 241 341 255 327 262
+             C336 283 325 308 304 315
+             C294 331 273 340 256 332"/>
+    <path d="M256 185v147"/>
+    <path d="M213 213c-7 10-9 21-4 32"/>
+    <path d="M200 260c16 3 26 12 30 25"/>
+    <path d="M222 300c-8 4-13 10-16 18"/>
+    <path d="M299 213c7 10 9 21 4 32"/>
+    <path d="M312 260c-16 3-26 12-30 25"/>
+    <path d="M290 300c8 4 13 10 16 18"/>
+  </g>
 </svg>

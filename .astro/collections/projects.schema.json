@@ -13,10 +13,31 @@
         "image": {
           "type": "string"
         },
+        "imageBg": {
+          "type": "string"
+        },
+        "imagePosition": {
+          "type": "string"
+        },
+        "logoMode": {
+          "type": "boolean"
+        },
+        "images": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "video": {
+          "type": "string"
+        },
         "link": {
           "type": "string"
         },
         "github": {
+          "type": "string"
+        },
+        "report": {
           "type": "string"
         },
         "tags": {
@@ -28,6 +49,13 @@
         "featured": {
           "type": "boolean",
           "default": false
+        },
+        "draft": {
+          "type": "boolean",
+          "default": false
+        },
+        "date": {
+          "type": "string"
         },
         "$schema": {
           "type": "string"

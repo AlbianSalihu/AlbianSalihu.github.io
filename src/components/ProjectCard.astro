@@ -1,29 +1,36 @@
 ---
 interface Props {
+  slug: string;
   title: string;
   description: string;
-  image?: string | undefined;
-  link?: string | undefined;
-  github?: string | undefined;
   tags?: string[] | undefined;
   featured?: boolean | undefined;
+  date?: string | undefined;
+  image?: string | undefined;
+  imageBg?: string | undefined;
+  imagePosition?: string | undefined;
+  logoMode?: boolean | undefined;
 }
 
-const base = import.meta.env.BASE_URL;
-const { title, description, image, link, github, tags, featured } = Astro.props;
-const imageSrc = image?.startsWith('/') ? `${base}${image.slice(1)}` : image;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const { slug, title, description, tags, featured, date, image, imageBg, imagePosition, logoMode } = Astro.props;
 ---
 
-<article class="project-card" class:list={{ featured }}>
+<a href={`${base}/projects/${slug}`} class:list={['project-card', { featured, 'has-image': !!image }]} data-reveal>
+  {image && (
+    <div class="card-thumbnail" style={imageBg ? `background:${imageBg}` : undefined}>
+      <img src={`${base}/${image}`} alt={title} loading="lazy"
+        style={imagePosition ? `object-position:${imagePosition}` : undefined}
+        class:list={[{ 'logo-thumb': !!logoMode }]} />
+    </div>
+  )}
   <div class="project-card-content">
-    {featured && <span class="featured-badge">Featured</span>}
-    {image && (
-      <div class="project-image">
-        <img src={imageSrc} alt={title} loading="lazy" />
-      </div>
-    )}
-    <h3 class="project-title">{title}</h3>
-    <p class="project-description">{description}</p>
+    <div class="card-top">
+      {featured && <span class="featured-badge" data-i18n="proj.feat_badge">Featured</span>}
+      {date && <span class="project-date">{date}</span>}
+    </div>
+    <h3 class="project-title" data-i18n={`p.${slug}.t`}>{title}</h3>
+    <p class="project-description" data-i18n={`p.${slug}.d`}>{description}</p>
     {tags && tags.length > 0 && (
       <div class="project-tags">
         {tags.map((tag) => (
@@ -31,140 +38,171 @@ const imageSrc = image?.startsWith('/') ? `${base}${image.slice(1)}` : image;
         ))}
       </div>
     )}
-    <div class="project-links">
-      {link && (
-        <a href={link} class="project-link" target="_blank" rel="noopener noreferrer">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-            <polyline points="15 3 21 3 21 9"></polyline>
-            <line x1="10" y1="14" x2="21" y2="3"></line>
-          </svg>
-          Live Demo
-        </a>
-      )}
-      {github && (
-        <a href={github} class="project-link" target="_blank" rel="noopener noreferrer">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
-          </svg>
-          GitHub
-        </a>
-      )}
-    </div>
+    <span class="read-more">
+      <span data-i18n="proj.read_more">View project</span>
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="5" y1="12" x2="19" y2="12"></line>
+        <polyline points="12 5 19 12 12 19"></polyline>
+      </svg>
+    </span>
   </div>
-</article>
+</a>
 
 <style>
   .project-card {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
     position: relative;
     background: var(--color-bg-card);
     border: 1px solid var(--color-border);
     border-radius: 1rem;
-    padding: 1.5rem;
-    transition: all 0.2s ease;
-    cursor: pointer;
-  }
-
-  .project-card.featured {
-    border-color: var(--color-accent-purple);
+    transition: border-color 0.2s ease, transform 0.2s ease;
   }
 
   .project-card:hover {
-    border-color: var(--color-primary);
-    box-shadow: 0 8px 30px rgba(59, 130, 246, 0.15);
+    border-color: #2a2a2a;
+    transform: translateY(-2px);
   }
 
-  .project-card-content {
+  /* Thumbnail */
+  .card-thumbnail {
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
+    background: #111;
     position: relative;
+    border-radius: 1rem 1rem 0 0;
+  }
+
+  .featured .card-thumbnail {
+    height: 200px;
+  }
+
+  .card-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    transition: transform 0.35s ease, opacity 0.35s ease;
+    opacity: 0.9;
+  }
+
+  .project-card:hover .card-thumbnail img {
+    transform: scale(1.04);
+    opacity: 1;
+  }
+
+  /* Logo thumbnails: contain instead of cover, centred with padding */
+  .card-thumbnail img.logo-thumb {
+    object-fit: contain;
+    padding: 1.5rem 2rem;
+  }
+
+  .project-card:hover .card-thumbnail img.logo-thumb {
+    transform: scale(1.03);
+  }
+
+  /* Gradient fade at the bottom edge so thumbnails blend into the dark card */
+  .card-thumbnail::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      transparent 50%,
+      var(--color-bg-card) 100%
+    );
+    pointer-events: none;
+  }
+
+  /* Content area — flex: 1 so it fills remaining space after the thumbnail */
+  .project-card-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 1.75rem;
+  }
+
+  .card-top {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
   }
 
   .featured-badge {
     display: inline-block;
-    padding: 0.25rem 0.75rem;
-    background: linear-gradient(135deg, var(--color-primary), var(--color-accent-purple));
+    padding: 0.2rem 0.6rem;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid var(--color-border);
     border-radius: 0.25rem;
-    font-size: 0.7rem;
+    font-size: 0.65rem;
     font-weight: 600;
-    color: white;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: 1rem;
+    color: var(--color-text-dim);
   }
 
-  .project-image {
-    width: 100%;
-    aspect-ratio: 16 / 9;
-    margin-bottom: 1.25rem;
-    border-radius: 0.5rem;
-    overflow: hidden;
-    background: var(--color-bg-darker);
-  }
-
-  .project-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s ease;
-  }
-
-  .project-card:hover .project-image img {
-    transform: scale(1.05);
+  .project-date {
+    font-size: 0.75rem;
+    color: var(--color-text-dim);
+    font-family: var(--font-heading);
   }
 
   .project-title {
     font-family: var(--font-heading);
-    font-size: 1.25rem;
+    font-size: 1.2rem;
     font-weight: 600;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.6rem;
     color: var(--color-text);
     transition: color 0.2s ease;
+    line-height: 1.3;
   }
 
   .project-card:hover .project-title {
-    color: var(--color-primary);
+    color: #ffffff;
   }
 
   .project-description {
     color: var(--color-text-dim);
     line-height: 1.6;
     font-size: 0.9rem;
-    margin-bottom: 1rem;
+    margin-bottom: 1.25rem;
+    flex-grow: 1;
   }
 
   .project-tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: 0.4rem;
     margin-bottom: 1.25rem;
   }
 
   .tag {
-    padding: 0.25rem 0.625rem;
-    background: rgba(59, 130, 246, 0.1);
+    padding: 0.2rem 0.55rem;
+    background: rgba(255,255,255,0.03);
     border: 1px solid var(--color-border);
     border-radius: 0.25rem;
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     color: var(--color-text-dim);
   }
 
-  .project-links {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
-
-  .project-link {
+  .read-more {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    color: var(--color-primary);
-    text-decoration: none;
-    font-size: 0.875rem;
+    gap: 0.35rem;
+    font-size: 0.8rem;
     font-weight: 500;
-    transition: color 0.2s ease;
+    color: var(--color-text-dim);
+    transition: color 0.2s ease, gap 0.2s ease;
+    font-family: var(--font-heading);
+    letter-spacing: 0.02em;
   }
 
-  .project-link:hover {
-    color: var(--color-accent-cyan);
+  .project-card:hover .read-more {
+    color: var(--color-text);
+    gap: 0.5rem;
   }
 </style>

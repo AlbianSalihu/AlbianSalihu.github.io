@@ -1,106 +1,133 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import ThreeBackground from '../components/ThreeBackground.astro';
-import Navigation from '../components/Navigation.astro';
 
-const base = import.meta.env.BASE_URL;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
-<BaseLayout title="About - Darkness" description="About me and my work">
-  <ThreeBackground />
-  <Navigation />
-
+<BaseLayout title="About — Albian Salihu" description="Robotics Engineer based in Lausanne, Switzerland">
   <main class="about-page">
     <div class="container">
-      <h1 class="page-title">About Me</h1>
+      <h1 class="page-title" data-i18n="about.title" data-reveal>About Me</h1>
 
       <div class="content-grid">
-        <section class="content-section intro-section">
-          <h2>Hello, I'm Darkness</h2>
-          <p>
-            I'm a web developer and creative coder passionate about building immersive digital experiences.
-            My work sits at the intersection of art and technology, where I explore the possibilities of
-            modern web technologies to create visually striking, motion-rich interfaces.
+        <section class="content-section intro-section" data-reveal style="transition-delay:80ms">
+          <h2 data-i18n="about.bg">Background</h2>
+          <p data-i18n="about.bio1">
+            I'm Albian, a Robotics Engineer based in Lausanne, Switzerland. I hold a Master's degree
+            in Robotics (minor in Space Technologies) and a Bachelor's in Microengineering, both from
+            EPFL — one of Europe's leading engineering institutions.
           </p>
-          <p>
-            With a deep love for dark aesthetics and smooth animations, I specialize in crafting websites
-            that aren't just functional—they're experiences that captivate and engage users from the moment
-            they land on the page.
+          <p data-i18n="about.bio2">
+            My path started in electronics with a vocational diploma (CFC) and baccalaureate at CPLN,
+            before moving into microengineering and then robotics at EPFL. That progression gives me
+            a strong foundation across the full hardware-software stack — from circuit-level electronics
+            to high-level control algorithms and AI.
+          </p>
+          <p data-i18n="about.bio3">
+            I currently work at Wasteflow, where I develop real-time control systems for industrial
+            waste-sorting conveyors — acting as the "muscle" that executes the decisions made by the
+            company's AI system.
           </p>
         </section>
 
-        <section class="content-section">
-          <h2>What I Do</h2>
+        <section class="content-section" data-reveal style="transition-delay:160ms">
+          <h2 data-i18n="about.what">What I Do</h2>
           <div class="what-i-do-grid">
             <div class="service-card">
               <div class="service-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <circle cx="12" cy="12" r="6"></circle>
-                  <circle cx="12" cy="12" r="2"></circle>
+                  <circle cx="12" cy="12" r="3"></circle>
+                  <path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"></path>
                 </svg>
               </div>
-              <h3>Creative Development</h3>
-              <p>Building unique web experiences with Three.js, WebGL, and advanced CSS animations.</p>
+              <h3 data-i18n="about.s1t">Robotics & Control</h3>
+              <p data-i18n="about.s1d">Real-time control systems, ROS 2, sensor integration, and autonomous robot platforms.</p>
             </div>
             <div class="service-card">
               <div class="service-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                  <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+                  <rect x="9" y="9" width="6" height="6"></rect>
+                  <line x1="9" y1="1" x2="9" y2="4"></line>
+                  <line x1="15" y1="1" x2="15" y2="4"></line>
+                  <line x1="9" y1="20" x2="9" y2="23"></line>
+                  <line x1="15" y1="20" x2="15" y2="23"></line>
+                  <line x1="20" y1="9" x2="23" y2="9"></line>
+                  <line x1="20" y1="14" x2="23" y2="14"></line>
+                  <line x1="1" y1="9" x2="4" y2="9"></line>
+                  <line x1="1" y1="14" x2="4" y2="14"></line>
                 </svg>
               </div>
-              <h3>Performance Optimization</h3>
-              <p>Ensuring smooth 60fps animations and optimal loading times with modern tooling.</p>
+              <h3 data-i18n="about.s2t">Embedded Systems & FPGA</h3>
+              <p data-i18n="about.s2d">FPGA development on Xilinx Zynq and Intel DE10. Signal processing, control loops, real-time constraints.</p>
             </div>
             <div class="service-card">
               <div class="service-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <line x1="2" y1="12" x2="22" y2="12"></line>
-                  <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
                 </svg>
               </div>
-              <h3>3D Graphics</h3>
-              <p>Creating particle systems, geometric patterns, and interactive 3D elements for the web.</p>
+              <h3 data-i18n="about.s3t">AI & Machine Learning</h3>
+              <p data-i18n="about.s3d">Training and deploying ML models for real-world decision-making, including computer vision pipelines.</p>
             </div>
             <div class="service-card">
               <div class="service-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                  <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
                 </svg>
               </div>
-              <h3>Dark UI Design</h3>
-              <p>Designing beautiful dark-themed interfaces with carefully crafted color palettes.</p>
+              <h3 data-i18n="about.s4t">Electronics & Prototyping</h3>
+              <p data-i18n="about.s4d">PCB design, circuit assembly, CAD modelling, and hands-on hardware prototyping from concept to test.</p>
             </div>
           </div>
         </section>
 
-        <section class="content-section">
-          <h2>My Approach</h2>
-          <p>
-            I believe that motion is emotion. Every animation, every transition, every particle movement
-            should have a purpose—to guide, to delight, or to immerse. I'm constantly pushing the boundaries
-            of what's possible on the web, experimenting with new techniques and technologies.
-          </p>
-          <p>
-            Whether it's a personal blog, a portfolio site, or a complex web application, I approach each
-            project with the same goal: create something that stands out, performs well, and provides an
-            unforgettable user experience.
-          </p>
+        <section class="content-section education-section" data-reveal style="transition-delay:100ms">
+          <h2 data-i18n="about.edu">Education</h2>
+          <div class="timeline">
+            <div class="timeline-item">
+              <div class="timeline-date">2021 – 2024</div>
+              <div class="timeline-content">
+                <h3 data-i18n="about.edu1t">Master in Robotics — Minor in Space Technologies</h3>
+                <p>EPFL, École Polytechnique Fédérale de Lausanne</p>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-date">2018 – 2021</div>
+              <div class="timeline-content">
+                <h3 data-i18n="about.edu2t">Bachelor in Microengineering</h3>
+                <p>EPFL, École Polytechnique Fédérale de Lausanne</p>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-date">2016 – 2017</div>
+              <div class="timeline-content">
+                <h3 data-i18n="about.edu3t">Federal Vocational Baccalaureate</h3>
+                <p>CPLN, Centre Professionnel du Littoral Neuchâtelois</p>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-date">2012 – 2016</div>
+              <div class="timeline-content">
+                <h3 data-i18n="about.edu4t">Federal VET Diploma (CFC) — Electronics</h3>
+                <p>CPLN, Centre Professionnel du Littoral Neuchâtelois</p>
+              </div>
+            </div>
+          </div>
         </section>
 
-        <section class="content-section cta-section">
-          <h2>Let's Connect</h2>
-          <p>Interested in working together or just want to chat about web animations and dark design?</p>
+        <section class="content-section cta-section" data-reveal style="transition-delay:150ms">
+          <h2 data-i18n="about.cta">Let's Work Together</h2>
+          <p data-i18n="about.cta_sub">Interested in collaborating on robotics, embedded systems, or AI projects?</p>
           <div class="contact-buttons">
-            <a href={`${base}projects`} class="btn btn-primary">
-              View My Work
+            <a href={`${base}/projects`} class="btn btn-primary">
+              <span data-i18n="about.btn_w">View My Work</span>
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <line x1="5" y1="12" x2="19" y2="12"></line>
                 <polyline points="12 5 19 12 12 19"></polyline>
               </svg>
             </a>
-            <a href={`${base}blog`} class="btn btn-secondary">Read My Blog</a>
+            <a href="mailto:albian.salihu@hotmail.fr" class="btn btn-secondary" data-i18n="about.btn_c">Contact Me</a>
           </div>
         </section>
       </div>
@@ -146,7 +173,7 @@ const base = import.meta.env.BASE_URL;
     font-size: 1.5rem;
     font-weight: 600;
     margin-bottom: 1rem;
-    color: var(--color-primary);
+    color: var(--color-text);
   }
 
   .content-section p {
@@ -168,16 +195,14 @@ const base = import.meta.env.BASE_URL;
 
   .service-card {
     padding: 1.25rem;
-    background: rgba(59, 130, 246, 0.05);
+    background: rgba(255, 255, 255, 0.02);
     border-radius: 0.75rem;
     border: 1px solid var(--color-border);
-    transition: all 0.2s ease;
-    cursor: pointer;
+    transition: border-color 0.2s ease;
   }
 
   .service-card:hover {
-    border-color: var(--color-primary);
-    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.1);
+    border-color: #2a2a2a;
   }
 
   .service-icon {
@@ -186,10 +211,10 @@ const base = import.meta.env.BASE_URL;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(59, 130, 246, 0.1);
+    background: rgba(255, 255, 255, 0.04);
     border-radius: 0.5rem;
     margin-bottom: 1rem;
-    color: var(--color-primary);
+    color: var(--color-text-dim);
   }
 
   .service-card h3 {
@@ -205,6 +230,44 @@ const base = import.meta.env.BASE_URL;
     color: var(--color-text-dim);
     margin: 0;
     line-height: 1.5;
+  }
+
+  /* Timeline */
+  .timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    margin-top: 1rem;
+  }
+
+  .timeline-item {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+  }
+
+  .timeline-date {
+    font-family: var(--font-heading);
+    font-size: 0.8rem;
+    color: var(--color-text-dim);
+    white-space: nowrap;
+    min-width: 80px;
+    padding-top: 0.2rem;
+    letter-spacing: 0.02em;
+  }
+
+  .timeline-content h3 {
+    font-family: var(--font-heading);
+    font-size: 0.975rem;
+    font-weight: 600;
+    color: var(--color-text);
+    margin-bottom: 0.2rem;
+  }
+
+  .timeline-content p {
+    font-size: 0.85rem;
+    color: var(--color-text-dim);
+    margin: 0;
   }
 
   .cta-section {
@@ -238,14 +301,13 @@ const base = import.meta.env.BASE_URL;
   }
 
   .btn-primary {
-    background: var(--color-primary);
-    color: white;
-    box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
+    background: #f1f5f9;
+    color: #0a0a0a;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
   }
 
   .btn-primary:hover {
-    background: #2563EB;
-    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
+    background: #ffffff;
   }
 
   .btn-primary svg {
@@ -263,8 +325,8 @@ const base = import.meta.env.BASE_URL;
   }
 
   .btn-secondary:hover {
-    background: rgba(59, 130, 246, 0.1);
-    border-color: var(--color-primary);
+    background: rgba(255, 255, 255, 0.05);
+    border-color: var(--color-text-dim);
   }
 
   @media (max-width: 768px) {
@@ -285,6 +347,11 @@ const base = import.meta.env.BASE_URL;
       width: 100%;
       max-width: 280px;
       justify-content: center;
+    }
+
+    .timeline-item {
+      flex-direction: column;
+      gap: 0.25rem;
     }
   }
 </style>
