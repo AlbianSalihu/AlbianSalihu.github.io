@@ -18,20 +18,11 @@ const { slug, title, description, tags, featured, date, image, imageBg, imagePos
 
 <a href={`${base}/projects/${slug}`} class:list={['project-card', { featured, 'has-image': !!image }]} data-reveal>
   {image && (
-    imageBg ? (
-      <div
-        class:list={['card-thumbnail', { 'logo-thumb-bg': !!logoMode }]}
-        role="img"
-        aria-label={title}
-        style={`background-color:${imageBg};background-image:url(${base}/${image});background-size:${logoMode ? 'contain' : 'cover'};background-position:${imagePosition || 'center'};background-repeat:no-repeat;`}
-      ></div>
-    ) : (
-      <div class="card-thumbnail">
-        <img src={`${base}/${image}`} alt={title} loading="lazy"
-          style={imagePosition ? `object-position:${imagePosition}` : undefined}
-          class:list={[{ 'logo-thumb': !!logoMode }]} />
-      </div>
-    )
+    <div class="card-thumbnail" style={imageBg ? `background:${imageBg}` : undefined}>
+      <img src={`${base}/${image}`} alt={title} loading="lazy"
+        style={imagePosition ? `object-position:${imagePosition}` : undefined}
+        class:list={[{ 'logo-thumb': !!logoMode }]} />
+    </div>
   )}
   <div class="project-card-content">
     <div class="card-top">
@@ -113,12 +104,6 @@ const { slug, title, description, tags, featured, date, image, imageBg, imagePos
     transform: scale(1.03);
   }
 
-  /* Logo thumbnails rendered as background-image (transparent PNG with imageBg) */
-  .card-thumbnail.logo-thumb-bg {
-    background-size: contain !important;
-    padding: 1.5rem 2rem;
-    background-origin: content-box;
-  }
 
   /* Gradient fade at the bottom edge so thumbnails blend into the dark card */
   .card-thumbnail::after {
