@@ -20,7 +20,7 @@ const { slug, title, description, tags, featured, date, image, imageBg, imagePos
   {image && (
     <div class="card-thumbnail" style={imageBg ? `background:${imageBg}` : undefined}>
       <img src={`${base}/${image}`} alt={title} loading="lazy"
-        style={imagePosition ? `object-position:${imagePosition}` : undefined}
+        style={[imageBg && `background:${imageBg}`, imagePosition && `object-position:${imagePosition}`].filter(Boolean).join(';') || undefined}
         class:list={[{ 'logo-thumb': !!logoMode }]} />
     </div>
   )}
@@ -111,8 +111,8 @@ const { slug, title, description, tags, featured, date, image, imageBg, imagePos
     inset: 0;
     background: linear-gradient(
       to bottom,
-      transparent 50%,
-      var(--color-bg-card) 100%
+      rgba(13,16,23,0) 50%,
+      rgba(13,16,23,1) 100%
     );
     pointer-events: none;
   }
