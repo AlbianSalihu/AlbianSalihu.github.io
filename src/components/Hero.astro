@@ -323,4 +323,20 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
   });
+
+  // ── Star background fade on scroll (hero page only) ──
+  document.addEventListener('astro:page-load', () => {
+    const hero = document.getElementById('hero-section');
+    const canvas = document.getElementById('constellation-canvas') as HTMLCanvasElement | null;
+    if (!hero || !canvas) return;
+
+    const onScroll = () => {
+      const heroHeight = hero.offsetHeight;
+      const progress = Math.min(window.scrollY / (heroHeight * 1.2), 1);
+      canvas.style.opacity = String(1 - progress * 0.5);
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  });
 </script>
