@@ -40,6 +40,12 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       <span class="tech-badge">ML</span>
     </div>
   </div>
+
+  <div class="scroll-indicator" id="scroll-indicator">
+    <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="6 9 12 15 18 9"></polyline>
+    </svg>
+  </div>
 </section>
 
 <style>
@@ -197,6 +203,29 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     to   { opacity: 1; transform: translateY(0); }
   }
 
+  /* Scroll indicator */
+  .scroll-indicator {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--color-text-dim);
+    opacity: 1;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+    animation: scrollBounce 2s ease-in-out infinite;
+    z-index: 10;
+  }
+
+  .scroll-indicator.hidden {
+    opacity: 0;
+  }
+
+  @keyframes scrollBounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50%       { transform: translateX(-50%) translateY(6px); }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .title-text, .hero-content { animation: none; }
     .cursor-blink { animation: none; }
@@ -282,5 +311,16 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
   document.addEventListener('langchange', (e) => {
     restartTypewriter((e as CustomEvent).detail);
+  });
+
+  // ── Scroll indicator fade ──
+  document.addEventListener('astro:page-load', () => {
+    const indicator = document.getElementById('scroll-indicator');
+    if (!indicator) return;
+    const onScroll = () => {
+      indicator.classList.toggle('hidden', window.scrollY > 60);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
   });
 </script>
