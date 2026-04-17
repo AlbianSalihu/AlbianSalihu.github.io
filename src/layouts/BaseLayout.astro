@@ -11,9 +11,10 @@ interface Props {
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const {
-  title = 'Darkness - Dark Theme',
-  description = 'An intense motion-filled dark theme Astro site'
+  title = 'Albian Salihu — Robotics Engineer',
+  description = 'Robotics & Embedded Systems Engineer based in Lausanne. FPGA, ROS 2, deep learning, autonomous systems.'
 } = Astro.props;
+const siteUrl = 'https://albiansalihu.github.io/portfolio';
 ---
 
 <!doctype html>
@@ -23,6 +24,16 @@ const {
     <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width" />
     <meta name="color-scheme" content="dark" />
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={siteUrl} />
+    <meta property="og:site_name" content="Albian Salihu" />
+    <!-- Twitter / X card -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
     <link rel="icon" type="image/svg+xml" href={`${base}/favicon.svg`} />
     <meta name="generator" content={Astro.generator} />
     <!-- Google Fonts: Space Grotesk + DM Sans -->
