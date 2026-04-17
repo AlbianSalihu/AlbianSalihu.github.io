@@ -29,6 +29,10 @@
             <span class="lang-en">Built my hands-on foundation — circuit design, PCB assembly, analog & digital electronics, and my first embedded programs.</span>
             <span class="lang-fr">Bases pratiques — conception de circuits, assemblage PCB, électronique analogique & numérique, et premiers programmes embarqués.</span>
           </p>
+          <a href="https://www.sbfi.admin.ch/en/vocational-education-and-training-vet" target="_blank" rel="noopener noreferrer" class="what-is-this">
+            <span class="lang-en">What is this?</span>
+            <span class="lang-fr">C'est quoi ?</span>
+          </a>
         </div>
         <div class="timeline-dot"></div>
       </div>
@@ -55,7 +59,7 @@
         <div class="timeline-content">
           <span class="timeline-date">2017 – 2018</span>
           <h3 class="timeline-title">
-            <span class="lang-en">Special Mathematics Course (CMS)</span>
+            <span class="lang-en">Preparatory Year (CMS)</span>
             <span class="lang-fr">Cours de Mathématiques Spéciales</span>
           </h3>
           <span class="timeline-place">EPFL, Lausanne</span>
@@ -63,6 +67,8 @@
             <span class="lang-en">EPFL's one-year bridge program for VET graduates — intensive maths and physics to reach the level of a standard academic baccalaureate.</span>
             <span class="lang-fr">Programme passerelle d'un an de l'EPFL pour les titulaires d'un CFC — maths et physique intensifs pour atteindre le niveau de la maturité gymnasiale.</span>
           </p>
+          <a href="https://www.epfl.ch/education/cms-preparatory-year/" target="_blank" rel="noopener noreferrer" class="what-is-this lang-en">What is this?</a>
+          <a href="https://www.epfl.ch/education/fr/cms/" target="_blank" rel="noopener noreferrer" class="what-is-this lang-fr">C'est quoi ?</a>
         </div>
         <div class="timeline-dot"></div>
       </div>
@@ -274,6 +280,41 @@
     color: var(--color-text-dim);
     line-height: 1.7;
   }
+
+  .what-is-this {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    margin-top: 0.75rem;
+    padding: 0.35rem 0.8rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    font-family: var(--font-heading);
+    letter-spacing: 0.02em;
+    color: var(--color-text-dim);
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--color-border);
+    border-radius: 2rem;
+    text-decoration: none;
+    transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+  }
+
+  .what-is-this::after {
+    content: '↗';
+    font-size: 0.7rem;
+    opacity: 0.6;
+  }
+
+  .what-is-this:hover {
+    color: var(--color-text);
+    border-color: var(--color-text-dim);
+    background: rgba(255,255,255,0.07);
+  }
+
+  /* Language visibility for what-is-this links */
+  .what-is-this.lang-fr { display: none; }
+  :global(:lang(fr)) .what-is-this.lang-fr { display: inline-flex; }
+  :global(:lang(fr)) .what-is-this.lang-en { display: none; }
 
   /* ── Mobile: collapse to single right column ── */
   @media (max-width: 640px) {
