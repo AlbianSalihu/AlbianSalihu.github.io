@@ -19,12 +19,12 @@ const otherProjects = allProjects
   .sort((a, b) => projectSortKey(b.data.date) - projectSortKey(a.data.date));
 
 const filters = [
-  { label: 'All',           match: [] },
-  { label: 'FPGA',          match: ['FPGA', 'VHDL'] },
-  { label: 'Robotics',      match: ['Robotics', 'ROS 2'] },
-  { label: 'Deep Learning', match: ['Deep Learning', 'Reinforcement Learning', 'ML'] },
-  { label: 'Embedded',      match: ['Embedded', 'Embedded Systems'] },
-  { label: 'Space',         match: ['Space'] },
+  { en: 'All',           fr: 'Tous',               match: [] },
+  { en: 'FPGA',          fr: 'FPGA',               match: ['FPGA', 'VHDL'] },
+  { en: 'Robotics',      fr: 'Robotique',           match: ['Robotics', 'ROS 2'] },
+  { en: 'Deep Learning', fr: 'Deep Learning',       match: ['Deep Learning', 'Reinforcement Learning', 'ML'] },
+  { en: 'Embedded',      fr: 'Embarqué',            match: ['Embedded', 'Embedded Systems'] },
+  { en: 'Space',         fr: 'Spatial',             match: ['Space'] },
 ];
 ---
 
@@ -44,7 +44,8 @@ const filters = [
             class:list={['filter-pill', { active: i === 0 }]}
             data-filter={JSON.stringify(f.match)}
           >
-            {f.label}
+            <span class="lang-en">{f.en}</span>
+            <span class="lang-fr">{f.fr}</span>
           </button>
         ))}
       </div>
