@@ -1,0 +1,103 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<BaseLayout title="404 — Albian Salihu" description="Page not found">
+  <main class="not-found">
+    <div class="content">
+      <span class="code">404</span>
+      <h1 class="title">Page not found</h1>
+      <p class="desc">This page doesn't exist or has been moved.</p>
+      <div class="actions">
+        <a href={`${base}/`} class="btn-home">Back to home</a>
+        <a href={`${base}/projects`} class="btn-projects">View projects</a>
+      </div>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .not-found {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    text-align: center;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .code {
+    font-family: var(--font-heading);
+    font-size: clamp(5rem, 20vw, 9rem);
+    font-weight: 700;
+    line-height: 1;
+    background: linear-gradient(135deg, var(--color-text) 0%, var(--color-primary) 60%, var(--color-accent-purple) 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -0.04em;
+  }
+
+  .title {
+    font-family: var(--font-heading);
+    font-size: clamp(1.25rem, 3vw, 1.75rem);
+    font-weight: 600;
+    color: var(--color-text);
+    margin: 0;
+  }
+
+  .desc {
+    font-size: 1rem;
+    color: var(--color-text-dim);
+    margin: 0;
+  }
+
+  .actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .btn-home {
+    padding: 0.7rem 1.5rem;
+    background: #f1f5f9;
+    color: #0a0a0a;
+    border: none;
+    border-radius: 0.5rem;
+    font-family: var(--font-heading);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.2s ease;
+  }
+
+  .btn-home:hover { background: #ffffff; }
+
+  .btn-projects {
+    padding: 0.7rem 1.5rem;
+    background: transparent;
+    color: var(--color-text-dim);
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+    font-family: var(--font-heading);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .btn-projects:hover {
+    color: var(--color-text);
+    border-color: var(--color-text-dim);
+  }
+</style>

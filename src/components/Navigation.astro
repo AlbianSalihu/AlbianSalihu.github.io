@@ -12,7 +12,7 @@ const relativePath = currentPath.replace(base, '') || '/';
     <div class="nav-links">
       <a href={`${base}/`} class:list={['nav-link', { active: relativePath === '/' }]} data-i18n="nav.home">Home</a>
       <a href={`${base}/projects`} class:list={['nav-link', { active: relativePath.startsWith('/projects') }]} data-i18n="nav.projects">Projects</a>
-      <a href={`${base}/about`} class:list={['nav-link', { active: relativePath === '/about' }]} data-i18n="nav.about">About</a>
+      <a href={`${base}/about`} class:list={['nav-link', { active: relativePath === '/about' }]} data-i18n="nav.about">Contact</a>
     </div>
 
     <div class="nav-actions">
@@ -45,7 +45,7 @@ const relativePath = currentPath.replace(base, '') || '/';
   <div class="mobile-menu-content">
     <a href={`${base}/`} class:list={['mobile-nav-link', { active: relativePath === '/' }]} data-i18n="nav.home">Home</a>
     <a href={`${base}/projects`} class:list={['mobile-nav-link', { active: relativePath.startsWith('/projects') }]} data-i18n="nav.projects">Projects</a>
-    <a href={`${base}/about`} class:list={['mobile-nav-link', { active: relativePath === '/about' }]} data-i18n="nav.about">About</a>
+    <a href={`${base}/about`} class:list={['mobile-nav-link', { active: relativePath === '/about' }]} data-i18n="nav.about">Contact</a>
     <div class="mobile-bottom">
       <div class="lang-toggle">
         <span class="lang-opt active" data-lang="en">EN</span>
