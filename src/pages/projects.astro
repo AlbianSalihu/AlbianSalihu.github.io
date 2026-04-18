@@ -17,6 +17,15 @@ const featuredProjects = allProjects
 const otherProjects = allProjects
   .filter(p => !p.data.featured && !p.data.draft)
   .sort((a, b) => projectSortKey(b.data.date) - projectSortKey(a.data.date));
+
+const filters = [
+  { label: 'All',           match: [] },
+  { label: 'FPGA',          match: ['FPGA', 'VHDL'] },
+  { label: 'Robotics',      match: ['Robotics', 'ROS 2'] },
+  { label: 'Deep Learning', match: ['Deep Learning', 'Reinforcement Learning', 'ML'] },
+  { label: 'Embedded',      match: ['Embedded', 'Embedded Systems'] },
+  { label: 'Space',         match: ['Space'] },
+];
 ---
 
 <BaseLayout title="Projects — Albian Salihu" description="A selection of my work in robotics, embedded systems, and AI">
@@ -29,48 +38,59 @@ const otherProjects = allProjects
         </p>
       </header>
 
-      {featuredProjects.length > 0 && (
-        <section class="featured-section">
-          <h2 class="section-title" data-i18n="proj.feat">Featured Projects</h2>
-          <div class="projects-grid featured-grid">
-            {featuredProjects.map((project) => (
-              <ProjectCard
-                slug={project.id}
-                title={project.data.title}
-                description={project.data.description}
-                tags={project.data.tags}
-                featured={true}
-                date={project.data.date}
-                image={project.data.image}
-                imageBg={project.data.imageBg}
-                imagePosition={project.data.imagePosition}
-                logoMode={project.data.logoMode}
-              />
-            ))}
-          </div>
-        </section>
-      )}
+      <div class="filter-bar" data-reveal style="transition-delay:120ms">
+        {filters.map((f, i) => (
+          <button
+            class:list={['filter-pill', { active: i === 0 }]}
+            data-filter={JSON.stringify(f.match)}
+          >
+            {f.label}
+          </button>
+        ))}
+      </div>
 
-      {otherProjects.length > 0 && (
-        <section class="other-projects">
-          <h2 class="section-title" data-i18n="proj.other">Other Projects</h2>
-          <div class="projects-grid">
-            {otherProjects.map((project) => (
-              <ProjectCard
-                slug={project.id}
-                title={project.data.title}
-                description={project.data.description}
-                tags={project.data.tags}
-                date={project.data.date}
-                image={project.data.image}
-                imageBg={project.data.imageBg}
-                imagePosition={project.data.imagePosition}
-                logoMode={project.data.logoMode}
-              />
-            ))}
+      <div class="projects-grid" id="projects-grid">
+        <!-- Featured heading -->
+        <div class="grid-heading" id="heading-featured" data-i18n="proj.feat">Featured Projects</div>
+
+        {featuredProjects.map((project) => (
+          <div class="card-wrapper" data-tags={JSON.stringify(project.data.tags ?? [])} data-group="featured">
+            <ProjectCard
+              slug={project.id}
+              title={project.data.title}
+              description={project.data.description}
+              tags={project.data.tags}
+              featured={true}
+              date={project.data.date}
+              image={project.data.image}
+              imageBg={project.data.imageBg}
+              imagePosition={project.data.imagePosition}
+              logoMode={project.data.logoMode}
+            />
           </div>
-        </section>
-      )}
+        ))}
+
+        <!-- Other heading -->
+        <div class="grid-heading" id="heading-other" data-i18n="proj.other">Other Projects</div>
+
+        {otherProjects.map((project) => (
+          <div class="card-wrapper" data-tags={JSON.stringify(project.data.tags ?? [])} data-group="other">
+            <ProjectCard
+              slug={project.id}
+              title={project.data.title}
+              description={project.data.description}
+              tags={project.data.tags}
+              date={project.data.date}
+              image={project.data.image}
+              imageBg={project.data.imageBg}
+              imagePosition={project.data.imagePosition}
+              logoMode={project.data.logoMode}
+            />
+          </div>
+        ))}
+      </div>
+
+      <p class="no-results" id="no-results" style="display:none">No projects match this filter.</p>
     </div>
   </main>
 </BaseLayout>
@@ -88,7 +108,7 @@ const otherProjects = allProjects
 
   .projects-header {
     text-align: center;
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
   }
 
   .page-title {
@@ -106,38 +126,157 @@ const otherProjects = allProjects
     margin: 0 auto;
   }
 
-  .featured-section,
-  .other-projects {
-    margin-bottom: 4rem;
+  .filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    margin-bottom: 3rem;
   }
 
-  .section-title {
+  .filter-pill {
+    padding: 0.4rem 1rem;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--color-border);
+    border-radius: 2rem;
     font-family: var(--font-heading);
-    font-size: 1.25rem;
-    font-weight: 600;
-    margin-bottom: 1.5rem;
+    font-size: 0.8rem;
+    font-weight: 500;
     color: var(--color-text-dim);
-    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .filter-pill:hover {
+    color: var(--color-text);
+    border-color: var(--color-text-dim);
+  }
+
+  .filter-pill.active {
+    background: rgba(255,255,255,0.1);
+    border-color: var(--color-text-dim);
+    color: var(--color-text);
   }
 
   .projects-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
     gap: 1.5rem;
   }
 
-  .featured-grid {
-    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  .grid-heading {
+    grid-column: 1 / -1;
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-text-dim);
+    letter-spacing: 0.02em;
+    padding-top: 1rem;
+  }
+
+  .grid-heading:first-child {
+    padding-top: 0;
+  }
+
+  .grid-heading.hidden {
+    display: none;
+  }
+
+  .card-wrapper {
+    display: flex;
+    flex-direction: column;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  .card-wrapper.hidden {
+    display: none;
+  }
+
+  .card-wrapper.exit {
+    opacity: 0;
+    transform: scale(0.9) translateY(-6px);
+    pointer-events: none;
+  }
+
+  .card-wrapper.enter {
+    opacity: 0;
+    transform: translateY(16px);
+    pointer-events: none;
+  }
+
+  .no-results {
+    text-align: center;
+    color: var(--color-text-dim);
+    font-size: 1rem;
+    padding: 3rem 0;
   }
 
   @media (max-width: 768px) {
     .projects-page {
       padding-top: calc(var(--nav-height) + 1rem);
     }
-
-    .projects-grid,
-    .featured-grid {
+    .projects-grid {
       grid-template-columns: 1fr;
     }
   }
 </style>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    const pills = document.querySelectorAll<HTMLButtonElement>('.filter-pill');
+    const wrappers = Array.from(document.querySelectorAll<HTMLElement>('.card-wrapper'));
+    const headingFeatured = document.getElementById('heading-featured');
+    const headingOther = document.getElementById('heading-other');
+    const noResults = document.getElementById('no-results');
+    const sleep = (ms: number) => new Promise(r => setTimeout(r, ms));
+    let animating = false;
+
+    pills.forEach(pill => {
+      pill.addEventListener('click', async () => {
+        if (animating) return;
+        animating = true;
+
+        pills.forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+
+        const match: string[] = JSON.parse(pill.dataset.filter || '[]');
+        const isAll = match.length === 0;
+
+        // Categorise
+        const visible = wrappers.filter(w => !w.classList.contains('hidden'));
+        const next = wrappers.filter(w => {
+          const tags: string[] = JSON.parse(w.dataset.tags || '[]');
+          return isAll || match.some(m => tags.includes(m));
+        });
+        const toHide = visible.filter(w => !next.includes(w));
+        const toShow = next.filter(w => !visible.includes(w));
+
+        // Step 1: exit all visible cards simultaneously
+        visible.forEach(w => w.classList.add('exit'));
+
+        await sleep(200);
+
+        // Step 2: apply layout while everything is invisible
+        toHide.forEach(w => { w.classList.remove('exit'); w.classList.add('hidden'); });
+        toShow.forEach(w => { w.classList.remove('hidden'); w.classList.add('enter'); });
+        // keep staying cards invisible for stagger
+        const staying = next.filter(w => visible.includes(w));
+        staying.forEach(w => { w.classList.remove('exit'); w.classList.add('enter'); });
+
+        headingFeatured?.classList.toggle('hidden', !isAll);
+        headingOther?.classList.toggle('hidden', !isAll);
+
+        const totalVisible = next.length;
+        if (noResults) noResults.style.display = totalVisible === 0 ? 'block' : 'none';
+
+        // Step 3: staggered entrance
+        await sleep(16);
+        next.forEach((w, i) => {
+          setTimeout(() => w.classList.remove('enter'), i * 40);
+        });
+
+        setTimeout(() => { animating = false; }, 200 + next.length * 40);
+      });
+    });
+  });
+</script>

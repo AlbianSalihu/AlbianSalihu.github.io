@@ -52,6 +52,13 @@ const siteUrl = 'https://albiansalihu.github.io/portfolio';
       <slot />
     </div>
 
+    <!-- Back to top -->
+    <button id="back-to-top" aria-label="Back to top">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="18 15 12 9 6 15"></polyline>
+      </svg>
+    </button>
+
     <style>
       #three-canvas {
         position: fixed;
@@ -68,6 +75,37 @@ const siteUrl = 'https://albiansalihu.github.io/portfolio';
         z-index: 1;
       }
 
+      #back-to-top {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        z-index: 100;
+        width: 44px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255,255,255,0.06);
+        border: 1px solid var(--color-border);
+        border-radius: 50%;
+        color: var(--color-text-dim);
+        cursor: pointer;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease, color 0.2s ease, background 0.2s ease;
+      }
+
+      #back-to-top.visible {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      #back-to-top:hover {
+        color: var(--color-text);
+        background: rgba(255,255,255,0.1);
+        border-color: var(--color-text-dim);
+      }
+
     </style>
 
     <script>
@@ -79,7 +117,7 @@ const siteUrl = 'https://albiansalihu.github.io/portfolio';
         'nav.cv':        { en: 'Download CV',  fr: 'Télécharger CV' },
         'hero.greeting': { en: "Hello, I'm",   fr: "Bonjour, je suis" },
         'hero.subtitle': { en: 'Robotics Engineer', fr: 'Ingénieur en Robotique' },
-        'hero.desc':     { en: "I design and build control systems for robotic and embedded applications — bridging hardware, software, and AI from prototype to real-world deployment.", fr: "Je conçois et développe des systèmes de contrôle pour applications robotiques et embarquées — à la frontière du matériel, du logiciel et de l'IA, du prototype au déploiement réel." },
+        'hero.desc':     { en: "I turn complex engineering problems into working systems — spanning FPGA design, robotics, computer vision, and AI, from first prototype to production.", fr: "Je transforme des problèmes d'ingénierie complexes en systèmes fonctionnels — couvrant la conception FPGA, la robotique, la vision par ordinateur et l'IA, du premier prototype à la production." },
         'hero.btn_proj': { en: 'View Projects', fr: 'Voir les projets' },
         'hero.btn_about':{ en: 'About Me',      fr: 'À propos' },
         'skills.title':  { en: 'Skills & Technologies', fr: 'Compétences & Technologies' },
@@ -308,6 +346,16 @@ const siteUrl = 'https://albiansalihu.github.io/portfolio';
 
         document.addEventListener('astro:page-load', refreshElements);
       }
+
+      // ── Back to top ──
+      document.addEventListener('astro:page-load', () => {
+        const btn = document.getElementById('back-to-top');
+        if (!btn) return;
+        window.addEventListener('scroll', () => {
+          btn.classList.toggle('visible', window.scrollY > 400);
+        }, { passive: true });
+        btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+      });
     </script>
   </body>
 </html>
