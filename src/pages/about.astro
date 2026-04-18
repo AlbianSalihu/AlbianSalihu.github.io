@@ -4,136 +4,155 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
-<BaseLayout title="About — Albian Salihu" description="Robotics Engineer based in Lausanne, Switzerland">
+<BaseLayout title="Contact — Albian Salihu" description="Robotics Engineer based in Lausanne, Switzerland">
   <main class="about-page">
     <div class="container">
-      <h1 class="page-title" data-i18n="about.title" data-reveal>About Me</h1>
+      <h1 class="page-title" data-i18n="about.title" data-reveal>Contact</h1>
 
       <div class="content-grid">
-        <section class="content-section intro-section" data-reveal style="transition-delay:80ms">
-          <h2 data-i18n="about.bg">Background</h2>
-          <p class="glow-hover glow-hover-nobg" data-i18n="about.bio1">
-            I'm Albian, a Robotics Engineer based in Lausanne, Switzerland. I hold a Master's degree
-            in Robotics (minor in Space Technologies) and a Bachelor's in Microengineering, both from
-            EPFL — one of Europe's leading engineering institutions.
-          </p>
-          <p class="glow-hover glow-hover-nobg" data-i18n="about.bio2">
-            My path started in electronics with a vocational diploma (CFC) and baccalaureate at CPLN,
-            before moving into microengineering and then robotics at EPFL. That progression gives me
-            a strong foundation across the full hardware-software stack — from circuit-level electronics
-            to high-level control algorithms and AI.
-          </p>
-          <p class="glow-hover glow-hover-nobg" data-i18n="about.bio3">
-            I currently work at Wasteflow, where I develop real-time control systems for industrial
-            waste-sorting conveyors — acting as the "muscle" that executes the decisions made by the
-            company's AI system.
+
+        <!-- Currently -->
+        <section class="content-section currently-section" data-reveal style="transition-delay:80ms">
+          <div class="currently-header">
+            <span class="currently-label" data-i18n="about.currently">Currently</span>
+            <span class="open-badge" data-i18n="about.open">Open to new opportunities</span>
+          </div>
+          <div class="currently-role">
+            <span class="role-title" data-i18n="about.role">Robotics and Systems Integration Engineer</span>
+            <span class="role-at" data-i18n="about.at">at Wasteflow, Lausanne</span>
+          </div>
+          <p class="glow-hover glow-hover-nobg currently-desc" data-i18n="about.curr_desc">
+            Developing real-time control systems for industrial waste-sorting conveyors — bridging AI vision decisions with precise physical actuation.
           </p>
         </section>
 
+        <!-- Contact form -->
         <section class="content-section" data-reveal style="transition-delay:160ms">
-          <h2 data-i18n="about.what">What I Do</h2>
-          <div class="what-i-do-grid">
-            <div class="service-card">
-              <div class="service-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="12" cy="12" r="3"></circle>
-                  <path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"></path>
-                </svg>
-              </div>
-              <h3 data-i18n="about.s1t">Robotics & Control</h3>
-              <p class="glow-hover glow-hover-nobg" data-i18n="about.s1d">Real-time control systems, ROS 2, sensor integration, and autonomous robot platforms.</p>
-            </div>
-            <div class="service-card">
-              <div class="service-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <rect x="4" y="4" width="16" height="16" rx="2"></rect>
-                  <rect x="9" y="9" width="6" height="6"></rect>
-                  <line x1="9" y1="1" x2="9" y2="4"></line>
-                  <line x1="15" y1="1" x2="15" y2="4"></line>
-                  <line x1="9" y1="20" x2="9" y2="23"></line>
-                  <line x1="15" y1="20" x2="15" y2="23"></line>
-                  <line x1="20" y1="9" x2="23" y2="9"></line>
-                  <line x1="20" y1="14" x2="23" y2="14"></line>
-                  <line x1="1" y1="9" x2="4" y2="9"></line>
-                  <line x1="1" y1="14" x2="4" y2="14"></line>
-                </svg>
-              </div>
-              <h3 data-i18n="about.s2t">Embedded Systems & FPGA</h3>
-              <p class="glow-hover glow-hover-nobg" data-i18n="about.s2d">FPGA development on Xilinx Zynq and Intel DE10. Signal processing, control loops, real-time constraints.</p>
-            </div>
-            <div class="service-card">
-              <div class="service-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
-                </svg>
-              </div>
-              <h3 data-i18n="about.s3t">AI & Machine Learning</h3>
-              <p class="glow-hover glow-hover-nobg" data-i18n="about.s3d">Training and deploying ML models for real-world decision-making, including computer vision pipelines.</p>
-            </div>
-            <div class="service-card">
-              <div class="service-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
-                </svg>
-              </div>
-              <h3 data-i18n="about.s4t">Electronics & Prototyping</h3>
-              <p class="glow-hover glow-hover-nobg" data-i18n="about.s4d">PCB design, circuit assembly, CAD modelling, and hands-on hardware prototyping from concept to test.</p>
-            </div>
+          <h2 data-i18n="about.contact">Get in Touch</h2>
+          <p class="form-subtitle glow-hover glow-hover-nobg" data-i18n="about.contact_sub">
+            Whether it's a project, an opportunity, or just a chat — feel free to reach out.
+          </p>
+
+          <div id="form-success" class="form-success" style="display:none">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+            <span data-i18n="about.f_success">Thanks! I'll get back to you soon.</span>
           </div>
+
+          <form id="contact-form" novalidate>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="cf-name" data-i18n="about.f_name">Name</label>
+                <input type="text" id="cf-name" name="name" autocomplete="name" />
+                <span class="field-error" id="err-name"></span>
+              </div>
+              <div class="form-group">
+                <label for="cf-email" data-i18n="about.f_email">Email</label>
+                <input type="email" id="cf-email" name="email" autocomplete="email" />
+                <span class="field-error" id="err-email"></span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="cf-message" data-i18n="about.f_msg">Message</label>
+              <textarea id="cf-message" name="message" rows="5"></textarea>
+              <span class="field-error" id="err-message"></span>
+            </div>
+            <div class="form-footer">
+              <span class="form-error" id="form-error" style="display:none" data-i18n="about.f_error">Something went wrong. Please try again.</span>
+              <button type="submit" id="form-submit" class="btn-send">
+                <span id="btn-label" data-i18n="about.f_send">Send</span>
+                <svg id="btn-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </button>
+            </div>
+          </form>
         </section>
 
-        <section class="content-section education-section" data-reveal style="transition-delay:100ms">
-          <h2 data-i18n="about.edu">Education</h2>
-          <div class="timeline">
-            <div class="timeline-item">
-              <div class="timeline-date">2021 – 2024</div>
-              <div class="timeline-content">
-                <h3 data-i18n="about.edu1t">Master in Robotics — Minor in Space Technologies</h3>
-                <p class="glow-hover glow-hover-nobg">EPFL, École Polytechnique Fédérale de Lausanne</p>
-              </div>
-            </div>
-            <div class="timeline-item">
-              <div class="timeline-date">2018 – 2021</div>
-              <div class="timeline-content">
-                <h3 data-i18n="about.edu2t">Bachelor in Microengineering</h3>
-                <p class="glow-hover glow-hover-nobg">EPFL, École Polytechnique Fédérale de Lausanne</p>
-              </div>
-            </div>
-            <div class="timeline-item">
-              <div class="timeline-date">2016 – 2017</div>
-              <div class="timeline-content">
-                <h3 data-i18n="about.edu3t">Federal Vocational Baccalaureate</h3>
-                <p class="glow-hover glow-hover-nobg">CPLN, Centre Professionnel du Littoral Neuchâtelois</p>
-              </div>
-            </div>
-            <div class="timeline-item">
-              <div class="timeline-date">2012 – 2016</div>
-              <div class="timeline-content">
-                <h3 data-i18n="about.edu4t">Federal VET Diploma (CFC) — Electronics</h3>
-                <p class="glow-hover glow-hover-nobg">CPLN, Centre Professionnel du Littoral Neuchâtelois</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section class="content-section cta-section" data-reveal style="transition-delay:150ms">
-          <h2 data-i18n="about.cta">Let's Work Together</h2>
-          <p class="glow-hover glow-hover-nobg" data-i18n="about.cta_sub">Interested in collaborating on robotics, embedded systems, or AI projects?</p>
-          <div class="contact-buttons">
-            <a href={`${base}/projects`} class="btn btn-primary">
-              <span data-i18n="about.btn_w">View My Work</span>
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="5" y1="12" x2="19" y2="12"></line>
-                <polyline points="12 5 19 12 12 19"></polyline>
-              </svg>
-            </a>
-            <a href="mailto:albian.salihu@hotmail.fr" class="btn btn-secondary" data-i18n="about.btn_c">Contact Me</a>
-          </div>
-        </section>
       </div>
     </div>
   </main>
 </BaseLayout>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    const form = document.getElementById('contact-form') as HTMLFormElement | null;
+    if (!form) return;
+
+    const nameEl    = document.getElementById('cf-name')     as HTMLInputElement;
+    const emailEl   = document.getElementById('cf-email')    as HTMLInputElement;
+    const messageEl = document.getElementById('cf-message')  as HTMLTextAreaElement;
+    const submitBtn = document.getElementById('form-submit') as HTMLButtonElement;
+    const btnLabel  = document.getElementById('btn-label')   as HTMLSpanElement;
+    const successEl = document.getElementById('form-success') as HTMLElement;
+    const formError = document.getElementById('form-error')  as HTMLElement;
+    const errName   = document.getElementById('err-name')    as HTMLSpanElement;
+    const errEmail  = document.getElementById('err-email')   as HTMLSpanElement;
+    const errMsg    = document.getElementById('err-message') as HTMLSpanElement;
+
+    const lang = () => localStorage.getItem('lang') || 'en';
+
+    const validate = () => {
+      let ok = true;
+      errName.textContent = '';
+      errEmail.textContent = '';
+      errMsg.textContent = '';
+      nameEl.classList.remove('invalid');
+      emailEl.classList.remove('invalid');
+      messageEl.classList.remove('invalid');
+
+      if (!nameEl.value.trim()) {
+        errName.textContent = lang() === 'fr' ? 'Requis' : 'Required';
+        nameEl.classList.add('invalid');
+        ok = false;
+      }
+      if (!emailEl.value.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailEl.value)) {
+        errEmail.textContent = lang() === 'fr' ? 'Email invalide' : 'Invalid email';
+        emailEl.classList.add('invalid');
+        ok = false;
+      }
+      if (!messageEl.value.trim()) {
+        errMsg.textContent = lang() === 'fr' ? 'Requis' : 'Required';
+        messageEl.classList.add('invalid');
+        ok = false;
+      }
+      return ok;
+    };
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      formError.style.display = 'none';
+      if (!validate()) return;
+
+      submitBtn.disabled = true;
+      btnLabel.setAttribute('data-i18n', 'about.f_sending');
+      btnLabel.textContent = lang() === 'fr' ? 'Envoi…' : 'Sending…';
+
+      try {
+        const res = await fetch('https://formspree.io/f/mrerqnoy', {
+          method: 'POST',
+          headers: { 'Accept': 'application/json' },
+          body: new FormData(form),
+        });
+
+        if (res.ok) {
+          form.style.display = 'none';
+          successEl.style.display = 'flex';
+        } else {
+          throw new Error();
+        }
+      } catch {
+        formError.style.display = 'block';
+        submitBtn.disabled = false;
+        btnLabel.setAttribute('data-i18n', 'about.f_send');
+        btnLabel.textContent = lang() === 'fr' ? 'Envoyer' : 'Send';
+      }
+    });
+  });
+</script>
 
 <style>
   .about-page {
@@ -142,7 +161,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   }
 
   .container {
-    max-width: 900px;
+    max-width: 740px;
     margin: 0 auto;
   }
 
@@ -172,7 +191,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     font-family: var(--font-heading);
     font-size: 1.5rem;
     font-weight: 600;
-    margin-bottom: 1rem;
+    margin-bottom: 1.25rem;
     color: var(--color-text);
   }
 
@@ -186,172 +205,226 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     margin-bottom: 0;
   }
 
-  .what-i-do-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 1rem;
-    margin-top: 1.5rem;
-  }
-
-  .service-card {
-    padding: 1.25rem;
-    background: rgba(255, 255, 255, 0.02);
-    border-radius: 0.75rem;
-    border: 1px solid var(--color-border);
-    transition: border-color 0.2s ease;
-  }
-
-  .service-card:hover {
-    border-color: #2a2a2a;
-  }
-
-  .service-icon {
-    width: 44px;
-    height: 44px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(255, 255, 255, 0.04);
-    border-radius: 0.5rem;
-    margin-bottom: 1rem;
-    color: var(--color-text-dim);
-  }
-
-  .service-card h3 {
-    font-family: var(--font-heading);
-    font-size: 1rem;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-    color: var(--color-text);
-  }
-
-  .service-card p {
-    font-size: 0.875rem;
-    color: var(--color-text-dim);
-    margin: 0;
-    line-height: 1.5;
-  }
-
-  /* Timeline */
-  .timeline {
+  /* ── Currently ── */
+  .currently-section {
     display: flex;
     flex-direction: column;
-    gap: 1.25rem;
-    margin-top: 1rem;
-  }
-
-  .timeline-item {
-    display: flex;
-    gap: 1.5rem;
-    align-items: flex-start;
-  }
-
-  .timeline-date {
-    font-family: var(--font-heading);
-    font-size: 0.8rem;
-    color: var(--color-text-dim);
-    white-space: nowrap;
-    min-width: 80px;
-    padding-top: 0.2rem;
-    letter-spacing: 0.02em;
-  }
-
-  .timeline-content h3 {
-    font-family: var(--font-heading);
-    font-size: 0.975rem;
-    font-weight: 600;
-    color: var(--color-text);
-    margin-bottom: 0.2rem;
-  }
-
-  .timeline-content p {
-    font-size: 0.85rem;
-    color: var(--color-text-dim);
-    margin: 0;
-  }
-
-  .cta-section {
-    text-align: center;
-  }
-
-  .cta-section p {
-    margin-bottom: 1.5rem;
-  }
-
-  .contact-buttons {
-    display: flex;
     gap: 1rem;
-    justify-content: center;
+  }
+
+  .currently-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
     flex-wrap: wrap;
   }
 
-  .btn {
+  .currently-label {
+    font-family: var(--font-heading);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-text-dim);
+  }
+
+  .open-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.2rem 0.7rem;
+    background: rgba(100, 216, 150, 0.08);
+    border: 1px solid rgba(100, 216, 150, 0.25);
+    border-radius: 2rem;
+    font-size: 0.72rem;
+    font-family: var(--font-heading);
+    font-weight: 500;
+    color: #6ddf9a;
+  }
+
+  .open-badge::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #6ddf9a;
+    flex-shrink: 0;
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.4; }
+  }
+
+  .currently-role {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .role-title {
+    font-family: var(--font-heading);
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--color-text);
+  }
+
+  .role-at {
+    font-size: 0.9rem;
+    color: var(--color-text-dim);
+    font-family: var(--font-heading);
+  }
+
+  .currently-desc {
+    color: var(--color-text-dim);
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  .form-subtitle {
+    color: var(--color-text-dim);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 0;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  #contact-form {
+    margin-top: 2rem;
+  }
+
+  /* Hide browser autofill icon */
+  input::-webkit-contacts-auto-fill-button,
+  input::-webkit-credentials-auto-fill-button {
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  /* ── Form ── */
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 0;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    margin-bottom: 1.1rem;
+  }
+
+  .form-group label {
+    font-family: var(--font-heading);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-text-dim);
+  }
+
+  .form-group input,
+  .form-group textarea {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+    padding: 0.7rem 1rem;
+    color: var(--color-text);
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s ease, background 0.2s ease;
+    resize: none;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .form-group input::placeholder,
+  .form-group textarea::placeholder {
+    color: transparent;
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus {
+    border-color: rgba(255,255,255,0.3);
+    background: rgba(255,255,255,0.06);
+  }
+
+  .form-group input.invalid,
+  .form-group textarea.invalid {
+    border-color: #f87171;
+  }
+
+  .field-error {
+    font-size: 0.75rem;
+    color: #f87171;
+    min-height: 1rem;
+  }
+
+  .form-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 0.25rem;
+  }
+
+  .form-error {
+    font-size: 0.85rem;
+    color: #f87171;
+  }
+
+  .btn-send {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.875rem 1.75rem;
-    font-size: 1rem;
-    font-weight: 600;
-    font-family: var(--font-body);
-    text-decoration: none;
-    border: none;
-    border-radius: 0.5rem;
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-
-  .btn-primary {
+    padding: 0.7rem 1.5rem;
     background: #f1f5f9;
     color: #0a0a0a;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+    border: none;
+    border-radius: 0.5rem;
+    font-family: var(--font-heading);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease, opacity 0.2s ease;
   }
 
-  .btn-primary:hover {
+  .btn-send:hover {
     background: #ffffff;
   }
 
-  .btn-primary svg {
+  .btn-send:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .btn-send svg {
     transition: transform 0.2s ease;
   }
 
-  .btn-primary:hover svg {
-    transform: translateX(4px);
+  .btn-send:hover:not(:disabled) svg {
+    transform: translateX(3px);
   }
 
-  .btn-secondary {
-    background: transparent;
-    color: var(--color-text);
-    border: 1px solid var(--color-border);
+  /* Success */
+  .form-success {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.25rem;
+    background: rgba(100, 216, 150, 0.08);
+    border: 1px solid rgba(100, 216, 150, 0.25);
+    border-radius: 0.5rem;
+    color: #6ddf9a;
+    font-size: 0.95rem;
   }
 
-  .btn-secondary:hover {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: var(--color-text-dim);
-  }
-
-  @media (max-width: 768px) {
-    .about-page {
-      padding-top: calc(var(--nav-height) + 1rem);
-    }
-
-    .what-i-do-grid {
-      grid-template-columns: 1fr;
-    }
-
-    .contact-buttons {
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .btn {
-      width: 100%;
-      max-width: 280px;
-      justify-content: center;
-    }
-
-    .timeline-item {
-      flex-direction: column;
-      gap: 0.25rem;
-    }
+  @media (max-width: 600px) {
+    .form-row { grid-template-columns: 1fr; }
+    .about-page { padding-top: calc(var(--nav-height) + 1rem); }
   }
 </style>
