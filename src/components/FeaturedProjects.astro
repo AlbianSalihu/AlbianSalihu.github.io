@@ -25,7 +25,7 @@ const projects = allProjects
 
     <div class="project-list">
       {projects.map((p, i) => (
-        <a href={`${base}/projects/${p.slug}`} class="project-row" data-reveal style={`transition-delay:${i * 60}ms`}>
+        <a href={`${base}/projects/${p.id}`} class="project-row" data-reveal style={`transition-delay:${i * 60}ms`}>
           <div class="project-row-left">
             <span class="project-number">0{i + 1}</span>
             <span class="project-name">{p.data.title}</span>
