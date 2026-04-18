@@ -9,6 +9,10 @@ github: 'https://github.com/AlbianSalihu/Noise2Noise'
 tags: ['Deep Learning', 'Python', 'PyTorch', 'CNN', 'U-Net', 'Image Processing', 'Noise2Noise']
 featured: false
 date: 'May 2022'
+role: 'Co-author'
+team: '2-person team'
+context: 'EPFL Deep Learning Course — CS-433'
+outcome: 'PSNR 25.43 dB with FFT-augmented U-Net; complete deep learning framework rebuilt from scratch with no autograd'
 ---
 
 <script>

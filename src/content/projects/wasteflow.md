@@ -11,6 +11,10 @@ github: ''
 tags: ['PLC', 'Python', 'Embedded', 'Industrial', 'Electrical Design', 'VFD', 'Robotics', 'Computer Vision']
 featured: true
 date: 'Sept 2024 – Present'
+role: 'Robotics & Systems Integration Engineer'
+team: 'Solo'
+context: 'Industry — Wasteflow, Lausanne'
+outcome: 'POC running daily at an industrial facility; conveyor speed control and alarm integration shipped to production — plus exploratory work on a robotic arm for hazardous waste extraction'
 ---
 
 <script>
@@ -44,16 +48,16 @@ date: 'Sept 2024 – Present'
 
 <div class="lang-en">
 
-[Wasteflow](https://wasteflow.ch) builds an AI-powered waste sorting system operating inside industrial recycling facilities. A computer vision pipeline classifies waste items in real time as they travel along conveyor belts — detecting material categories (paper, cardboard, plastics, wood, and more) as well as dangerous objects.
+[Wasteflow](https://wasteflow.ch) is building an AI-powered waste sorting system for industrial recycling facilities. A real-time computer vision pipeline classifies material categories and flags dangerous objects as they travel along conveyor belts — the challenge is bridging that AI output with precise, reliable physical actuation.
 
-I work as a **Robotics and System Integration Engineer**, contributing across several independent projects. Details of ongoing work are not disclosed.
+As **Robotics and Systems Integration Engineer**, I own the full stack from electrical panel to software: designing control systems, wiring hardware, integrating PLCs and VFDs, and deploying to live facilities. I've contributed to three independent subsystems since joining in September 2024. Details of ongoing work are under NDA.
 
 </div>
 <div class="lang-fr">
 
-[Wasteflow](https://wasteflow.ch) développe un système de tri des déchets assisté par IA, opérant dans des centres de tri industriels. Un pipeline de vision par ordinateur classifie les déchets en temps réel sur des convoyeurs — détectant les catégories de matériaux (papier, carton, plastiques, bois, etc.) ainsi que les objets dangereux.
+[Wasteflow](https://wasteflow.ch) développe un système de tri des déchets assisté par IA pour les centres de recyclage industriels. Un pipeline de vision par ordinateur classifie les matériaux et détecte les objets dangereux en temps réel sur les convoyeurs — le défi est de traduire ces décisions IA en actionnement physique précis et fiable.
 
-J'occupe le poste d'**Ingénieur Robotique et Intégration Systèmes**, contribuant à plusieurs projets indépendants. Les détails des travaux en cours sont confidentiels.
+En tant qu'**Ingénieur Robotique et Intégration Systèmes**, je couvre l'ensemble du système — de l'armoire électrique au logiciel : conception des systèmes de contrôle, câblage, intégration d'automates et de variateurs, et déploiement sur sites industriels. J'ai contribué à trois sous-systèmes indépendants depuis septembre 2024. Les détails sont couverts par un accord de confidentialité.
 
 </div>
 

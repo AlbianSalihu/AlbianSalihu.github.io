@@ -9,6 +9,10 @@ github: 'https://github.com/AlbianSalihu/FPGA-Audio-Effect'
 tags: ['FPGA', 'VHDL', 'Embedded Systems', 'Intel DE1-SoC', 'Nios II', 'Avalon Bus', 'DSP', 'C', 'Signal Processing']
 featured: false
 date: 'June 2023'
+role: 'Co-designer'
+team: '2-person team'
+context: 'EPFL Embedded Systems Course'
+outcome: 'Custom DMA and IRQ Sender IP cores in VHDL synthesized and verified; 48 kHz audio effect pipeline running end-to-end on Intel DE1-SoC'
 ---
 
 <script>

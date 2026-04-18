@@ -12,6 +12,10 @@ report: '/epfl-spacecraft/filament_controller_report.pdf'
 tags: ['FPGA', 'VHDL', 'Xilinx', 'Vivado', 'Space', 'AXI', 'PID', 'Embedded', 'Control Systems']
 featured: true
 date: 'Sep – Dec 2023'
+role: 'FPGA Engineer'
+team: 'Solo'
+context: 'EPFL Semester Project — ESA-supported CHESS mission'
+outcome: 'Functional open-loop FSM + discrete PID filament controller verified on Xilinx Kria K26 with AXI4-Lite CPU interface'
 ---
 
 <script>

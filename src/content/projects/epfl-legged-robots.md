@@ -10,6 +10,10 @@ report: '/epfl-legged-robots/LR_Project_2_Group09.pdf'
 tags: ['Robotics', 'Python', 'Reinforcement Learning', 'Control Systems', 'Simulation', 'Bio-inspired', 'PyBullet', 'PPO', 'SAC']
 featured: false
 date: 'Nov 2022 – Jan 2023'
+role: 'Co-author'
+team: '2-person team'
+context: 'EPFL Legged Robots Course — BioRob Lab'
+outcome: 'Stable CPG gaits and DRL locomotion both achieved in PyBullet simulation on a 12-DOF quadruped; full algorithm comparison documented'
 ---
 
 <script>

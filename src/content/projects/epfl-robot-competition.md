@@ -11,6 +11,10 @@ tags: ['Robotics', 'ROS 2', 'C++', 'Autonomous Navigation', 'Computer Vision', '
 featured: true
 date: 'Feb – Jun 2023'
 report: '/epfl-robot-competition/BudgetRoomba_report.pdf'
+role: 'Electronics Lead & Software Contributor'
+team: 'Team of 4'
+context: 'EPFL Annual Robotics Competition'
+outcome: '7 bricks collected, 4 successful drop-offs, zero obstacle collisions'
 ---
 
 <script>

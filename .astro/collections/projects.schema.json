@@ -57,6 +57,18 @@
         "date": {
           "type": "string"
         },
+        "role": {
+          "type": "string"
+        },
+        "team": {
+          "type": "string"
+        },
+        "context": {
+          "type": "string"
+        },
+        "outcome": {
+          "type": "string"
+        },
         "$schema": {
           "type": "string"
         }

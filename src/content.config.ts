@@ -19,6 +19,10 @@ const projects = defineCollection({
     featured: z.boolean().default(false),
     draft: z.boolean().default(false),
     date: z.string().optional(),
+    role: z.string().optional(),
+    team: z.string().optional(),
+    context: z.string().optional(),
+    outcome: z.string().optional(),
   }),
 });
 

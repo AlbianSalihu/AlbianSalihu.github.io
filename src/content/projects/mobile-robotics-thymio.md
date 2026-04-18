@@ -9,6 +9,10 @@ github: 'https://github.com/AlbianSalihu/Thymiair'
 tags: ['Python', 'Robotics', 'Computer Vision', 'Kalman Filter', 'Path Planning', 'OpenCV', 'Thymio', 'Mobile Robotics']
 featured: false
 date: 'Fall 2022'
+role: 'Team member'
+team: '4-person team'
+context: 'EPFL Mobile Robotics Course — MICRO-452'
+outcome: 'Full autonomous navigation pipeline demonstrated: vision, Dijkstra path planning, EKF pose estimation, and reactive obstacle avoidance integrated end-to-end'
 ---
 
 <script>

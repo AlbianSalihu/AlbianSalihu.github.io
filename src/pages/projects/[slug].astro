@@ -101,6 +101,42 @@ const youtubeId = ytMatch?.[1] ?? null;
         </div>
       </header>
 
+      <!-- Summary box -->
+      {(project.data.role || project.data.team || project.data.context || project.data.outcome) && (
+        <div class="project-summary">
+          {project.data.role && (
+            <div class="summary-item">
+              <span class="summary-label" data-i18n="summary.role">Role</span>
+              <span class="summary-value" data-i18n={`p.${project.id}.role`}>{project.data.role}</span>
+            </div>
+          )}
+          {project.data.team && (
+            <div class="summary-item">
+              <span class="summary-label" data-i18n="summary.team">Team</span>
+              <span class="summary-value" data-i18n={`p.${project.id}.team`}>{project.data.team}</span>
+            </div>
+          )}
+          {project.data.context && (
+            <div class="summary-item">
+              <span class="summary-label" data-i18n="summary.context">Context</span>
+              <span class="summary-value" data-i18n={`p.${project.id}.context`}>{project.data.context}</span>
+            </div>
+          )}
+          {project.data.date && (
+            <div class="summary-item">
+              <span class="summary-label" data-i18n="summary.timeline">Timeline</span>
+              <span class="summary-value">{project.data.date}</span>
+            </div>
+          )}
+          {project.data.outcome && (
+            <div class="summary-item summary-item--outcome">
+              <span class="summary-label" data-i18n="summary.outcome">Outcome</span>
+              <span class="summary-value" data-i18n={`p.${project.id}.outcome`}>{project.data.outcome}</span>
+            </div>
+          )}
+        </div>
+      )}
+
       <!-- Media: images from frontmatter -->
       {project.data.images && project.data.images.length > 0 && (
         <div class:list={['project-gallery', project.data.images.length === 1 ? 'single' : '']}>
@@ -348,6 +384,60 @@ const youtubeId = ytMatch?.[1] ?? null;
 
   .project-link--report {
     border-color: rgba(255,255,255,0.12);
+  }
+
+  /* ── Summary box ── */
+  .project-summary {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: 0.75rem;
+    overflow: hidden;
+    margin-bottom: 2.5rem;
+  }
+
+  .summary-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    padding: 1rem 1.25rem;
+    border-right: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .summary-item:nth-child(4) {
+    border-right: none;
+  }
+
+  .summary-item--outcome {
+    grid-column: 1 / -1;
+    border-right: none;
+    border-bottom: none;
+    background: rgba(255,255,255,0.015);
+  }
+
+  @media (max-width: 560px) {
+    .project-summary { grid-template-columns: repeat(2, 1fr); }
+    .summary-item:nth-child(4) { border-right: 1px solid var(--color-border); }
+    .summary-item:nth-child(2),
+    .summary-item:nth-child(4) { border-right: none; }
+  }
+
+  .summary-label {
+    font-family: var(--font-heading);
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--color-text-dim);
+  }
+
+  .summary-value {
+    font-size: 0.875rem;
+    color: var(--color-text);
+    line-height: 1.4;
   }
 
   /* ── Media gallery ── */
