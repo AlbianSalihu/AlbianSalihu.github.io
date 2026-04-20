@@ -92,7 +92,7 @@ Le **CubeSatTOF** est un spectromètre de masse à temps de vol miniaturisé con
 
 L'instrument est construit autour de trois cartes empilées : une **carte de puissance** (alimentation du filament et analogique haute tension), une **carte capteur** (détecteur de particules), et une **carte numérique** (Xilinx Kria K26 SoC — processeur ARM + logique FPGA).
 
-Le sous-système filament est la partie la plus critique et la plus fragile de l'instrument. Trop peu de puissance : aucune ionisation. Trop : le filament fond — détruisant l'instrument. Un contrôle précis et déterministe est impératif.
+Le sous-système filament est la partie la plus critique et la plus fragile de l'instrument. Pas assez de puissance : aucune ionisation. Trop de puissance : le filament fond — détruisant l'instrument. Un contrôle précis et déterministe est impératif.
 
 <img src="/epfl-spacecraft/CubesatTOF.JPG" alt="Spectromètre de masse CubeSatTOF" style="max-width:55%;display:block;margin:0 auto 1.5rem auto;" />
 

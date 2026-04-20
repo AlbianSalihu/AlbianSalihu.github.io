@@ -98,7 +98,7 @@ L'arène comporte quatre zones de difficulté croissante et de multiplicateur de
 | Zone 3 | 6 | 40 | Derrière une porte nécessitant un bouton |
 | Zone 4 | 6 | 40 | Derrière une rampe (B2) ou des marches (B3) |
 
-Deux zones de dépôt : **100%** (points complets) et **50%** (moitié des points). Le robot doit naviguer, se localiser, détecter les constructions Duplo, les collecter, les déposer dans la bonne zone et éviter tous les obstacles — distance minimale entre obstacles : **500 mm**. L'arène comporte 4 balises LED aux coins (rouge, vert, rose, bleu) et est entourée de murs.
+Deux zones de dépôt : **100%** (points complets) et **50%** (moitié des points). Le robot doit naviguer, se localiser, détecter les constructions Duplo, les collecter, les déposer dans la bonne zone et éviter tous les obstacles. La distance minimale entre les obstacles est de **500 mm**. L'arène comporte 4 balises LED aux coins (rouge, vert, rose, bleu) et est entourée de murs.
 
 </div>
 
@@ -465,7 +465,7 @@ Une légère dérive de l'estimation d'état a fait atterrir certaines briques s
 
 Sur l'évitement d'obstacles, *Budget Roomba* a en réalité surpassé les équipes mieux classées : certains robots à capteurs ultrasoniques ont déplacé les plantes-obstacles pendant la course, tandis que notre robot a maintenu une marge de sécurité suffisante en permanence.
 
-Le Prof. Ijspeert a décrit cette édition comme **"la meilleure compétition jamais organisée"** en termes de points marqués — les années précédentes, la plupart des robots collectaient presque rien. Ma responsabilité dans l'équipe était la **conception et l'intégration électronique** (câblage ESCON, distribution d'alimentation, interfaçage des capteurs, schéma PCB).
+Le Prof. Ijspeert a décrit cette édition comme **"la meilleure compétition jamais organisée"** en termes de points marqués — les années précédentes, la plupart des robots ne collectaient presque rien. Ma responsabilité dans l'équipe était la **conception et l'intégration électronique** (câblage ESCON, distribution d'alimentation, interfaçage des capteurs, schéma PCB).
 
 </div>
 

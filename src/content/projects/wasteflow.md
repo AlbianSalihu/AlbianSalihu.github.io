@@ -80,7 +80,9 @@ The core project. Wasteflow's AI layer produces real-time waste quality metrics 
 </div>
 <div class="lang-fr">
 
-Le projet principal. La couche IA de Wasteflow produit des métriques de qualité des déchets en temps réel depuis le flux du convoyeur. Le problème : traduire ces métriques en actionnement physique du convoyeur pour optimiser la pureté de tri et le débit.
+Le projet principal de Wasteflow repose sur une couche IA qui produit des métriques de qualité des déchets en temps réel depuis le flux du convoyeur. 
+
+**Le problème** : traduire ces métriques en actionnement physique du convoyeur pour optimiser la pureté de tri et le débit.
 
 **Ce que j'ai construit :**
 - Un **algorithme de contrôle à base de règles** tournant sur un PC industriel Linux, pilotant la vitesse du convoyeur en réponse aux sorties qualité de l'IA

@@ -226,31 +226,31 @@ Position du pied désirée vs réelle avec le contrôleur combiné optimisé (tr
 
 ### CPG Videos
 
-<div class="lang-en">**Trot:**</div><div class="lang-fr">**Trot :**</div>
+<div class="lang-en">Trot:</div><div class="lang-fr">Trot :</div>
 <div class="video-grid">
-<video src="/epfl-legged-robots/TROT_HIGH_0,612ms.MP4" controls></video>
-<video src="/epfl-legged-robots/TROT_LOW_0,345ms.MP4" controls></video>
+<video controls><source src="/epfl-legged-robots/TROT_HIGH_0,612ms.MP4" type="video/mp4"></video>
+<video controls><source src="/epfl-legged-robots/TROT_LOW_0,345ms.MP4" type="video/mp4"></video>
 </div>
 <span class="video-label">Fast — 0.612 m/s &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Slow — 0.345 m/s</span>
 
-<div class="lang-en">**Walk:**</div><div class="lang-fr">**Marche :**</div>
+<div class="lang-en">Walk:</div><div class="lang-fr">Marche :</div>
 <div class="video-grid">
-<video src="/epfl-legged-robots/WALK_HIGH_1,434ms.MP4" controls></video>
-<video src="/epfl-legged-robots/WALK_LOW_0,278ms.MP4" controls></video>
+<video controls><source src="/epfl-legged-robots/WALK_HIGH_1,434ms.MP4" type="video/mp4"></video>
+<video controls><source src="/epfl-legged-robots/WALK_LOW_0,278ms.MP4" type="video/mp4"></video>
 </div>
 <span class="video-label">Fast — 1.434 m/s &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Slow — 0.278 m/s</span>
 
-<div class="lang-en">**Bound:**</div><div class="lang-fr">**Bond :**</div>
+<div class="lang-en">Bound:</div><div class="lang-fr">Bond :</div>
 <div class="video-grid">
-<video src="/epfl-legged-robots/BOUND_HIGH_0,626ms.MP4" controls></video>
-<video src="/epfl-legged-robots/BOUND_LOW_0,345ms.MP4" controls></video>
+<video controls><source src="/epfl-legged-robots/BOUND_HIGH_0,626ms.MP4" type="video/mp4"></video>
+<video controls><source src="/epfl-legged-robots/BOUND_LOW_0,345ms.MP4" type="video/mp4"></video>
 </div>
 <span class="video-label">Fast — 0.626 m/s &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Slow — 0.345 m/s</span>
 
-<div class="lang-en">**Pace:**</div><div class="lang-fr">**Pas (Pace) :**</div>
+<div class="lang-en">Pace:</div><div class="lang-fr">Pas (Pace) :</div>
 <div class="video-grid">
-<video src="/epfl-legged-robots/PACE_HIGH_1,376ms.MP4" controls></video>
-<video src="/epfl-legged-robots/PACE_LOW_0,341ms.MP4" controls></video>
+<video controls><source src="/epfl-legged-robots/PACE_HIGH_1,376ms.MP4" type="video/mp4"></video>
+<video controls><source src="/epfl-legged-robots/PACE_LOW_0,341ms.MP4" type="video/mp4"></video>
 </div>
 <span class="video-label">Fast — 1.376 m/s &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Slow — 0.341 m/s</span>
 
@@ -387,14 +387,14 @@ Contact des pattes et évolution des états CPG en locomotion rapide :
 
 <div class="lang-en">**PPO — fast & slow:**</div><div class="lang-fr">**PPO — rapide & lente :**</div>
 <div class="video-grid">
-<video src="/epfl-legged-robots/RL_CPG_PPO_FAST_1ms.MP4" controls></video>
-<video src="/epfl-legged-robots/RL_CPG_PPO_SLOW_0.5ms.mp4" controls></video>
+<video controls><source src="/epfl-legged-robots/RL_CPG_PPO_FAST_1ms.MP4" type="video/mp4"></video>
+<video controls><source src="/epfl-legged-robots/RL_CPG_PPO_SLOW_0.5ms.mp4" type="video/mp4"></video>
 </div>
 <span class="video-label">PPO fast — 0.944 m/s &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PPO slow — 0.491 m/s</span>
 
 <div class="lang-en">**SAC policy:**</div><div class="lang-fr">**Politique SAC :**</div>
 
-<video src="/epfl-legged-robots/RL_SAC_BEST_1ms.mp4" controls></video>
+<video controls><source src="/epfl-legged-robots/RL_SAC_BEST_1ms.mp4" type="video/mp4"></video>
 
 ## Conclusion
 
@@ -422,8 +422,8 @@ L'hybride CPG-RL est l'insight clé — les espaces d'action PD articulaire et c
 ## Bloopers
 
 <div class="video-grid">
-<video src="/epfl-legged-robots/BLOOPERS_PD.MP4" controls></video>
-<video src="/epfl-legged-robots/RL_CARTESIAN_PD_PPO_BLOOPER.mp4" controls></video>
+<video controls><source src="/epfl-legged-robots/BLOOPERS_PD.MP4" type="video/mp4"></video>
+<video controls><source src="/epfl-legged-robots/RL_CARTESIAN_PD_PPO_BLOOPER.mp4" type="video/mp4"></video>
 </div>
 <div class="lang-en"><span class="video-label">PD controller during gain tuning &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Cartesian PD action space DRL</span></div>
 <div class="lang-fr"><span class="video-label">Contrôleur PD pendant le réglage des gains &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DRL avec espace d'action PD Cartésien</span></div>

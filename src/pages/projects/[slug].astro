@@ -125,7 +125,7 @@ const youtubeId = ytMatch?.[1] ?? null;
           {project.data.date && (
             <div class="summary-item">
               <span class="summary-label" data-i18n="summary.timeline">Timeline</span>
-              <span class="summary-value">{project.data.date}</span>
+              <span class="summary-value" data-i18n={`p.${project.id}.date`}>{project.data.date}</span>
             </div>
           )}
           {project.data.outcome && (
@@ -157,7 +157,7 @@ const youtubeId = ytMatch?.[1] ?? null;
               allowfullscreen
             ></iframe>
           ) : (
-            <video src={project.data.video.startsWith('http') ? project.data.video : `${base}${project.data.video}`} controls></video>
+            <video controls><source src={project.data.video.startsWith('http') ? project.data.video : `${base}${project.data.video}`} type="video/mp4" /></video>
           )}
         </div>
       )}

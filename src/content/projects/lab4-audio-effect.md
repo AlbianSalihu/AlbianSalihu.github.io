@@ -325,7 +325,7 @@ La tâche de CPU0 est simple et unique :
 3. Surveiller la FIFO audio : pour chaque échantillon disponible (canal droit), l'écrire dans `sdramData[count]`
 4. Une fois `count` atteignant `MAX_SEND_DATA` (480 000 échantillons), écrire l'adresse de base SDRAM dans le registre `customIRQSender` et terminer
 
-CPU0 n'accède à la SDRAM que par des écritures séquentielles — pas de problèmes de cohérence de cache sur le chemin d'enregistrement.
+CPU0 n'accède à la SDRAM que par des écritures séquentielles ne créant ainsi pas de problèmes de cohérence de cache sur le chemin d'enregistrement.
 
 </div>
 

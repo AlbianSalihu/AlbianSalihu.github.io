@@ -259,7 +259,7 @@ The gap vs Mini-Project 1 (25.43 → 20.42) reflects the difference between opti
 
 **PSNR = 20,4185** après 4 epochs.
 
-L'écart avec le Mini-Projet 1 (25,43 → 20,42) reflète la différence entre les noyaux CUDA optimisés de PyTorch et une implémentation codée à la main — non pas une faille dans l'approche, mais un coût attendu de l'exercice.
+L'écart avec le Mini-Projet 1 (25,43 → 20,42) reflète la différence entre les noyaux CUDA optimisés de PyTorch et une implémentation codée à la main ce n'est pas une faille dans l'approche, mais un coût attendu de l'exercice.
 
 <img src="/deep-learning/prediction_val_2.png" alt="Prédictions sur le jeu de validation — modèle from scratch" style="max-width:90%;display:block;margin:0 auto;" />
 
