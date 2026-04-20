@@ -71,6 +71,8 @@ Notre philosophie centrale : **la robustesse avant l'ambition.** Plutôt que de 
 
 </div>
 
+<video controls><source src="/epfl-robot-competition/robot.mp4" type="video/mp4"></video>
+
 ## Competition Setup
 
 <div class="lang-en">
