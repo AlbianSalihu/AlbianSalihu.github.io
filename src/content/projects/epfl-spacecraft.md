@@ -167,9 +167,7 @@ Génère FIL_SYNC et FIL_PHASE à la fréquence correcte avec un déphasage conf
 
 A discrete **PID controller** running in FPGA fabric — no OS jitter, no scheduling latency. The update rate is configurable via `regPIDFreq`. The control law adjusts the phase shift each cycle to drive Iem toward the setpoint:
 
-```
-U[k] = Kp·e[k] + Ki·Ts·Σe[k] + Kd·(e[k]−e[k−1])/Ts
-```
+$$U[k] = K_p \cdot e[k] + K_i \cdot T_s \cdot \textstyle\sum e[k] + K_d \cdot \frac{e[k] - e[k-1]}{T_s}$$
 
 An **anti-windup** stage clamps the output to [0°, 180°], preventing integrator saturation. Individual terms can be disabled by writing 0 to their gain register — enabling P-only or PI configurations without code changes.
 
@@ -182,9 +180,7 @@ A two-stage PID (fast/slow dynamics) was studied as a candidate architecture and
 
 Un **contrôleur PID discret** s'exécutant dans le fabric FPGA — sans gigue système, sans latence d'ordonnancement. Le taux de mise à jour est configurable via `regPIDFreq`. La loi de commande ajuste le déphasage à chaque cycle pour amener Iem vers la consigne :
 
-```
-U[k] = Kp·e[k] + Ki·Ts·Σe[k] + Kd·(e[k]−e[k−1])/Ts
-```
+$$U[k] = K_p \cdot e[k] + K_i \cdot T_s \cdot \textstyle\sum e[k] + K_d \cdot \frac{e[k] - e[k-1]}{T_s}$$
 
 Un étage **anti-windup** borne la sortie à [0°, 180°], empêchant la saturation de l'intégrateur. Les termes individuels peuvent être désactivés en écrivant 0 dans leur registre de gain — permettant des configurations P seul ou PI sans modification du code.
 
