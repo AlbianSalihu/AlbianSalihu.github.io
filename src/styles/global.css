@@ -67,24 +67,6 @@ body {
 }
 
 /* Global animations */
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-20px);
-  }
-}
-
-@keyframes pulse-glow {
-  0%, 100% {
-    box-shadow: 0 0 20px var(--color-shadow);
-  }
-  50% {
-    box-shadow: 0 0 40px var(--color-shadow), 0 0 60px var(--color-shadow);
-  }
-}
-
 @keyframes text-shimmer {
   0% {
     background-position: 0% 50%;

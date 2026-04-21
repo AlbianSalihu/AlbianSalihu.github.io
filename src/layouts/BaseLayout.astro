@@ -240,20 +240,31 @@ const siteUrl = 'https://albiansalihu.github.io/portfolio';
         'p.lab4-audio-effect.d':        { en: 'Custom DMA and IRQ Sender IP cores in VHDL on Intel DE1-SoC. Dual Nios II processors communicate via hardware interrupt. 48 kHz audio pipeline: microphone → SDRAM → FFT → low-pass → IFFT → speaker.', fr: 'Cœurs IP DMA et IRQ Sender personnalisés en VHDL sur Intel DE1-SoC. Deux processeurs Nios II communiquent par interruption matérielle. Pipeline audio 48 kHz : microphone → SDRAM → FFT → passe-bas → IFFT → haut-parleur.' },
       };
 
+      // Cache DOM elements so language switches don't re-query the whole document
+      let cachedI18nEls: HTMLElement[] = [];
+      let cachedLangOpts: HTMLElement[] = [];
+      let cachedCvLinks: HTMLAnchorElement[] = [];
+
+      function cacheI18nElements() {
+        cachedI18nEls  = Array.from(document.querySelectorAll<HTMLElement>('[data-i18n]'));
+        cachedLangOpts = Array.from(document.querySelectorAll<HTMLElement>('.lang-opt'));
+        cachedCvLinks  = Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-cv-link]'));
+      }
+
       function applyLanguage(lang: string) {
         localStorage.setItem('lang', lang);
         document.documentElement.lang = lang;
-        document.querySelectorAll<HTMLElement>('[data-i18n]').forEach(el => {
+        cachedI18nEls.forEach(el => {
           const key = el.getAttribute('data-i18n')!;
           if (T[key]?.[lang]) el.textContent = T[key][lang];
         });
-        document.querySelectorAll<HTMLElement>('.lang-opt').forEach(opt => {
+        cachedLangOpts.forEach(opt => {
           opt.classList.toggle('active', opt.dataset.lang === lang);
         });
         // Notify components that language changed
         document.dispatchEvent(new CustomEvent('langchange', { detail: lang }));
         // Switch CV download to language-appropriate file and filename
-        document.querySelectorAll<HTMLAnchorElement>('[data-cv-link]').forEach(a => {
+        cachedCvLinks.forEach(a => {
           const base = a.href.replace(/\/cv(?:_fr)?\.pdf$/, '');
           if (lang === 'fr') {
             a.href = base + '/cv_fr.pdf';
@@ -268,9 +279,10 @@ const siteUrl = 'https://albiansalihu.github.io/portfolio';
       (window as any).__applyLanguage = applyLanguage;
 
       document.addEventListener('astro:page-load', () => {
+        cacheI18nElements();
         const lang = localStorage.getItem('lang') || 'en';
         applyLanguage(lang);
-        document.querySelectorAll<HTMLElement>('.lang-opt').forEach(opt => {
+        cachedLangOpts.forEach(opt => {
           opt.addEventListener('click', () => applyLanguage(opt.dataset.lang!));
         });
       });
@@ -288,23 +300,26 @@ const siteUrl = 'https://albiansalihu.github.io/portfolio';
     </script>
 
     <script>
-      // Scroll-reveal — runs after every page navigation
+      // Scroll-reveal — observer created once and reused across navigations
+      let revealObserver: IntersectionObserver | null = null;
+
       function initReveal() {
-        const io = new IntersectionObserver(
-          (entries) => {
-            entries.forEach(e => {
-              if (e.isIntersecting) {
-                (e.target as HTMLElement).classList.add('revealed');
-                io.unobserve(e.target);
-              }
-            });
-          },
-          { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
-        );
+        if (!revealObserver) {
+          revealObserver = new IntersectionObserver(
+            (entries) => {
+              entries.forEach(e => {
+                if (e.isIntersecting) {
+                  (e.target as HTMLElement).classList.add('revealed');
+                  revealObserver!.unobserve(e.target);
+                }
+              });
+            },
+            { threshold: 0.08, rootMargin: '0px 0px -40px 0px' }
+          );
+        }
         document.querySelectorAll('[data-reveal]').forEach(el => {
-          // Reset in case of View Transition re-use
           el.classList.remove('revealed');
-          io.observe(el);
+          revealObserver!.observe(el);
         });
       }
       document.addEventListener('astro:page-load', initReveal);
@@ -388,9 +403,13 @@ const siteUrl = 'https://albiansalihu.github.io/portfolio';
           }
         }
 
+        const MOVE_THRESHOLD2 = 25; // skip update if mouse moved less than 5px (5² = 25)
+        let lastMX = -9999, lastMY = -9999;
         document.addEventListener('mousemove', (e) => {
-          mouseX = e.clientX;
-          mouseY = e.clientY;
+          const dx = e.clientX - lastMX, dy = e.clientY - lastMY;
+          if (dx * dx + dy * dy < MOVE_THRESHOLD2) return;
+          mouseX = lastMX = e.clientX;
+          mouseY = lastMY = e.clientY;
           if (!rafQueued) { rafQueued = true; requestAnimationFrame(update); }
         });
 
@@ -403,12 +422,18 @@ const siteUrl = 'https://albiansalihu.github.io/portfolio';
         document.addEventListener('astro:page-load', refreshElements);
       }
 
-      // ── Back to top ──
+      // ── Back to top — RAF-throttled so it doesn't fire on every scroll event ──
       document.addEventListener('astro:page-load', () => {
         const btn = document.getElementById('back-to-top');
         if (!btn) return;
+        let rafPending = false;
         window.addEventListener('scroll', () => {
-          btn.classList.toggle('visible', window.scrollY > 400);
+          if (rafPending) return;
+          rafPending = true;
+          requestAnimationFrame(() => {
+            btn.classList.toggle('visible', window.scrollY > 400);
+            rafPending = false;
+          });
         }, { passive: true });
         btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
       });

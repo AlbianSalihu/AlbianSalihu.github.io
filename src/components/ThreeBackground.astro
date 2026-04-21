@@ -279,6 +279,11 @@
     let flashes: Flash[] = [];
     let activeFormations: ActiveFormation[] = [];
 
+    // Spatial grid — rebuilt each frame, shared by repulsion, formation capture, collision, connections
+    let frameGrid: Map<number, number[]> = new Map();
+    let frameGridCols = 0;
+    let frameGridCd = 0;
+
     let W = 0, H = 0;
     let VH = 0;
     let scrollY = 0;
@@ -624,14 +629,24 @@
 
     function resize() {
       if (!canvas) return;
+      const oldW = W;
+      const oldVH = VH;
+
       W = canvas.width = window.innerWidth;
       H = canvas.height = window.innerHeight;
-      // Virtual height must cover the visible range at any scroll depth.
-      // At max scroll (pageH - H), visible virtual y-top = (pageH - H) * parallaxFactor.
-      // Add 1.5× viewport below that so the bottom is always filled.
       const pageH = document.documentElement.scrollHeight;
       const minVH = (pageH - H) * SETTINGS.parallaxFactor + H * 1.5;
       VH = Math.max(H * SETTINGS.parallaxScale, minVH);
+
+      // Rescale star positions proportionally so they stay spread across the new size
+      if (nodes.length && oldW && oldVH) {
+        const scaleX = W / oldW;
+        const scaleY = VH / oldVH;
+        for (const n of nodes) {
+          n.x *= scaleX;
+          n.y *= scaleY;
+        }
+      }
     }
 
     function onScroll() {
@@ -752,20 +767,35 @@
         let bestIdx = -1;
         let bestDist = Infinity;
 
-        for (let i = 0; i < nodes.length; i++) {
-          const n = nodes[i];
-          if (used.has(i)) continue;
-          if (n.mode !== 'free') continue;
-
-          const dx = n.x - pt.x;
-          const dy = n.y - pt.y;
-          const d2 = dx * dx + dy * dy;
-
-          if (!force && d2 > maxD2) continue;
-
-          if (d2 < bestDist) {
-            bestDist = d2;
-            bestIdx = i;
+        if (force || frameGrid.size === 0) {
+          // forced spawn or grid not yet ready — full scan
+          for (let i = 0; i < nodes.length; i++) {
+            const n = nodes[i];
+            if (used.has(i) || n.mode !== 'free') continue;
+            const dx = n.x - pt.x;
+            const dy = n.y - pt.y;
+            const d2 = dx * dx + dy * dy;
+            if (d2 < bestDist) { bestDist = d2; bestIdx = i; }
+          }
+        } else {
+          // normal spawn — only walk grid cells within capture radius (#6)
+          const capCells = Math.ceil(SETTINGS.formationCaptureRadius / frameGridCd);
+          const ptGX = Math.floor(pt.x / frameGridCd);
+          const ptGY = Math.floor(pt.y / frameGridCd);
+          for (let dy = -capCells; dy <= capCells; dy++) {
+            for (let dx = -capCells; dx <= capCells; dx++) {
+              const cell = frameGrid.get((ptGY + dy) * frameGridCols + (ptGX + dx));
+              if (!cell) continue;
+              for (const i of cell) {
+                if (used.has(i)) continue;
+                const n = nodes[i];
+                const ddx = n.x - pt.x;
+                const ddy = n.y - pt.y;
+                const d2 = ddx * ddx + ddy * ddy;
+                if (d2 > maxD2) continue;
+                if (d2 < bestDist) { bestDist = d2; bestIdx = i; }
+              }
+            }
           }
         }
 
@@ -897,6 +927,20 @@
       ctx.clearRect(0, 0, W, H);
       tick++;
 
+      // Build spatial grid once — reused by repulsion, formation capture, collision, connections
+      frameGridCd = SETTINGS.connectionDistance;
+      frameGridCols = Math.ceil(W / frameGridCd) + 1;
+      frameGrid.clear();
+      for (let i = 0; i < nodes.length; i++) {
+        if (nodes[i].mode !== 'free') continue;
+        const gcx = Math.floor(nodes[i].x / frameGridCd);
+        const gcy = Math.floor(nodes[i].y / frameGridCd);
+        const gkey = gcy * frameGridCols + gcx;
+        let gcell = frameGrid.get(gkey);
+        if (!gcell) { gcell = []; frameGrid.set(gkey, gcell); }
+        gcell.push(i);
+      }
+
       maybeSpawnFormation();
 
       // Update nodes
@@ -905,18 +949,33 @@
       const repR = SETTINGS.mouseRepulseRadius;
       const repStr = SETTINGS.mouseRepulseStrength;
 
+      // Mouse repulsion pre-pass: only walk cells near cursor instead of all 1500 nodes (#12)
+      if (mouseX > -9000) {
+        const repR2 = repR * repR;
+        const mGX = Math.floor(mouseX / frameGridCd);
+        const mGY = Math.floor(mouseVY / frameGridCd);
+        for (let dy = -1; dy <= 1; dy++) {
+          for (let dx = -1; dx <= 1; dx++) {
+            const cell = frameGrid.get((mGY + dy) * frameGridCols + (mGX + dx));
+            if (!cell) continue;
+            for (const i of cell) {
+              const n = nodes[i];
+              const mdx = n.x - mouseX;
+              const mdy = n.y - mouseVY;
+              const md2 = mdx * mdx + mdy * mdy;
+              if (md2 < repR2 && md2 > 0.01) {
+                const mdist = Math.sqrt(md2);
+                const force = repStr * (1 - mdist / repR);
+                n.vx += (mdx / mdist) * force;
+                n.vy += (mdy / mdist) * force;
+              }
+            }
+          }
+        }
+      }
+
       for (const n of nodes) {
         if (n.mode === 'free') {
-          // Mouse repulsion
-          const mdx = n.x - mouseX;
-          const mdy = n.y - mouseVY;
-          const mdist = Math.sqrt(mdx * mdx + mdy * mdy);
-          if (mdist < repR && mdist > 0.1) {
-            const force = repStr * (1 - mdist / repR);
-            n.vx += (mdx / mdist) * force;
-            n.vy += (mdy / mdist) * force;
-          }
-
           n.x += n.vx;
           n.y += n.vy;
 
@@ -951,12 +1010,20 @@
 
       updateFormations();
 
+      // Reuse module-level spatial grid (already rebuilt at top of this frame)
+      const cd = frameGridCd;
+      const cd2 = cd * cd;
+      const gridCols = frameGridCols;
+      const gridRows = Math.ceil(VH / cd) + 1;
+      const spatialGrid = frameGrid;
+
       // Spawn shooting stars
       if (tick % SETTINGS.shootingStarInterval === 0) {
         spawnShootingStar();
       }
 
-      // Update shooting stars
+      // Update shooting stars — grid-based collision instead of full node scan
+      const cr2 = SETTINGS.collisionRadius * SETTINGS.collisionRadius;
       for (const s of shootingStars) {
         s.trail.unshift({ x: s.x, y: s.y });
         if (s.trail.length > SETTINGS.trailLength) s.trail.pop();
@@ -964,18 +1031,27 @@
         s.x += s.vx;
         s.y += s.vy;
 
-        for (const n of nodes) {
-          const dx = s.x - n.x;
-          const dy = s.y - n.y;
-          if (Math.sqrt(dx * dx + dy * dy) < SETTINGS.collisionRadius) {
-            const col = n.hasColor ? getStarColor(n.colorPhase) : [255, 255, 255];
-            spawnFlash(n.x, n.y, col);
-            s.alive = false;
-            break;
+        const scx = Math.floor(s.x / cd);
+        const scy = Math.floor(s.y / cd);
+        outer: for (let dy = -1; dy <= 1; dy++) {
+          for (let dx = -1; dx <= 1; dx++) {
+            const cell = spatialGrid.get((scy + dy) * gridCols + (scx + dx));
+            if (!cell) continue;
+            for (const ni of cell) {
+              const n = nodes[ni];
+              const ddx = s.x - n.x;
+              const ddy = s.y - n.y;
+              if (ddx * ddx + ddy * ddy < cr2) {
+                spawnFlash(n.x, n.y, n.hasColor ? getStarColor(n.colorPhase) : [255, 255, 255]);
+                s.alive = false;
+                break outer;
+              }
+            }
           }
         }
 
-        if (s.x > W + 50 || s.y > H + 50 || s.x < -50 || s.y < -50) {
+        const screenY = s.y + offsetY;
+        if (s.x > W + 50 || screenY > H + 50 || s.x < -50 || screenY < -50) {
           s.alive = false;
         }
       }
@@ -990,49 +1066,86 @@
       }
       flashes = flashes.filter((f) => f.age < f.maxAge);
 
-      // Grid
+      // Grid — all dots in one batched fill()
       if (SETTINGS.gridEnabled) {
         const gs = SETTINGS.gridSpacing;
+        ctx.beginPath();
         for (let gx = gs / 2; gx < W; gx += gs) {
           for (let gy = gs / 2; gy < H; gy += gs) {
-            ctx.beginPath();
+            ctx.moveTo(gx + 1.1, gy);
             ctx.arc(gx, gy, 1.1, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(100,160,255,${SETTINGS.gridOpacity})`;
-            ctx.fill();
           }
         }
+        ctx.fillStyle = `rgba(100,160,255,${SETTINGS.gridOpacity})`;
+        ctx.fill();
       }
 
       // Parallax
       ctx.save();
       ctx.translate(0, offsetY);
 
-      // Normal connections
+      // Normal connections — batched strokes (spatial grid already built above)
+      // Accumulate line coords into opacity buckets — flat [x1,y1,x2,y2,...] per bucket
+      const BUCKETS = 8;
+      const buckets: number[][] = Array.from({ length: BUCKETS }, () => []);
+
+      ctx.lineWidth = 0.5;
       for (let i = 0; i < nodes.length; i++) {
-        for (let j = i + 1; j < nodes.length; j++) {
-          if (nodes[i].mode !== 'free') continue;
-          if (nodes[j].mode !== 'free') continue;
+        const ni = nodes[i];
+        if (ni.mode !== 'free') continue;
+        const cx = Math.floor(ni.x / cd);
+        const cy = Math.floor(ni.y / cd);
 
-          const dx = nodes[i].x - nodes[j].x;
-          const dy = nodes[i].y - nodes[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-
-          if (dist < SETTINGS.connectionDistance) {
-            const opacity = SETTINGS.lineOpacityMax * (1 - dist / SETTINGS.connectionDistance);
-            ctx.beginPath();
-            ctx.moveTo(nodes[i].x, nodes[i].y);
-            ctx.lineTo(nodes[j].x, nodes[j].y);
-            ctx.strokeStyle = `rgba(255,255,255,${opacity})`;
-            ctx.lineWidth = 0.5;
-            ctx.stroke();
+        for (let dy = -1; dy <= 1; dy++) {
+          for (let dx = -1; dx <= 1; dx++) {
+            const nx = cx + dx;
+            const ny = cy + dy;
+            if (nx < 0 || ny < 0 || nx >= gridCols || ny >= gridRows) continue;
+            const cell = spatialGrid.get(ny * gridCols + nx);
+            if (!cell) continue;
+            for (const j of cell) {
+              if (j <= i) continue;
+              const nj = nodes[j];
+              const ddx = ni.x - nj.x;
+              const ddy = ni.y - nj.y;
+              const dist2 = ddx * ddx + ddy * ddy;
+              if (dist2 < cd2) {
+                const dist = Math.sqrt(dist2);
+                const t = 1 - dist / cd;
+                const b = Math.min(BUCKETS - 1, Math.floor(t * BUCKETS));
+                const bk = buckets[b];
+                bk.push(ni.x, ni.y, nj.x, nj.y);
+              }
+            }
           }
         }
       }
 
+      // One stroke() per bucket instead of one per line
+      for (let b = 0; b < BUCKETS; b++) {
+        const bk = buckets[b];
+        if (bk.length === 0) continue;
+        const opacity = SETTINGS.lineOpacityMax * ((b + 0.5) / BUCKETS);
+        ctx.beginPath();
+        ctx.strokeStyle = `rgba(255,255,255,${opacity.toFixed(3)})`;
+        for (let k = 0; k < bk.length; k += 4) {
+          ctx.moveTo(bk[k], bk[k + 1]);
+          ctx.lineTo(bk[k + 2], bk[k + 3]);
+        }
+        ctx.stroke();
+      }
+
       drawFormations();
 
-      // Nodes
+      // Nodes — viewport culling + batched white fills
+      const visMinY = -offsetY - 5;
+      const visMaxY = -offsetY + H + 5;
+      const NODE_BUCKETS = 10;
+      const nodeBuckets: number[][] = Array.from({ length: NODE_BUCKETS }, () => []);
+
       for (const n of nodes) {
+        if (n.y < visMinY || n.y > visMaxY) continue;
+
         const pulse = Math.sin(tick * SETTINGS.pulseSpeed + n.pulseOffset);
         let opacity = Math.max(
           0.05,
@@ -1042,17 +1155,14 @@
         let r = 255, g = 255, b = 255;
         if (n.hasColor) {
           const c = getStarColor(n.colorPhase);
-          r = c[0];
-          g = c[1];
-          b = c[2];
+          r = c[0]; g = c[1]; b = c[2];
         }
-
         if (n.mode === 'holding') opacity = Math.min(1, opacity + 0.25);
 
         if (n.radius > 1.6 || n.hasColor || n.mode !== 'free') {
           const gs = n.mode === 'holding' ? n.radius * 5 : n.radius * 3.5;
           const grad = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, gs);
-          grad.addColorStop(0, `rgba(${r},${g},${b},${opacity * 0.45})`);
+          grad.addColorStop(0, `rgba(${r},${g},${b},${(opacity * 0.45).toFixed(3)})`);
           grad.addColorStop(1, `rgba(${r},${g},${b},0)`);
           ctx.beginPath();
           ctx.arc(n.x, n.y, gs, 0, Math.PI * 2);
@@ -1060,9 +1170,30 @@
           ctx.fill();
         }
 
+        if (n.hasColor || n.mode !== 'free') {
+          // Unique color or formation — draw individually
+          ctx.beginPath();
+          ctx.arc(n.x, n.y, n.radius, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(${r},${g},${b},${opacity.toFixed(3)})`;
+          ctx.fill();
+        } else {
+          // Plain white — queue into opacity bucket for batched fill
+          const bIdx = Math.min(NODE_BUCKETS - 1, Math.floor(opacity * NODE_BUCKETS));
+          nodeBuckets[bIdx].push(n.x, n.y, n.radius);
+        }
+      }
+
+      // Flush white node buckets — one fill() per bucket
+      for (let b = 0; b < NODE_BUCKETS; b++) {
+        const bk = nodeBuckets[b];
+        if (bk.length === 0) continue;
+        const opacity = (b + 0.5) / NODE_BUCKETS;
         ctx.beginPath();
-        ctx.arc(n.x, n.y, n.radius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${r},${g},${b},${opacity})`;
+        ctx.fillStyle = `rgba(255,255,255,${opacity.toFixed(3)})`;
+        for (let k = 0; k < bk.length; k += 3) {
+          ctx.moveTo(bk[k] + bk[k + 2], bk[k + 1]);
+          ctx.arc(bk[k], bk[k + 1], bk[k + 2], 0, Math.PI * 2);
+        }
         ctx.fill();
       }
 

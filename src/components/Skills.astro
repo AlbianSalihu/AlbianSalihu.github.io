@@ -17,7 +17,9 @@ const categories: Category[] = [
     skills: [
       { name: 'ROS 2', url: 'https://docs.ros.org' },
       { name: 'Real-time Control' },
-      { name: 'UAV Control' },
+      { name: 'MPC' },
+      { name: 'Aerial Robotics' },
+      { name: 'GNSS' },
       { name: 'Sensor Integration' },
       { name: 'System Integration' },
       { name: 'Conveyor Control' },
@@ -28,12 +30,12 @@ const categories: Category[] = [
     i18nKey: 'skills.emb',
     icon: `<rect x="4" y="4" width="16" height="16" rx="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line>`,
     skills: [
-      { name: 'FPGA (Xilinx Zynq)', url: 'https://www.amd.com/en/products/adaptive-socs-and-fpgas/soc/zynq-7000.html' },
-      { name: 'FPGA (Intel DE10)', url: 'https://www.terasic.com.tw/cgi-bin/page/archive.pl?Language=English&CategoryNo=167&No=1046' },
+      { name: 'FPGA' },
       { name: 'Vivado / Vitis', url: 'https://www.amd.com/en/products/software/adaptive-socs-and-fpgas/vivado.html' },
       { name: 'Quartus', url: 'https://www.intel.com/content/www/us/en/products/details/fpga/development-tools/quartus-prime.html' },
       { name: 'Microcontrollers' },
       { name: 'VHDL' },
+      { name: 'µC/OS (RTOS)' },
     ],
   },
   {
@@ -101,11 +103,7 @@ const categories: Category[] = [
             <h3 class="category-title" data-i18n={cat.i18nKey}>{cat.titleKey}</h3>
           </div>
           <div class="skill-list">
-            {cat.skills.map(skill =>
-              skill.url
-                ? <a href={skill.url} class="skill-tag skill-link" target="_blank" rel="noopener noreferrer">{skill.name}</a>
-                : <span class="skill-tag">{skill.name}</span>
-            )}
+            {cat.skills.map(skill => <span class="skill-tag">{skill.name}</span>)}
           </div>
         </div>
       ))}
