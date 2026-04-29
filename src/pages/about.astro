@@ -70,6 +70,12 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
               </button>
             </div>
           </form>
+
+          <p class="mail-alt">
+            <span class="lang-en">Or reach me directly at</span>
+            <span class="lang-fr">Ou contactez-moi directement à</span>
+            <a href="mailto:albian.salihu@hotmail.fr" class="mail-link">albian.salihu@hotmail.fr</a>
+          </p>
         </section>
 
       </div>
@@ -421,6 +427,26 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     border-radius: 0.5rem;
     color: #6ddf9a;
     font-size: 0.95rem;
+  }
+
+  .mail-alt {
+    margin-top: 1.25rem;
+    font-size: 0.875rem;
+    color: var(--color-text-dim);
+    text-align: center;
+  }
+
+  .mail-link {
+    color: var(--color-text);
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-border);
+    transition: border-color 0.2s ease, color 0.2s ease;
+    margin-left: 0.3em;
+  }
+
+  .mail-link:hover {
+    color: var(--color-text);
+    border-bottom-color: var(--color-text-dim);
   }
 
   @media (max-width: 600px) {
