@@ -447,7 +447,7 @@ A slight drift in state estimation caused some bricks to land on the edge of the
 
 On obstacle avoidance, *Budget Roomba* actually outperformed higher-scoring teams: some Ultra-Sound sensor based robots moved the potted-plant obstacles during the run, while our robot maintained a safe margin at all times.
 
-Prof. Ijspeert described this edition as **"the best competition ever"** in terms of points scored — prior years saw most robots collect nearly nothing. My responsibility in the team was **electronics design and integration** (ESCON wiring, power distribution, sensor interfacing, PCB schematic).
+Prof. Ijspeert described this edition as **"the best competition ever"** in terms of points scored — prior years saw most robots collect nearly nothing. My responsibility in the team was **electronics design and integration** (ESCON wiring, power distribution, sensor interfacing).
 
 </div>
 <div class="lang-fr">
@@ -467,7 +467,7 @@ Une légère dérive de l'estimation d'état a fait atterrir certaines briques s
 
 Sur l'évitement d'obstacles, *Budget Roomba* a en réalité surpassé les équipes mieux classées : certains robots à capteurs ultrasoniques ont déplacé les plantes-obstacles pendant la course, tandis que notre robot a maintenu une marge de sécurité suffisante en permanence.
 
-Le Prof. Ijspeert a décrit cette édition comme **"la meilleure compétition jamais organisée"** en termes de points marqués — les années précédentes, la plupart des robots ne collectaient presque rien. Ma responsabilité dans l'équipe était la **conception et l'intégration électronique** (câblage ESCON, distribution d'alimentation, interfaçage des capteurs, schéma PCB).
+Le Prof. Ijspeert a décrit cette édition comme **"la meilleure compétition jamais organisée"** en termes de points marqués — les années précédentes, la plupart des robots ne collectaient presque rien. Ma responsabilité dans l'équipe était la **conception et l'intégration électronique** (câblage ESCON, distribution d'alimentation, interfaçage des capteurs).
 
 </div>
 
