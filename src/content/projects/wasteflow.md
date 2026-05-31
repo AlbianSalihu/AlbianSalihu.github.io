@@ -10,7 +10,7 @@ link: ''
 github: ''
 tags: ['PLC', 'Python', 'Embedded', 'Industrial', 'Electrical Design', 'VFD', 'Robotics', 'Computer Vision']
 featured: true
-date: 'Sept 2024 – Present'
+date: 'May 2025 – Present'
 role: 'Robotics & Systems Integration Engineer'
 team: 'Solo'
 context: 'Industry — Wasteflow, Lausanne'
