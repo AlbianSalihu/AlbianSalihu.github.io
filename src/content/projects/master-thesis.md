@@ -11,7 +11,6 @@ tags: ['Control Systems', 'Laser Sensing', 'Python', 'Medical', '3D Printing', '
 featured: true
 date: 'Feb – Sept 2024'
 role: 'R&D Engineer Intern'
-team: 'Solo'
 context: 'Industry Thesis — Swiss MotionTech / EPFL'
 outcome: 'Closed-loop sensor feedback system enabling reliable multi-hardness silicone 3D printing for custom medical prosthetic liners'
 ---

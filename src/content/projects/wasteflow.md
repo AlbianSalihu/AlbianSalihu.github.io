@@ -12,7 +12,6 @@ tags: ['PLC', 'Python', 'Embedded', 'Industrial', 'Electrical Design', 'VFD', 'R
 featured: true
 date: 'May 2025 – Present'
 role: 'Robotics & Systems Integration Engineer'
-team: 'Solo'
 context: 'Industry — Wasteflow, Lausanne'
 outcome: 'POC running daily at an industrial facility; conveyor speed control and alarm integration shipped to production — plus exploratory work on a robotic arm for hazardous waste extraction'
 ---

@@ -17,6 +17,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 // Only h2 and h3 for the sidebar
 const tocHeadings = headings.filter(h => h.depth === 2 || h.depth === 3);
 
+const summaryCols = [project.data.role, project.data.team, project.data.context, project.data.date].filter(Boolean).length;
+
 // YouTube embed helper
 const ytMatch = project.data.video?.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\s]+)/);
 const youtubeId = ytMatch?.[1] ?? null;
@@ -103,7 +105,7 @@ const youtubeId = ytMatch?.[1] ?? null;
 
       <!-- Summary box -->
       {(project.data.role || project.data.team || project.data.context || project.data.outcome) && (
-        <div class="project-summary">
+        <div class="project-summary" style={`grid-template-columns: repeat(${summaryCols}, 1fr)`}>
           {project.data.role && (
             <div class="summary-item">
               <span class="summary-label" data-i18n="summary.role">Role</span>
@@ -389,7 +391,7 @@ const youtubeId = ytMatch?.[1] ?? null;
   /* ── Summary box ── */
   .project-summary {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4, 1fr); /* overridden per-project by inline style */
     gap: 0;
     background: var(--color-bg-card);
     border: 1px solid var(--color-border);
@@ -407,7 +409,7 @@ const youtubeId = ytMatch?.[1] ?? null;
     border-bottom: 1px solid var(--color-border);
   }
 
-  .summary-item:nth-child(4) {
+  .summary-item:nth-last-child(2) {
     border-right: none;
   }
 
@@ -420,9 +422,9 @@ const youtubeId = ytMatch?.[1] ?? null;
 
   @media (max-width: 560px) {
     .project-summary { grid-template-columns: repeat(2, 1fr); }
-    .summary-item:nth-child(4) { border-right: 1px solid var(--color-border); }
-    .summary-item:nth-child(2),
-    .summary-item:nth-child(4) { border-right: none; }
+    .summary-item:nth-last-child(2) { border-right: 1px solid var(--color-border); }
+    .summary-item:nth-child(2n):not(.summary-item--outcome),
+    .summary-item:nth-last-child(2) { border-right: none; }
   }
 
   .summary-label {
