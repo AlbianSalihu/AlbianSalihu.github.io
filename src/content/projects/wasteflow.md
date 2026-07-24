@@ -49,14 +49,14 @@ outcome: 'POC running daily at an industrial facility; conveyor speed control an
 
 [Wasteflow](https://wasteflow.ch) is building an AI-powered waste sorting system for industrial recycling facilities. A real-time computer vision pipeline classifies material categories and flags dangerous objects as they travel along conveyor belts — the challenge is bridging that AI output with precise, reliable physical actuation.
 
-As **Robotics and Systems Integration Engineer**, I own the full stack from electrical panel to software: designing control systems, wiring hardware, integrating PLCs and VFDs, and deploying to live facilities. I've contributed to three independent subsystems since joining in September 2024. Details of ongoing work are under NDA.
+As **Robotics and Systems Integration Engineer**, I own the full stack from electrical panel to software: designing control systems, wiring hardware, integrating PLCs and VFDs, and deploying to live facilities. I've contributed to three independent subsystems since joining in May 2025. Details of ongoing work are under NDA.
 
 </div>
 <div class="lang-fr">
 
 [Wasteflow](https://wasteflow.ch) développe un système de tri des déchets assisté par IA pour les centres de recyclage industriels. Un pipeline de vision par ordinateur classifie les matériaux et détecte les objets dangereux en temps réel sur les convoyeurs — le défi est de traduire ces décisions IA en actionnement physique précis et fiable.
 
-En tant qu'**Ingénieur Robotique et Intégration Systèmes**, je couvre l'ensemble du système — de l'armoire électrique au logiciel : conception des systèmes de contrôle, câblage, intégration d'automates et de variateurs, et déploiement sur sites industriels. J'ai contribué à trois sous-systèmes indépendants depuis septembre 2024. Les détails sont couverts par un accord de confidentialité.
+En tant qu'**Ingénieur Robotique et Intégration Systèmes**, je couvre l'ensemble du système — de l'armoire électrique au logiciel : conception des systèmes de contrôle, câblage, intégration d'automates et de variateurs, et déploiement sur sites industriels. J'ai contribué à trois sous-systèmes indépendants depuis mai 2025. Les détails sont couverts par un accord de confidentialité.
 
 </div>
 
