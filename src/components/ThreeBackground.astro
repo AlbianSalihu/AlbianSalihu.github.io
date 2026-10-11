@@ -11,19 +11,19 @@
   const isMobile = window.innerWidth < 768;
 
   const SETTINGS = {
-    nodeCount: isMobile ? 400 : 1500,
-    connectionDistance: isMobile ? 90 : 150,
+    nodeCount: isMobile ? 180 : 500,
+    connectionDistance: isMobile ? 90 : 130,
     nodeSpeed: 0.2,
     nodeRadiusMin: 0.8,
     nodeRadiusMax: 2.2,
-    lineOpacityMax: 0.2,
+    lineOpacityMax: 0.16,
 
     // Pulse
     pulseSpeed: 0.03,
     pulseAmount: 0.45,
 
     // Color nodes
-    colorNodeFraction: 0.2,
+    colorNodeFraction: 0.05,
     colorShiftSpeed: 0.04,
     starColors: [
       [255, 255, 255],
@@ -37,17 +37,21 @@
     parallaxScale: 2.5,
 
     // Shooting stars
-    shootingStarInterval: 90,
+    shootingStarInterval: 600,
     shootingStarSpeed: 14,
     trailLength: 28,
     collisionRadius: 2,
     insideSpawnFraction: 0.4,
     clickBurst: 1,
 
+    // Scroll fade — full strength at the top, dims behind content
+    scrollFadeMin: 0.4,       // opacity once scrolled past the fade distance
+    scrollFadeDistance: 0.8,  // fraction of the viewport height to fade over
+
     // PCB grid
     gridEnabled: true,
     gridSpacing: 36,
-    gridOpacity: 0.1,
+    gridOpacity: 0.04,
 
     // Mouse repulsion
     mouseRepulseRadius: 30,    // px — how far stars get pushed
@@ -580,7 +584,7 @@
       ctx = canvas.getContext('2d');
       if (!ctx) return;
 
-      scrollY = window.scrollY;
+      onScroll();
       resize();
       // Restore full live state from previous navigation if available, otherwise spawn fresh
       const saved = (window as any).__starState;
@@ -651,6 +655,9 @@
 
     function onScroll() {
       scrollY = window.scrollY;
+      if (!canvas) return;
+      const t = Math.min(1, scrollY / (window.innerHeight * SETTINGS.scrollFadeDistance));
+      canvas.style.opacity = String(1 - t * (1 - SETTINGS.scrollFadeMin));
     }
 
     function spawnNodes() {

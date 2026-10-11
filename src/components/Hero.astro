@@ -4,7 +4,6 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 <section class="hero" id="hero-section">
   <div class="hero-content" id="hero-parallax">
-    <div class="greeting" data-i18n="hero.greeting">Hello, I'm</div>
     <h1 class="hero-title">
       <span class="title-text">ALBIAN SALIHU</span>
     </h1>
@@ -65,15 +64,6 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     max-width: 800px;
     animation: fadeInUp 0.8s ease-out;
     will-change: transform;
-  }
-
-  .greeting {
-    font-size: clamp(1rem, 2vw, 1.25rem);
-    color: var(--color-primary);
-    margin-bottom: 0.75rem;
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
   }
 
   .hero-title {
@@ -324,22 +314,6 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     const onScroll = () => {
       indicator.classList.toggle('hidden', window.scrollY > 60);
     };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
-  });
-
-  // ── Star background fade on scroll (hero page only) ──
-  document.addEventListener('astro:page-load', () => {
-    const hero = document.getElementById('hero-section');
-    const canvas = document.getElementById('constellation-canvas') as HTMLCanvasElement | null;
-    if (!hero || !canvas) return;
-
-    const onScroll = () => {
-      const heroHeight = hero.offsetHeight;
-      const progress = Math.min(window.scrollY / (heroHeight * 1.2), 1);
-      canvas.style.opacity = String(1 - progress * 0.5);
-    };
-
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
   });
